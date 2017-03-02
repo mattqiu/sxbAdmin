@@ -1,0 +1,32 @@
+
+<include file="Public:head"/>
+<table class="list" cellpadding="0" cellspacing="0" >
+    <tbody>
+    <tr>
+        <th width="8%"><input type="checkbox" onclick="selAll(this);" class="1" />编号</th>
+        <th width="15%">配置项</th>
+        <th width="10%">名称</th>
+        <th>值</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>操作</th>
+    </tr>
+    <foreach name="list" item="item" key="key">
+        <tr>
+            <td><input type="checkbox" name="id[]" value="{$item.id}" />{$item.id}</td>
+            <td>{$item.lable}</td>
+            <td>{$item.key}</td>
+            <td>{$item.val}</td>
+            <td>{$item.date_begin}</td>
+            <td>{$item.date_end}</td>
+            <td>
+                &nbsp;<a href="{$frontSiteUrl}/navbar-brand/info/id/{$navbar-brand.id}" target="_blank">查看</a>
+                &nbsp;<a href="{:U('Brand/editBrand', 'id='.$navbar-brand['id'])}">编辑</a>
+                &nbsp;<a href="{:U('Brand/deleteBrand', 'ids='.$navbar-brand['id'])}">删除</a>
+            </td>
+        </tr>
+    </foreach>
+    </tbody>
+</table>
+<include file="Public:footer"/>
+<script type="text/javascript" src="__PUBLIC__/admin/js/action.js"></script>

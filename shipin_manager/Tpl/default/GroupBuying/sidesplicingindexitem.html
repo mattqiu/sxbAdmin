@@ -1,0 +1,27 @@
+<tr>
+    <td ><input type="checkbox" /> <a href="http://m.shuxiaobai.com/groupbuy/sideplicinginst/{$item.id}" target="__blank">{$item.id}</a></td>
+    <td>{$item.sponsor.username}</td>
+    <td ><img src="{$img_site}{$item.groupbuytml.thum_photo}" alt="" width="60"> <br/>
+        {$item.groupbuytml.product_name}</td>
+    <td >{$item.groupbuytml.groupbuying_name}</td>
+    <td ><a href="http://m.shuxiaobai.com/groupbuy/joinGroupBuy/{$item.id}" target="__blank">{$item.groupbuy_inst_id}</a></td>
+    <td >{$item.groupbuytml.separatebuy_price}</td>
+    <td>{$item.create_time}</td>
+    <td>{$item.end_time}</td>
+    <td>{$item.req_nums}</td>
+    <td>{$item.now_nums}</td>
+    <td >{$item.state}</td>
+    <td >{$item.used_permission}</td>
+    <td >{$item.used_coupon}</td>
+    <td >{$item.is_leader_recv}</td>
+    <td >{$item.recv_data}</td>
+
+    <td >
+        <foreach name="item.partake_list" item="partake_item" key="partake_key">
+            {$partake_item.username} 、
+        </foreach>
+    </td>
+    <td></td>
+    <td>
+    </td>
+</tr>

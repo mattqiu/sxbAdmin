@@ -1,0 +1,215 @@
+<?php
+// +----------------------------------------------------------------------
+// | 时品
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://m.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id$ 
+
+/**
+ * Class CouponTemplAction
+ *  优惠券模板管理
+ */
+class DroplistAction extends CommonAction{
+
+    public function index(){
+        $where = array();
+
+        $couponTmlM = M('coupon_tml');
+        $droplistM = M('droplist');
+        $count = $droplistM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $droplistM->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('drop_group_id desc')->select();
+
+        if(!empty($list)){
+            foreach($list as $key => $item){
+                if(!empty($item['mutex_data'])&&$item['mutex_data'] != '0')
+                {
+                    $js_mutex_data = json_decode($item['mutex_data'],true);
+                    $array_conpontmlid2mutex = array();
+                    foreach($js_mutex_data as $mutexkey => $mutexitem){
+                        $array_conpontmlid2mutex[$mutexitem['coupon_tml_id']] = $mutexitem;
+                    }
+
+                    $coupon_tmlids = array_column($js_mutex_data,'coupon_tml_id');
+                    $coupon_tmlids = implode(',', $coupon_tmlids);
+                    $coupontmllist = $couponTmlM->where("id in (".$coupon_tmlids.")")->select();
+                    if(!empty($coupontmllist)){
+                        $couponshowdata = array();
+                        foreach($coupontmllist as $coupontmlkey => $coupontmlitem){
+                            $mutexitem_rate = $array_conpontmlid2mutex[$coupontmlitem['id']]['drop_rate'];
+                            $strshow = '模板id:'.$coupontmlitem['id'].',名称:'.$coupontmlitem['sms_send_showtext'].',概率:'.$mutexitem_rate.',使用范围说明:'.$coupontmlitem['description'];
+                            $couponshowdata[]=$strshow;
+                        }
+                        $list[$key]['b64_mutex_data'] = base64_encode($item['mutex_data']);
+                        $list[$key]['mutex_data'] = $couponshowdata;
+
+                    }
+                    else
+                    {
+                        $list[$key]['b64_mutex_data'] = '';
+                        $list[$key]['mutex_data'] = '';
+                    }
+
+                }
+
+            }
+        }
+
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display();
+    }
+
+    public function create(){
+        $this->display();
+    }
+
+    public function doCreate(){
+        $drop_group_id = I('drop_group_id', 0);
+        $group_name = I('group_name', 0);
+        $drop_rate = I('drop_rate', 0);
+        $mutex_data = array();
+        $array_coupon_tml_ids = $_REQUEST['coupon_tml_id'];
+        $array_mutex_drop_rate = $_REQUEST['mutex_drop_rate'];
+
+        for($i=0;$i<count($array_coupon_tml_ids);$i++)
+        {
+            $mutex_one = array(
+                'coupon_tml_id'=>$array_coupon_tml_ids[$i],
+                'drop_rate'=>$array_mutex_drop_rate[$i]
+            );
+            $mutex_data[] = $mutex_one;
+        }
+
+        $droplistM = M('droplist');
+            $data = array();
+            $data['drop_group_id'] =  $drop_group_id;
+            $data['group_name'] =  $group_name;
+            $data['drop_rate'] =  $drop_rate;
+            $data['mutex_data'] =  json_encode($mutex_data);
+
+        $droplistM->add($data);
+
+        redirect('/Droplist/index');
+    }
+
+    public function del(){
+        $id = I('id', 0);
+        if($id > 0){
+            $droplistM = M('droplist');
+            $droplistM->where('id = ' . $id)->delete();
+        }
+        redirect('/Droplist/index');
+    }
+
+    public function edit(){
+        $id = I('id', 0);
+
+        $droplistM = M('droplist');
+        $item = $droplistM->where('id =' . $id)->find();
+
+        $drop_group_id = $item['drop_group_id'];
+        $group_name = $item['group_name'];
+        $drop_rate = $item['drop_rate'];
+        $str_mutex_data = $item['mutex_data'];
+
+
+
+        if(!empty($str_mutex_data)&&$str_mutex_data != '0')
+        {
+            $js_mutex_data = json_decode($str_mutex_data,true);
+            $count = count($js_mutex_data);
+
+        }
+
+        $this->assign('id', $id);
+        $this->assign('drop_group_id', $drop_group_id);
+        $this->assign('group_name',$group_name);
+        $this->assign('drop_rate', $drop_rate);
+        $this->assign('mutex_data', $js_mutex_data);
+        $this->assign('count', $count);
+
+        $this->display();
+    }
+
+    public function doEdit(){
+        $id = I('id', 0);
+        $drop_group_id = I('drop_group_id', 0);
+        $group_name = I('group_name', 0);
+        $drop_rate = I('drop_rate', 0);
+        $mutex_data = array();
+        $array_coupon_tml_ids = $_REQUEST['coupon_tml_id'];
+        $array_mutex_drop_rate = $_REQUEST['mutex_drop_rate'];
+
+        for($i=0;$i<count($array_coupon_tml_ids);$i++)
+        {
+            $mutex_one = array(
+                'coupon_tml_id'=>$array_coupon_tml_ids[$i],
+                'drop_rate'=>$array_mutex_drop_rate[$i]
+            );
+            $mutex_data[] = $mutex_one;
+        }
+
+        $droplistM = M('droplist');
+        $data = array();
+        $data['drop_group_id'] =  $drop_group_id;
+        $data['group_name'] =  $group_name;
+        $data['drop_rate'] =  $drop_rate;
+        $data['mutex_data'] =  json_encode($mutex_data);
+
+        $droplistM->where('id='.$id)->save($data);
+
+        redirect('/Droplist/index');
+    }
+
+    /**
+     *  选择关联的优惠券模板
+     */
+    public function selectJson(){
+        $where = array();
+
+        $couponTmlM = M('coupon_tml');
+        $count = $couponTmlM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $couponTmlM->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        if(!empty($list)){
+            foreach($list as $key => $item){
+                $list[$key]['isgroupbuy_only'] = 1 == $item['isgroupbuy_only'] ? '<span class="red">是</span>' : '<span class="green">否</span>';
+                $list[$key]['coupon_type'] = 1 == $item['coupon_type'] ? '<span class="red">团购</span>' : '<span class="green">普通</span>';
+                $list[$key]['use_target'] = 1 == $item['use_target'] ? '<span class="red">团长</span>' : '<span class="green">不限</span>';
+
+            }
+        }
+
+        $result  = array('data' => $list, 'key' => array('id','sms_send_showtext' ,'money', 'description', 'lifetime'), 'th'=>array('id','显示名称', '金额(元)', '描述', '有效期(天)'), 'page' => $strPage);
+        echo json_encode($result);
+    }
+
+    /**
+     *  选择掉落组
+     */
+    public function selectDroplistGroupJson(){
+        $where = array();
+
+        $droplistM = M('droplist');
+        $count = $droplistM->where($where)->group('drop_group_id')->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $droplistM->where($where)->group('drop_group_id')
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        $result  = array('data' => $list, 'key' => array('drop_group_id','group_name'), 'th'=>array('组id','组名'), 'page' => $strPage);
+        echo json_encode($result);
+    }
+
+} 

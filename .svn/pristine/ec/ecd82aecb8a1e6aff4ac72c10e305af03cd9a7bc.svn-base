@@ -1,0 +1,14 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td ><img src="{$img_site}{$item.photo}" alt="" width="80"></td>
+    <td >{$item.position}</td>
+    <td >{$item.title}</td>
+    <td ><a href="javascript:void(0);" class="is_show" data-id="{$item.id}" data-key="is_show" >{$item.is_show}</a> </td>
+    <td><a href="javascript:void(0);" class="edit_cell_txt" data-id="{$item.id}" data-key="sort">{$item.sort}</a></td>
+    <td >{$item.panicbuying_id}</td>
+    <td >{$item.groupbuyingtml_id}</td>
+    <td>
+        <a href="/{$Think.MODULE_NAME}/edit/id/{$item.id}">编辑</a> <br/>
+        <a href="/{$Think.MODULE_NAME}/del/id/{$item.id}">删除</a>
+    </td>
+</tr>

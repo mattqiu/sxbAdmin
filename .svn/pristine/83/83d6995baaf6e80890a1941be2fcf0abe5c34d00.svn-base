@@ -1,0 +1,79 @@
+<include file="Public:header"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/comm.css" />
+<div class="form-div">
+<form name="theForm" action="{:U('optimize')}" method="post">
+    总碎片数:{$allChip}<input type="submit" class="button" value="开始进行数据表优化">
+    <input type="hidden" value="0" name="num"/>
+    <input type="hidden" value="2" name="step"/>
+</form>
+</div>
+<div id="listDiv" class="list-div">
+<table cellspacing="1" cellpadding="3" id="list-table">
+  <tbody><tr>
+    <th>数据表</th>
+    <th>数据表类型</th>
+    <th>记录数</th>
+    <th>数据</th>
+    <th>碎片</th>
+    <th>字符集</th>
+    <th>状态</th>
+  </tr>
+<foreach name="list" item="l" key="k">
+   <tr>
+      <td class="first-cell" >{$l.table}</td>
+      <td align="left" >{$l.db_type}</td>
+      <td align="right" >{$l.rows}</td>
+      <td align="right" >{$l.size}</td>
+      <td align="right" >{$l.rec_chip}</td>
+      <td class="pl5" align="left" >{$l.charset}</td>
+      <td align="left" >{$l.status}</td>
+    </tr>
+</foreach> 
+      <tr>
+      <td class="first-cell" >sp_year_batch_address</td>
+      <td align="left" >MyISAM</td>
+      <td align="right" >140</td>
+      <td align="right" > 24.93 KB</td>
+      <td align="right" >0</td>
+      <td align="left" >utf8_general_ci</td>
+      <td align="left" >OK</td>
+    </tr>
+  </tbody></table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<inlcude file="Public:head" />

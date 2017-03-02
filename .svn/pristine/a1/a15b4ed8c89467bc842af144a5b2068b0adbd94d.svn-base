@@ -1,0 +1,255 @@
+<include file="Public:head_v3"/>
+<body>
+<div id="theme-wrapper">
+
+    <include file="Public:header_v3"/>
+
+    <div id="page-wrapper" class="container">
+        <div class="row">
+
+            <include file="Public:sidebar_v3"/>
+
+            <div id="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol class="breadcrumb">
+                                    <li><a href="#">首页</a></li>
+                                    <li class="active"><span>数据报表查看</span></li>
+                                </ol>
+                                <h1>Advanced tables</h1>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="main-box clearfix">
+                                    <header class="main-box-header clearfix">
+                                        <h2>商品报表</h2><br>
+
+                                        <form action="/{$Think.MODULE_NAME }/goods" method="post" target="_self" role="form" id="order_search_form">
+
+
+                                            <div class="row">
+                                                <div class="form-group col-md-3" style="width:370px;">
+                                                    <label for="site" class="form-inline-label">选择站点：</label>
+                                                    <select  id="site" class="form-control w150 text-center form-inline-input-group" name="site">
+                                                            <option value="1" <if condition="$post.site eq 1">selected</if>>------所有------</option>
+                                                            <option value="2" <if condition="$post.site eq 2">selected</if>>------嘉善------</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                             <div class="row">
+                                                <div class="form-group col-md-3" style="width:370px;">
+                                                    <label for="sort" class="form-inline-label">排序方式：</label>
+                                                    <select  id="sort" class="form-control w150 text-center form-inline-input-group" name="sort">
+                                                            <option value="0" <if condition="$post.sort eq 0">selected</if>>------请选择------</option>
+                                                            <option value="1" <if condition="$post.sort eq 1">selected</if>>----商品ID降序----</option>
+                                                            <option value="2" <if condition="$post.sort eq 2">selected</if>>----商品ID升序----</option>
+                                                            <option value="3" <if condition="$post.sort eq 3">selected</if>>----订单升序-----</option>
+                                                            <option value="4" <if condition="$post.sort eq 4">selected</if>>----订单降序----</option>
+                                                            <option value="5" <if condition="$post.sort eq 5">selected</if>>----总金额升序----</option>
+                                                            <option value="6" <if condition="$post.sort eq 6">selected</if>>----总金额降序----</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-2">
+                                                    <button id="sift_orders" type="submit"  class=" btn btn-primary mrg-b-lg">查看</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </header>
+                                    <div class="main-box-body clearfix" style="margin-top:30px;">
+                                        <div class="table-responsive">
+                                            <table id="table-example-fixed" class="table text-center table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">商品ID</th>
+                                                    <th class="text-center">商品名称</th>
+                                                    <th class="text-center">订单量</th>
+                                                    <th class="text-center">订单总金额</th>
+                                                    <th class="text-center">平均每单价格</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="tbo">
+                                                    <volist name="result" id="vol">
+                                                        <tr>
+                                                            <td >{$vol.product_id}</td>
+                                                            <td >{$vol.remark}</td>
+                                                            <td>{$vol.sqty}&nbsp;单</td>
+                                                            <td>{$vol.stm|round=2}&nbsp;元</td>
+                                                            <td>{$vol.avg}&nbsp;元</td>
+                                                        </tr>
+                                                    </volist>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page">
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+                <footer id="footer-bar" class="row">
+                    <p id="footer-copyright" class="col-xs-12">
+                        &copy; 2014 <a href="http://www.adbee.sk/" target="_blank">Adbee digital</a>. Powered by Centaurus Theme.
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+
+    <div id="config-tool-options">
+        <h4>Layout Options</h4>
+        <ul>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-header"/>
+                    <label for="config-fixed-header">
+                        Fixed Header
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-sidebar"/>
+                    <label for="config-fixed-sidebar">
+                        Fixed Left Menu
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-footer"/>
+                    <label for="config-fixed-footer">
+                        Fixed Footer
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-boxed-layout"/>
+                    <label for="config-boxed-layout">
+                        Boxed Layout
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-rtl-layout"/>
+                    <label for="config-rtl-layout">
+                        Right-to-Left
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <br/>
+        <h4>Skin Color</h4>
+        <ul id="skin-colors" class="clearfix">
+            <li>
+                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="md-overlay"></div>
+
+<script src="__PUBLIC__/admin/v3/js/demo-skin-changer.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.nanoscroller.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/demo.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.fixedHeader.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.tableTools.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.bootstrap.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/scripts.js"></script>
+<script src="__PUBLIC__/admin/v3/js/pace.min.js"></script>
+
+<!--模态弹出框专属-->
+<script src="__PUBLIC__/admin/v3/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/admin/v3/js/classie.js"></script>
+<script src="__PUBLIC__/admin/v3/js/modalEffects.js"></script>
+<script src="__PUBLIC__/admin/v3/js/shipinmmm/orders.js"></script>
+
+<!--时期时间选择器-->
+<script src="__PUBLIC__/admin/v3/js/bootstrap-datepicker.js"></script>
+<script src="__PUBLIC__/admin/v3/js/moment.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/daterangepicker.js" type="text/javascript"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/admin/js/plugins/base64.min.js"></script>
+
+<script>
+
+    $(function($){
+//      $('.up').click(function(){
+//          var _this = $(this);
+//          var types = _this.attr('type');
+//          $.ajax({
+//              url : "/{$Think.MODULE_NAME }/goods",
+//              data : 'type='+types,
+//              type : 'post',
+//              success: function(result){
+//                  if(result){
+//                      $('.tbo').remove();
+//                  }
+//              },
+//          },'json');
+//
+//    })
+
+    function getFormParams(formId, data) {
+        var _form = $('#' + formId);
+//        _form.find('input:text')
+    }
+    })
+</script>
+</body>
+</html>

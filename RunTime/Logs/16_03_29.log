@@ -1,0 +1,356 @@
+[ 2016-03-29T11:56:47+08:00 ] 127.0.0.1 /index.php?s=/omerchant/areaList
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\wamp\www\sxb\thinkphp\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `ttgy_area` [ RunTime:0.003000s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wamp\www\sxb\thinkphp\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT `id`,`name` FROM `ttgy_area` WHERE ( `pid` = '0' )  [ RunTime:0.015001s ]
+
+[ 2016-03-29T11:57:22+08:00 ] 127.0.0.1 /index.php?s=/omerchant/areaList
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\wamp\www\sxb\thinkphp\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `ttgy_area` [ RunTime:0.002000s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wamp\www\sxb\thinkphp\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT `id`,`name` FROM `ttgy_area` WHERE ( `pid` = '0' )  [ RunTime:0.014001s ]
+
+[ 2016-03-29T11:57:23+08:00 ] 127.0.0.1 /index.php?s=/omerchant/areaList
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\wamp\www\sxb\thinkphp\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `ttgy_area` [ RunTime:0.002000s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wamp\www\sxb\thinkphp\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT `id`,`name` FROM `ttgy_area` WHERE ( `pid` = '' )  [ RunTime:0.014001s ]
+
+[ 2016-03-29T11:57:27+08:00 ] 127.0.0.1 /index.php?s=/omerchant/areaList
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 373 行.
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\wamp\www\sxb\thinkphp\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `ttgy_area` [ RunTime:0.002000s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wamp\www\sxb\thinkphp\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT `id`,`name` FROM `ttgy_area` WHERE ( `pid` = '153' )  [ RunTime:0.015001s ]
+

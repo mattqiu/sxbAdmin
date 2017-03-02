@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * 阿里云rds 二进制日志
+ * Class RdsBinlogAction
+ */
+Vendor('aliyun/AcsRequest');
+Vendor('aliyun/RpcAcsRequest');
+Vendor('aliyun/DescribeBinlogFilesRequest');
+Vendor('aliyun/DefaultAcsClient');
+Vendor('aliyun/Auth/Credential');
+Vendor('aliyun/Auth/ISigner');
+Vendor('aliyun/Auth/ShaHmac1Signer');
+Vendor('aliyun/Auth/ShaHmac256Signer');
+Vendor('aliyun/Profile/DefaultProfile');
+class RdsBinlogAction extends CommonAction {
+
+    public function _init(){
+        set_time_limit(0);
+        header('"text/html; charset=UTF-8"');
+    }
+
+    public function index() {
+        $accessKey = 'P9n3Fv2K437YKLgP';
+        $accessSercetKey = 'FwE7zpVtLgCQyqKWJ7ppg6GHmLJ1RY';
+        $instanceId = 'rds2698sy20670yn6u76';
+        $url ='rds.aliyuncs.com';
+
+
+        $iClientProfile = DefaultProfile::getProfile("cn-hangzhou", $accessKey, $accessSercetKey);
+        $client = new DefaultAcsClient($iClientProfile);
+
+        $request = new DescribeBinlogFilesRequest();
+        $request->setMethod("GET");
+        $request->setDBInstanceId($instanceId);
+        $request->setStartTime('2015-12-22T00:00:00Z');
+        $request->setEndTime('2015-12-26T23:00:00Z');
+        $response = $client->getAcsResponse($request);
+        print_r($response);
+    }
+}

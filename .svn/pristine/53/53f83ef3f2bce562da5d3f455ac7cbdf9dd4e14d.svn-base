@@ -1,0 +1,20 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td ><img src="{$img_site}{$item.thum_photo}" alt="" width="60"> <br/>
+        {$item.product_name}</td>
+    <td >{$item.groupbuying_name}</td>
+    <td >{$item.groupbuying_price}</td>
+    <td >{$item.groupbuying_reqnums}</td>
+    <td >{$item.separatebuy_price}</td>
+    <td >{$item.condition_type}</td>
+    <td >{$item.condition_num}</td>
+    <td >{$item.state}</td>
+    <td >{$item.salenum}</td>
+    <td >{$item.postage}</td>
+    <td >{$item.canbuy_times}</td>
+    <td>
+        <a href="{$frontSiteUrl}detail/groupbuy/{$item.id}" target="_blank">预览</a>
+        <a href="/index.php?m=GroupBuyingTml&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=GroupBuyingTml&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

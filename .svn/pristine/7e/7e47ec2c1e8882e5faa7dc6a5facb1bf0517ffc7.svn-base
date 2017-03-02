@@ -1,0 +1,21 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td ><img src="{$img_site}{$item.groupbuy_tml.thum_photo}" alt="" width="60"> <br/>
+        {$item.groupbuy_tml.product_name}</td>
+    <td >{$item.groupbuy_tml.groupbuying_name}</td>
+    <td >{$item.activity_title}</td>
+    <td >{$item.begin_price}</td>
+    <td >{$item.min_price}</td>
+    <td >{$item.dec_sale_type}</td>
+    <td >{$item.sale_min}</td>
+    <td >{$item.sale_max}</td>
+    <td >{$item.req_min_partake_num}</td>
+    <td >{$item.is_have_special_mission}</td>
+    <td>
+        <div style="min-width: 80px">
+        <a href="{$frontSiteUrl}bargainactivity/joinbactivity/0/{$item.id}" target="_blank">预览</a>
+        <a href="/index.php?m=BargainActivityTml&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=BargainActivityTml&a=del&id={$item.id}">删除</a>
+        </div>
+    </td>
+</tr>

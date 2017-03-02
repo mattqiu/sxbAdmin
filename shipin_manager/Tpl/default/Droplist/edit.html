@@ -1,0 +1,358 @@
+<include file="Public:head_v3"/>
+<body>
+<div id="theme-wrapper" class="rushToPurchase">
+
+    <include file="Public:header_v3"/>
+    <div id="page-wrapper" class="container">
+        <div class="row">
+            <include file="Public:sidebar_v3"/>
+            <div id="content-wrapper">
+
+                <div class="md-content">
+                    <div class="modal-header">
+                        <button class="md-close close">&times;</button>
+                        <h4 class="modal-title">修改掉落组</h4>
+                    </div>
+                    <form action="/Droplist/doEdit"  method="post" role="form" id="add_form">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <span class="label">id:{$id}</span>
+                                    <input type="hidden" name="id" class="form-control col-xs-6" id="id" value="{$id}"/>
+                                    <span class="label">掉落组id(相同的id视为一组掉落)</span>
+                                    <input type="text" name="drop_group_id" class="form-control col-xs-6" id="drop_group_id" value="{$drop_group_id}"/>
+                                </div>
+
+                                <div class="form-group col-xs-4">
+                                    <span class="label">组名</span>
+                                    <input type="text" name="group_name" class="form-control col-xs-6" id="group_name" value="{$group_name}"/>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-5">
+                                    <span class="label">掉落概率（0到1）</span>
+                                    <input type="text" name="drop_rate" class="form-control col-xs-5" id="drop_rate" value="{$drop_rate}"/>
+                                </div>
+
+                                <div class="form-group col-xs-5">
+                                    <span class="label">每用户掉落限制次数（超过则不给这个用户）</span>
+                                    <input type="text" name="user_limit_times" class="form-control col-xs-2" id="user_limit_times" value="{$user_limit_times}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-5">
+                                    <span class="label">总掉落限制次数（用于控制总量）</span>
+                                    <input type="text" name="count_limit_times" class="form-control col-xs-2" id="count_limit_times" value="{$count_limit_times}"/>
+                                </div>
+                                <div class="form-group col-xs-5">
+                                    <span class="label">已掉落{$now_drop_times}次</span>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <span class="label">掉落物品（互斥：总概率要等于1）</span>
+                                    <button id="add_one_mutex_data" type="button" class="btn btn-primary" onclick="addMutexLine()">增加一条互斥掉落数据</button>
+                                </div>
+                            </div>
+
+                            <div id="mutex_data" class="row" add_line="{$count - 1}">
+                                <foreach name="mutex_data" key="key" item="item">
+                                <div class="row mutex_line">
+                                    <div class="form-group col-xs-10">
+                                        <span class="label">选择掉落物品类型:</span>
+                                        <select name="dropitem_type[]" id="dropitem_type_{$key}" onchange="changedroptype({$key})">
+                                            <option value="0" <if condition="$item['dropitem_type'] eq 0">selected="selected"</if> >优惠券</option>
+                                            <option value="1" <if condition="$item['dropitem_type'] eq 1">selected="selected"</if> >宝盒</option>
+                                            <option value="2" <if condition="$item['dropitem_type'] eq 2">selected="selected"</if> >钥匙</option>
+                                            <option value="3" <if condition="$item['dropitem_type'] eq 3">selected="selected"</if> >微信红包</option>
+                                        </select>
+
+                                        <if condition="$item['dropitem_type'] eq 0">
+                                            <span class="" id="dropitem_type_text_{$key}">优惠券模板id</span>
+                                            <a id="dropitem_type_a_{$key}" href="javascript:void(0);"class="modals_radio_select md-trigger btn btn-primary"
+                                            data-inputId="dropitem_id_{$key}" data-url="/Droplist/selectJson"
+                                            data-title="选择优惠券模板" data-modal="modal_radio_select">选择优惠券模板</a>
+                                            <input type="text" name="dropitem_id[]" class="form-control col-xs-2 modals_radio_select_input" id="dropitem_id_{$key}" value="{$item['dropitem_id']}"/>
+
+                                            <span class="">掉落概率</span>
+                                            <input type="text" name="mutex_drop_rate[]" id="mutex_drop_rate_{$key}" class="form-control col-xs-2 modals_radio_select_input" value="{$item['drop_rate']}"/>
+                                        </if>
+
+                                        <if condition="$item['dropitem_type'] eq 1">
+                                            <span class="" id="dropitem_type_text_{$key}">宝盒模板id</span>
+                                            <a id="dropitem_type_a_{$key}" href="javascript:void(0);"class="modals_radio_select md-trigger btn btn-primary"
+                                               data-inputId="dropitem_id_{$key}" data-url="/JewelboxTml/selectJson"
+                                               data-title="选择宝盒模板" data-modal="modal_radio_select">选择宝盒模板</a>
+                                            <input type="text" name="dropitem_id[]" class="form-control col-xs-2 modals_radio_select_input" id="dropitem_id_{$key}" value="{$item['dropitem_id']}"/>
+
+                                            <span class="">掉落概率</span>
+                                            <input type="text" name="mutex_drop_rate[]" id="mutex_drop_rate_{$key}" class="form-control col-xs-2 modals_radio_select_input" value="{$item['drop_rate']}"/>
+                                        </if>
+
+                                        <if condition="$item['dropitem_type'] eq 2">
+                                            <span class="" id="dropitem_type_text_{$key}">钥匙数量</span>
+                                            <a id="dropitem_type_a_{$key}" href="javascript:void(0);"class="modals_radio_select md-trigger btn btn-primary"
+                                               data-inputId="dropitem_id_{$key}" data-url=""
+                                               data-title="钥匙数量" data-modal="modal_radio_select">钥匙数量</a>
+                                            <input type="text" name="dropitem_id[]" class="form-control col-xs-2 modals_radio_select_input" id="dropitem_id_{$key}" value="{$item['dropitem_id']}"/>
+
+                                            <span class="">掉落概率</span>
+                                            <input type="text" name="mutex_drop_rate[]" id="mutex_drop_rate_{$key}" class="form-control col-xs-2 modals_radio_select_input" value="{$item['drop_rate']}"/>
+                                        </if>
+
+                                        <if condition="$item['dropitem_type'] eq 3">
+                                            <span class="" id="dropitem_type_text_{$key}">金额</span>
+                                            <a id="dropitem_type_a_{$key}" href="javascript:void(0);"class="modals_radio_select md-trigger btn btn-primary"
+                                               data-inputId="dropitem_id_{$key}" data-url=""
+                                               data-title="钥匙数量" data-modal="modal_radio_select">金额</a>
+                                            <input type="text" name="dropitem_id[]" class="form-control col-xs-2 modals_radio_select_input" id="dropitem_id_{$key}" value="{$item['dropitem_id']}"/>
+
+                                            <span class="">掉落概率</span>
+                                            <input type="text" name="mutex_drop_rate[]" id="mutex_drop_rate_{$key}" class="form-control col-xs-2 modals_radio_select_input" value="{$item['drop_rate']}"/>
+                                        </if>
+
+                                    </div>
+                                </div>
+                                </foreach>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button id="form_save" class="btn btn-primary" >保存</button>
+                            </div>
+
+                            </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+
+    <div id="config-tool-options">
+        <h4>Layout Options</h4>
+        <ul>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-header"/>
+                    <label for="config-fixed-header">
+                        Fixed Header
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-sidebar"/>
+                    <label for="config-fixed-sidebar">
+                        Fixed Left Menu
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-footer"/>
+                    <label for="config-fixed-footer">
+                        Fixed Footer
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-boxed-layout"/>
+                    <label for="config-boxed-layout">
+                        Boxed Layout
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-rtl-layout"/>
+                    <label for="config-rtl-layout">
+                        Right-to-Left
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <br/>
+        <h4>Skin Color</h4>
+        <ul id="skin-colors" class="clearfix">
+            <li>
+                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<div id="modal_radio_select" class="md-modal md-effect-1">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">×</button>
+            <h4 class="modal-title">弹出框标题</h4>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" id="modal_radio_select_cancel">取消</button>
+            <button class="btn btn-primary" type="button" id="modal_radio_select_confirm" data-inputId="">确定</button>
+        </div>
+    </div>
+</div>
+<div class="md-overlay" id="md-overlay"></div>
+
+<script src="__PUBLIC__/admin/v3/js/demo-skin-changer.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.nanoscroller.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/demo.js"></script>
+
+<!--模态弹出框专属-->
+<script src="__PUBLIC__/admin/v3/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/admin/v3/js/classie.js"></script>
+<script src="__PUBLIC__/admin/v3/js/modalEffects.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/scripts.js"></script>
+<script src="__PUBLIC__/admin/v3/js/pace.min.js"></script>
+
+<!--时期时间选择器-->
+<script src="__PUBLIC__/admin/v3/js/bootstrap-datepicker.js"></script>
+<script src="__PUBLIC__/admin/v3/js/moment.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/daterangepicker.js" type="text/javascript"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script src="__PUBLIC__/admin/v3/js/shipinmmm/modals-select.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    function addMutexLine()
+    {
+        var parentNode = $('#mutex_data');
+        var vline_num = parseInt(parentNode.attr("add_line"))+1;
+        parentNode.attr("add_line",vline_num);
+        var src  = '<div class="row mutex_line">' +
+            '<div class="form-group col-xs-10">' +
+            '<span class="label">选择掉落物品类型:</span>' +
+            '<select name="dropitem_type[]" id="dropitem_type_'+vline_num+'" onchange="changedroptype('+vline_num+')">' +
+            '<option value="0">优惠券</option>' +
+            '<option value="1">宝盒</option>' +
+            '</select>' +
+                '<span class="" id="dropitem_type_text_'+vline_num+'">优惠券模板id</span>' +
+                '<a id="dropitem_type_a_'+vline_num+'" href="javascript:void(0);" class="modals_radio_select md-trigger btn btn-primary" ' +
+                'data-inputId="dropitem_id_'+vline_num+'" data-url="/Droplist/selectJson" ' +
+                'data-title="选择优惠券模板" data-modal="modal_radio_select">选择优惠券模板</a>' +
+                '<input type="text" name="dropitem_id[]" class="form-control col-xs-2 modals_radio_select_input" id="dropitem_id_'+vline_num+'"/>'+
+                '<span class="">掉落概率</span>' +
+                '<input type="text" name="mutex_drop_rate[]" id="mutex_drop_rate_'+vline_num+'" class="form-control col-xs-2 modals_radio_select_input"/>'+
+                '</div>'+
+                '</div>';
+        parentNode.append(src);
+
+        mModalEffect();
+        modals_select_datalink();
+    }
+
+    function changedroptype(linenum)
+    {
+        var strdropitem_typeid = 'dropitem_type_'+linenum;
+        var dropitem_type_Node = $('#'+strdropitem_typeid);
+        var iItemtype = parseInt(dropitem_type_Node.val());
+
+        var strTextid = 'dropitem_type_text_'+linenum;
+        var dropitem_type_text_Node = $('#'+strTextid);
+
+        var strAid = 'dropitem_type_a_'+linenum;
+        var dropitem_type_a_Node = $('#'+strAid);
+
+        var strDropitem_id = 'dropitem_id_'+linenum;
+        var dropitem_id_Node = $('#'+strDropitem_id);
+
+        var strMutex_drop_rate = 'mutex_drop_rate_'+linenum;
+        var mutex_drop_rate__Node = $('#'+strMutex_drop_rate);
+
+        switch(iItemtype)
+        {
+            case 0://优惠券
+            {
+                dropitem_type_text_Node.html('优惠券模板id');
+                dropitem_type_a_Node.html('选择优惠券模板');
+                dropitem_type_a_Node.attr('data-title','选择优惠券模板');
+                dropitem_type_a_Node.attr('data-url','/Droplist/selectJson');
+                dropitem_id_Node.val('');
+                mutex_drop_rate__Node.val('');
+            }break;
+            case 1://宝盒
+            {
+                dropitem_type_text_Node.html('宝盒模板id');
+                dropitem_type_a_Node.html('选择宝盒模板');
+                dropitem_type_a_Node.attr('data-title','选择宝盒模板');
+                dropitem_type_a_Node.attr('data-url','/JewelboxTml/selectJson');
+                dropitem_id_Node.val('');
+                mutex_drop_rate__Node.val('');
+            }break;
+            case 2://钥匙
+            {
+                dropitem_type_text_Node.html('钥匙数量');
+                dropitem_type_a_Node.html('钥匙数量');
+                dropitem_type_a_Node.attr('data-title','钥匙数量');
+                dropitem_type_a_Node.attr('data-url','');
+                dropitem_id_Node.val('');
+                mutex_drop_rate__Node.val('');
+            }break;
+            case 2://微信红包
+            {
+                dropitem_type_text_Node.html('金额');
+                dropitem_type_a_Node.html('金额');
+                dropitem_type_a_Node.attr('data-title','金额');
+                dropitem_type_a_Node.attr('data-url','');
+                dropitem_id_Node.val('');
+                mutex_drop_rate__Node.val('');
+            }break;
+        }
+
+
+    }
+
+
+</script>
+</body>
+</html>

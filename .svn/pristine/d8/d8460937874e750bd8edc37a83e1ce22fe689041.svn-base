@@ -1,0 +1,11 @@
+<tr>
+    <td ><input type="checkbox" id="check_all"/>{$item.id}</td>
+    <td >{$item.name}</td>
+    <td >{$item.order_id}</td>
+    <td ><if condition="$item.is_show eq 0"> 否  <else/>是 </if></td>
+    <td ><if condition="$item.is_split eq 0"> 否  <else/>是 </if></td>
+    <td ><if condition="$item.is_hot eq 0"> 否  <else/>是 </if></td>
+    <td >
+        <a href="/ProductClass/edit/id/{$item.id}">编辑</a>
+        <a href="/ProductClass/del/id/{$item.id}">删除</a></td>
+</tr>

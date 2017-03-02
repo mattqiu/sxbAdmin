@@ -1,0 +1,225 @@
+<include file="Public:head_v3"/>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script>
+    
+    $(function(){
+        $('#page a:first-child').addClass('one');
+    })
+
+</script>
+<body>
+<div id="theme-wrapper">
+
+    <include file="Public:header_v3"/>
+
+    <div id="page-wrapper" class="container">
+        <div class="row">
+
+            <include file="Public:sidebar_v3"/>
+
+            <div id="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol class="breadcrumb">
+                                    <li><a href="#">首页</a></li>
+                                    <li class="active"><span>后台用户管理</span></li>
+                                </ol>
+                                <h1>Advanced tables</h1>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="main-box clearfix">
+                                    <header class="main-box-header clearfix">
+                                        <h2>用户列表</h2>
+                                    </header>
+
+                                    <div class="main-box-body clearfix">
+                                        <div class="table-responsive">
+                                            <table id="table-example-fixed" class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">ID</th>
+                                                    <th style="text-align:center;">用户ID</th>
+                                                    <th style="text-align:center;">用户昵称</th>
+                                                    <th style="text-align:center;">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <foreach name="list" item="item">
+                                                    <include file="item"/>
+                                                </foreach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page">
+                            {$page}
+                        </div>
+                        
+                    </div>
+                </div>
+                <footer id="footer-bar" class="row">
+                    <p id="footer-copyright" class="col-xs-12">
+                        &copy; 2014 <a href="http://www.adbee.sk/" target="_blank">Adbee digital</a>. Powered by Centaurus Theme.
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+
+    <div id="config-tool-options">
+        <h4>Layout Options</h4>
+        <ul>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-header"/>
+                    <label for="config-fixed-header">
+                        Fixed Header
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-sidebar"/>
+                    <label for="config-fixed-sidebar">
+                        Fixed Left Menu
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-footer"/>
+                    <label for="config-fixed-footer">
+                        Fixed Footer
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-boxed-layout"/>
+                    <label for="config-boxed-layout">
+                        Boxed Layout
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-rtl-layout"/>
+                    <label for="config-rtl-layout">
+                        Right-to-Left
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <br/>
+        <h4>Skin Color</h4>
+        <ul id="skin-colors" class="clearfix">
+            <li>
+                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<script src="__PUBLIC__/admin/v3/js/demo-skin-changer.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.nanoscroller.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/demo.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.fixedHeader.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.tableTools.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.bootstrap.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/scripts.js"></script>
+<script src="__PUBLIC__/admin/v3/js/pace.min.js"></script>
+
+<!--模态弹出框专属-->
+<script src="__PUBLIC__/admin/v3/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/admin/v3/js/classie.js"></script>
+<script src="__PUBLIC__/admin/v3/js/modalEffects.js"></script>
+
+
+
+<script type="text/javascript">
+$(function($){
+    //显示商品信息
+    $('#goods_id').on('blur', function(){
+        var _this = $(this);
+        var url = "{:U('Product/getProductInfo')}";
+        var data = {product_id : _this.val()};
+        $.get(url, data, function(data){
+            $('#goods_name').html(data.product_name);
+            $('#old_price').html(data.product_price[0].old_price);
+        }, 'json');
+    });
+
+    $('.off_type').on('change', function(){
+        var _this = $(this);
+        var wrapId = _this.attr('data-id');
+        $('.offType-wrap').css('display', 'none');
+        $('#' + wrapId).css('display', 'block');
+    });
+
+    $('#form_save').on('click', function(){
+        var _this = $(this);
+        _this.attr('disabled', 'disabled');
+        $('#add_form').submit();
+    })
+    $(".delete").click(function(){
+        return confirm("您确定要将此用户移出黑名单吗？");
+    })
+});
+
+
+
+
+</script>
+</body>
+
+<script src="/Public/admin/js/comment.js"></script>
+
+</html>

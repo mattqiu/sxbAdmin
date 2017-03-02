@@ -1,0 +1,16 @@
+<tr>
+    <td ><input type="checkbox" />{$item.groupbuying_id}</td>
+    <td>{$item.groupbuy_order_name}</td>
+    <td >{$item.order_name}</td>
+    <td >{$item.recv_name}</td>
+    <td >{$item.recv_phone}</td>
+    <td>{$item.recv_address}</td>
+    <td>{$item.groupbuying_name}</td>
+    <td>{$item.pay_money}</td>
+    <td>{$item.pay_name}</td>
+    <td>{$item.state}</td>
+    <td>{$item.create_time}</td>
+    <td>{$item.last_update_time}</td>
+
+    <td></td>
+</tr>

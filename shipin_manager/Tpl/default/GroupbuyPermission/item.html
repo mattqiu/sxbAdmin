@@ -1,0 +1,13 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.permission_groupid}</td>
+    <td >{$item.permission_type}</td>
+    <td >{$item.permission_value}</td>
+    <td >{$item.description}</td>
+    <td >{$item.effect_range}</td>
+
+    <td >
+        <a href="/index.php?m=GroupbuyPermission&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=GroupbuyPermission&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

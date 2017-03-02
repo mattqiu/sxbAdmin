@@ -1,0 +1,121 @@
+<include file="Public:head_news"/>
+<div class="tab-div">
+  <div id="tabbar-div">
+    <p>
+      <span class="tab-front" id="general-tab" onclick="tarChange(this);">通用信息</span>
+	  <span class="tab-back" id="detail-tab" onclick="tarChange(this);">新闻内容</span>
+	  <span class="tab-back" id="editer_comm-tab" onclick="tarChange(this);">编辑推荐</span>
+    </p>
+   </div>
+   <div id="tabbody-div">
+        <form  action="{$done.url}" method="post" enctype="multipart/form-data" name="theForm" onsubmit="return validate();">
+                <table width="90%" id="general-table" >
+                       <tr>
+                            <td class="narrow-label">新闻标题</td>
+                            <td>
+                                <input type="text" name="title" size ="40" maxlength="60" value="{$news.title}" />
+                                <span class="require-field">*</span>
+                            </td>
+                        </tr>  
+                
+                      <tr>
+                                <td class="narrow-label">新闻分类</td>
+                                <td>
+                                  <select name="news_cat" onchange="catChanged()">
+                                    <option value="0">-选择分类-</option>
+                                    <foreach name="news_cat" item="cat">
+                                    <option value="{$cat.cat_id}" <eq name="news.cat_id" value="$cat['cat_id']">selected="selected"</eq>>{$cat.cat_name}</option>
+                                    <foreach name="cat.cat_son" item="son">
+                                    <option value="{$son.cat_id}" <eq name="news.cat_id" value="$son['cat_id']">selected="selected"</eq>>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{$son.cat_name}
+                                    </option>
+                                        <if condition="!empty($son['sub_cat'])" >
+                                        <foreach name="son.sub_cat" item="sub_cat">
+                                            <option value="{$sub_cat.cat_id}"
+                                            <eq name="news.cat_id" value="$sub_cat['cat_id']">selected="selected"</eq>>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$sub_cat.cat_name}
+                                            </option>
+                                        </foreach>
+                                        </if>
+                                    </foreach>
+                                    </foreach>
+                                  </select>
+                                 {$lang.require_field}</td>
+                      </tr>
+                    <tr>
+                        <td class="narrow-label">排序权重</td>
+                        <td><input type="text" name="sort_order" value="{$news.sort_order}"/> <span>(默认50, 数字越小,排序越靠前)</span></td>
+                    </tr>
+                      <tr>
+                            <td class="narrow-label">新闻重要性</td>
+                            <td>
+                            <label>
+                                <input type="radio" name="news_type" value="1" <eq name="news.news_type" value="1">checked</eq>>普通
+                            </label>
+                          <label><input type="radio" name="news_type" value="2" <eq name="news.news_type" value="2">checked</eq>>栏目置顶</label>
+                         <label> <input type="radio" name="news_type" value="3" <eq name="news.news_type" value="3">checked</eq>>全局置顶</label>
+                            </td>
+                    </tr>
+                      
+                          <tr>
+        <td class="narrow-label">新闻作者</td>
+        <td><input type="text" name="author" maxlength="60" value="{$news.author}" /></td>
+                        </tr>  
+
+      <tr>
+        <td class="narrow-label">关键字</td>
+        <td><input type="text" name="keywords" maxlength="60" value="{$news.keywords}" /></td>
+      </tr>                
+      <tr>
+        <td class="narrow-label">网页描述</td>
+        <td><textarea name="description" id="description" cols="40" rows="5">{$news.description}</textarea></td>
+      </tr>                
+      <tr>
+        <td class="narrow-label">新闻图片</td>
+        <td><input type="file" name="news_img">
+          <span class="narrow-label">{$lang.img_url}
+          <input name="img_url" type="text" value="{$news.news_img}" size="30" maxlength="255" />
+          </span></td>
+      </tr>                
+      <tr>
+        <td class="narrow-label">外部链接</td>
+        <td><input name="link_url" type="text" id="link_url" value="http://" maxlength="60" /></td>
+      </tr>               
+            <tr>
+        <td class="narrow-label">上传文件</td>
+        <td><input type="file" name="file">
+          <span class="narrow-label">或者输入文件地址
+          <input name="file_url" type="text" value="" size="30" maxlength="255" />
+          </span></td>
+      </tr>                
+      </table>
+
+      <table width="90%" id="detail-table" class="dnone">
+            <tr>
+                <td><script type="text/plain" id="content" name="content" style="">{$news.content}</script></td>
+            </tr>
+      </table>
+      <table width="90%" id="editer_comm-table" class="dnone">
+            <tr>
+                <td><script type="text/plain" id="editor_comm" style="" name="editor_comm">{$news.editer_comm}</script></td>
+            </tr>
+      </table>
+      <div class="button-div">
+      <input type="hidden" name="step" value="2" />
+      <input type="hidden" name="act" value="{$act}" />
+      <input type="hidden" name="id" value="{$news.news_id}" />
+      <input type="submit" value="确定" class="button"  />
+      <input type="reset" value="重置" class="button" />
+    </div>
+        </form>
+   </div> 
+</div>
+<include file="footer" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor143/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor143/editor_api.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor143/lang/zh-cn/zh-cn.js"></script>-->
+<script type="text/javascript" src="__PUBLIC__/admin/js/common.js"></script>
+<script type="text/javascript">
+    var editContent = UE.getEditor('content',{initialFrameHeight:800});
+    var editEditorComm = UE.getEditor('editor_comm',{initialFrameHeight:800});
+</script>

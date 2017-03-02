@@ -1,0 +1,29 @@
+<tbody >
+<tr class="select_all">
+    <td class="id_order_name" style="text-align:left;text-indent:3px;"><input type="checkbox" class="checkOrder" orderClass="{$item.order_name}"/>&nbsp;{$item.id}</td>
+    <td>{$item.order_name}</td>
+    <td>{$item.rec_name}</td>
+    <td>{$item.rec_mobile}</td>
+    <td>{$item.product_name}</td>
+    <td>{$item.delivery_id}</td>
+    <td>{$item.groupbuy_order_name}</td>
+    <td><if condition="$item.import_jd_num eq 0">未导入<else/>导入{$item.import_jd_num}次</if></td>
+    <td>{$item.print_num}</td>
+    <td>{$item.package_num}</td>
+    <td>{$item.send_warehome_name}</td>
+    <td style="padding:0;">
+        <if condition="$item.status eq 1"><span class="order_status tack">已取出</span>
+            <elseif condition="$item.status eq 2"/><span class="order_status sync">已同步</span>
+            <elseif condition="$item.status eq 3"/><span class="order_status print">已打印</span>
+            <elseif condition="$item.status eq 4"/><span class="order_status deliver">已发货</span>
+            <elseif condition="$item.status eq 10"/><span class="order_status abnormal">异常</span>
+        </if>
+    </td>
+    <td>
+        <if condition="$type eq 3">{$item.last_print_time}
+            <elseif condition="$type eq 2"/>{$item.last_import_jd_time}
+            <else/>{$item.add_time}
+        </if>
+    </td>
+</tr>
+</tbody>

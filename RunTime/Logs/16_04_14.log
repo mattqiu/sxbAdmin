@@ -1,0 +1,9 @@
+[ 2016-04-14T17:42:08+08:00 ] 127.0.0.1 /index.php?s=/Ostock/index
+ERR: 无法加载模块:Ostock
+
+[ 2016-04-14T17:43:10+08:00 ] 127.0.0.1 /index.php?m=Ostock&a=merchantStock&id=1
+ERR: 非法操作:merchantstock
+
+[ 2016-04-14T17:44:57+08:00 ] 127.0.0.1 /index.php?m=Ostock&a=merchantStock&id=1
+ERR: 模板不存在[./shipin_manager/Tpl/default/Ostock/merchantstock.html]
+

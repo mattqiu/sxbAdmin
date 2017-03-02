@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html" />
+	<title>操作成功</title>
+    <link  rel="stylesheet" type="text/css" href="__PUBLIC__/css/base.css"/>
+    <link  rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/comm.css"/>
+    <link  rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/default.css"/>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<div class="header_1">时品网管理中心-{$nav}</div>
+<style>
+.emain{border: 1px solid #f1f1f1;height: 290px;}
+.error{margin-top: 100px;}
+.error1{text-align: center;}
+</style>
+<div class="width emain">
+<div class="error">
+   <div class="error1">    
+        <img  src="__PUBLIC__/admin/images/error.gif" width="50" height="50" class="vm" />
+        <span style="font-size: 16px;">{$info.msg}，</span>
+        <span id="second">{$info.second}</span>秒后跳转，
+        <a href="<empty name="info.url">javascript:history.go(-1);<else/>{$info.url}</empty>" id="url">返回上一页</a>
+   </div>     
+</div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+<literal>
+var sec    = $("#second");
+var second = parseInt(sec.html()); 
+var url    = $("#url").attr("href");
+
+function aa()
+{
+    if( second == 0 )
+      location.href = url;
+    else
+    {
+      second--;
+      sec.html(second);
+      return second;
+    }
+}
+setInterval("aa()", 1000);
+
+
+</literal>
+</script>

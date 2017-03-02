@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$title}</title>
+    <link  rel="stylesheet" type="text/css" href="__PUBLIC__/css/base.css"/>
+    <link  rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/comm.css"/>
+    <link  rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/default.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/js/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/js/themes/icon.css" />
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/jquery.easyui.min.1.2.2.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/admin/js/outlook2.js"></script>
+    <script type="text/javascript">
+	 var _menus = {"menus":[
+                        {"menuid":"39","icon":"glyphicon  glyphicon-sys","menuname":"商城管理",
+							"menus":[{"menuid":"51","menuname":"商品分类","icon":"glyphicon  glyphicon-nav","url":"__APP__/category"},
+									{"menuid":"52","menuname":"商品列表","icon":"glyphicon  glyphicon-nav","url":"__APP__/Goods/index"},
+								//	{"menuid":"53","menuname":"商品订单","icon":"glyphicon  glyphicon-nav","url":"demo2.html"}
+								]
+						},{"menuid":"1","icon":"glyphicon  glyphicon-sys","menuname":"内测管理",
+							"menus":[
+									{"menuid":"12","menuname":"内测审核","icon":"glyphicon  glyphicon-add","url":"__APP__/Nei/index"}
+								]
+						},{"menuid":"8","icon":"glyphicon  glyphicon-sys","menuname":"用户管理",
+							"menus":[{"menuid":"21","menuname":"员工列表","icon":"glyphicon  glyphicon-nav","url":"demo.html"},
+									{"menuid":"22","menuname":"视频监控","icon":"glyphicon  glyphicon-nav","url":"demo1.html"}
+								]
+						}
+				]};
+        //设置登录窗口
+        function openPwd() {
+            $('#w').window({
+                title: '修改密码',
+                width: 300,
+                modal: true,
+                shadow: true,
+                closed: true,
+                height: 160,
+                resizable:false
+            });
+        }
+        //关闭登录窗口
+        function closePwd() {
+            $('#w').window('close');
+        }
+
+        
+
+        //修改密码
+        function serverLogin() {
+            var $newpass = $('#txtNewPass');
+            var $rePass = $('#txtRePass');
+
+            if ($newpass.val() == '') {
+                msgShow('系统提示', '请输入密码！', 'warning');
+                return false;
+            }
+            if ($rePass.val() == '') {
+                msgShow('系统提示', '请在一次输入密码！', 'warning');
+                return false;
+            }
+
+            if ($newpass.val() != $rePass.val()) {
+                msgShow('系统提示', '两次密码不一至！请重新输入', 'warning');
+                return false;
+            }
+
+            $.post('/ajax/editpassword.ashx?newpass=' + $newpass.val(), function(msg) {
+                msgShow('系统提示', '恭喜，密码修改成功！<br>您的新密码为：' + msg, 'info');
+                $newpass.val('');
+                $rePass.val('');
+                close();
+            })
+            
+        }
+
+        $(function() {
+
+            openPwd();
+
+            $('#editpass').click(function() {
+                $('#w').window('open');
+            });
+
+            $('#btnEp').click(function() {
+                serverLogin();
+            })
+
+			$('#btnCancel').click(function(){closePwd();})
+
+            $('#loginOut').click(function() {
+                $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function(r) {
+
+                    if (r) {
+                        location.href = '{:U("user/del_logout")}';
+                    }
+                });
+            })
+        });
+        
+</script>
+</head>
+<body>
+<div class="header_1">时品网管理中心-{$nav}</div>
+<span class="dnone">__APP__</span>

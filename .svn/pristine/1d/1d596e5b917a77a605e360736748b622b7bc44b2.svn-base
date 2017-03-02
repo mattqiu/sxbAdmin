@@ -1,0 +1,11 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.name}</td>
+    <td >{$item.real_name}</td>
+    <td >{$item.address}</td>
+    <td >{$item.contacts}</td>
+    <td >{$item.mobile}</td>
+    <td >{$item.tel}</td>
+    <td >{$item.status}</td>
+    <td ><a href="/{$Think.MODULE_NAME}/edit/id/{$item.id}">编辑</a></td>
+</tr>

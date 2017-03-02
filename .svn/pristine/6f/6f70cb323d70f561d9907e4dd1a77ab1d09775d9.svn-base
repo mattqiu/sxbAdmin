@@ -1,0 +1,124 @@
+<?php
+// +----------------------------------------------------------------------
+// | 时品
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://m.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id$ 
+
+/**
+ * Class CouponTemplAction
+ *  优惠券模板管理
+ */
+class CouponTemplAction extends CommonAction{
+
+    public function index(){
+        $where = array();
+
+        $couponTmlM = M('coupon_tml');
+        $count = $couponTmlM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $couponTmlM->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        if(!empty($list)){
+            foreach($list as $key => $item){
+                $list[$key]['isgroupbuy_only'] = 1 == $item['isgroupbuy_only'] ? '<span class="red">是</span>' : '<span class="green">否</span>';
+                $list[$key]['coupon_type'] = 1 == $item['coupon_type'] ? '<span class="red">团购</span>' : '<span class="green">普通</span>';
+                $list[$key]['use_target'] = 1 == $item['use_target'] ? '<span class="red">团长</span>' : '<span class="green">不限</span>';
+
+            }
+        }
+
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display();
+    }
+
+    public function create(){
+        $this->display();
+    }
+
+    public function doCreate(){
+        $money = I('money', 0);
+        $lifetime = I('lifetime', 0);
+        $coupon_type = I('coupon_type', 1);
+        $isgroupbuy_only = I('isgroupbuy_only', 1);
+        $limit_value = I('group_tml_id', 0);
+        $permission_id = I('groupbuy_permission', 0);
+        $description = I('description', '');
+        $use_target = I('use_target', 0);
+        $sms_show_name = I('sms_show_name',0);
+        $sms_send_type = I('sms_send_type', 0);
+
+        if($lifetime > 0 && !empty($description)){
+            $couponTmlM = M('coupon_tml');
+            $data = array();
+            $data['money'] =  $money;
+            $data['limit_value'] =  $limit_value;
+            if($limit_value > 0){
+                $data['islimit_tml'] =  1;
+            }
+
+            $data['permission_id'] =  $permission_id;
+            $data['lifetime'] =  $lifetime;
+            $data['description'] =  $description;
+            $data['coupon_type'] =  $coupon_type;
+            $data['isgroupbuy_only'] =  $isgroupbuy_only;
+            $data['use_target'] = $use_target;
+            $data['sms_send_showtext'] = $sms_show_name;
+            $data['sms_send_type'] = $sms_send_type;
+
+            $couponTmlM->add($data);
+        }
+
+        redirect('/CouponTempl/index');
+    }
+
+    public function del(){
+        $id = I('id', 0);
+        if($id > 0){
+            $droplistM = M('coupon_tml');
+            $droplistM->where('id = ' . $id)->delete();
+        }
+        redirect('/CouponTempl/index');
+    }
+
+    /**
+     *  选择关联的优惠券模板
+     */
+    public function selectJson(){
+        $where = array();
+
+        $couponTmlM = M('coupon_tml');
+        $count = $couponTmlM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $couponTmlM->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        if(!empty($list)){
+            foreach($list as $key => $item){
+                $list[$key]['isgroupbuy_only'] = 1 == $item['isgroupbuy_only'] ? '<span class="red">是</span>' : '<span class="green">否</span>';
+                $list[$key]['coupon_type'] = 1 == $item['coupon_type'] ? '<span class="red">团购</span>' : '<span class="green">普通</span>';
+                $list[$key]['use_target'] = 1 == $item['use_target'] ? '<span class="red">团长</span>' : '<span class="green">不限</span>';
+
+            }
+        }
+
+        $result  = array('data' => $list, 'key' => array('id', 'money', 'description', 'lifetime'), 'th'=>array('id', '金额(元)', '描述', '有效期(天)'), 'page' => $strPage);
+        echo json_encode($result);
+    }
+
+    /**
+     *  选择团购对应的权限
+     */
+    public function selectCouponPermission(){
+
+    }
+} 

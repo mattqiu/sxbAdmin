@@ -1,0 +1,72 @@
+[ 2016-03-09T10:12:30+08:00 ] 127.0.0.1 /index.php?s=/DataReport/volume
+ERR: 非法操作:volume
+
+[ 2016-03-09T10:16:43+08:00 ] 127.0.0.1 /index.php?s=/DataReport/group
+ERR: Redis server went away
+
+[ 2016-03-09T10:16:56+08:00 ] 127.0.0.1 /index.php?s=/DataReport/volume
+ERR: 非法操作:volume
+
+[ 2016-03-09T10:38:48+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:02:26+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:03:45+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:04:07+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:04:30+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:19:58+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:20:40+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T11:20:46+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T12:06:57+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T14:22:56+08:00 ] 127.0.0.1 /DataReport/prvoinceVolume?product_id=4547
+ERR: 非法操作:prvoincevolume
+
+[ 2016-03-09T14:23:19+08:00 ] 127.0.0.1 /DataReport/provinceVolume?product_id=4566
+ERR: 模板不存在[./shipin_manager/Tpl/default/DataReport/provincevolume.html]
+
+[ 2016-03-09T15:02:12+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:02:52+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:03:05+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:03:34+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:03:47+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:04:06+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:04:21+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:04:44+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:05:21+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-03-09T15:05:26+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+

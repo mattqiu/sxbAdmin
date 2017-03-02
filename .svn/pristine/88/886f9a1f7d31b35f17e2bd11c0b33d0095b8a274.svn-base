@@ -1,0 +1,8 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.permission_groupid}</td>
+    <td >{$item.permission_type}</td>
+    <td >{$item.permission_value}</td>
+    <td >{$item.description}</td>
+    <td >{$item.effect_range}</td>
+</tr>

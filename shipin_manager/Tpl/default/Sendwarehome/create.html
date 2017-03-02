@@ -1,0 +1,237 @@
+<include file="Public:head_v3"/>
+<body>
+<div id="theme-wrapper" class="rushToPurchase">
+
+    <include file="Public:header_v3"/>
+    <div id="page-wrapper" class="container">
+        <div class="row">
+            <include file="Public:sidebar_v3"/>
+            <div id="content-wrapper">
+
+                <div class="md-content">
+                    <div class="modal-header">
+                        <button class="md-close close">&times;</button>
+                        <h4 class="modal-title">添加发货仓</h4>
+                    </div>
+                    <form action="/Sendwarehome/doCreate"  method="post" role="form" id="add_form">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-xs-4" style="margin-right:30000px;">
+                                    <span class="label">发货仓名</span>
+                                    <input type="text" name="name" class="form-control col-xs-6" id="name"/>
+                                </div>
+                                <div class="form-group col-xs-4" style="margin-right:30000px;">
+                                    <span class="label">发货仓号</span>
+                                    <input type="text" name="jd_warehome_code" class="form-control col-xs-6"/>
+                                </div>
+                                <div class="form-group col-xs-4" style="margin-right:30000px;">
+                                    <span class="label">字母名称</span>
+                                    <input type="text" name="en_name" class="form-control col-xs-6" />
+                                </div>
+                                <div class="form-group col-xs-4">
+                                    <span class="label">始发城市</span>
+                                    <input type="text" name="source_city" class="form-control col-xs-6" />
+                                </div>
+                            <div class="row">
+                                <div class="form-group col-xs-10">
+                                    <span class="label">发货渠道id</span>
+                                    <a href="javascript:void(0);" id="select_supply_id" class="modals_radio_select md-trigger btn btn-primary"
+                                       data-inputId="supply_id" data-url="/Sendwarehome/selectJson"
+                                       data-title="选择发货渠道" data-modal="modal_radio_select">选择发货渠道id</a>
+                                    <input type="text" name="supply_id" class="form-control col-xs-2 modals_radio_select_input" id="supply_id"style="width:136px;"/>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" style="text-align:left;">
+                                <button id="form_save" class="btn btn-primary">保存</button>
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+
+    <div id="config-tool-options">
+        <h4>Layout Options</h4>
+        <ul>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-header"/>
+                    <label for="config-fixed-header">
+                        Fixed Header
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-sidebar"/>
+                    <label for="config-fixed-sidebar">
+                        Fixed Left Menu
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-footer"/>
+                    <label for="config-fixed-footer">
+                        Fixed Footer
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-boxed-layout"/>
+                    <label for="config-boxed-layout">
+                        Boxed Layout
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-rtl-layout"/>
+                    <label for="config-rtl-layout">
+                        Right-to-Left
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <br/>
+        <h4>Skin Color</h4>
+        <ul id="skin-colors" class="clearfix">
+            <li>
+                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<div id="modal_radio_select" class="md-modal md-effect-1">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">×</button>
+            <h4 class="modal-title">弹出框标题</h4>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" id="modal_radio_select_cancel">取消</button>
+            <button class="btn btn-primary" type="button" id="modal_radio_select_confirm" data-inputId="">确定</button>
+        </div>
+    </div>
+</div>
+<div class="md-overlay" id="md-overlay"></div>
+
+<script src="__PUBLIC__/admin/v3/js/demo-skin-changer.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.nanoscroller.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/demo.js"></script>
+
+<!--模态弹出框专属-->
+<script src="__PUBLIC__/admin/v3/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/admin/v3/js/classie.js"></script>
+<script src="__PUBLIC__/admin/v3/js/modalEffects.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/scripts.js"></script>
+<script src="__PUBLIC__/admin/v3/js/pace.min.js"></script>
+
+<!--时期时间选择器-->
+<script src="__PUBLIC__/admin/v3/js/bootstrap-datepicker.js"></script>
+<script src="__PUBLIC__/admin/v3/js/moment.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/daterangepicker.js" type="text/javascript"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script src="__PUBLIC__/admin/v3/js/shipinmmm/modals-select.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function($){
+    $('#goods_id').on('blur', function(){
+        var _this = $(this);
+        var url = "{:U('Product/getProductInfo')}";
+        var data = {product_id : _this.val()};
+        $.get(url, data, function(data){
+            $('#goods_name').html(data.product_name);
+            $('#old_price').html(data.product_price[0].old_price);
+        }, 'json');
+    });
+
+    //日期选择器
+//datepicker
+    $('#to_date').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: 1,
+        startDate:new Date(),
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'zh-CN'
+    });
+
+    $('#begin_time').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: 1,
+        startDate:new Date(), //开始时间，在这时间之前都不可选
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'zh-CN'
+    });
+
+//daterange picker
+    $('#datepickerDateRange').daterangepicker();
+
+//timepicker
+    $('.timepicker').timepicker({
+        minuteStep: 5,
+        showSeconds: true,
+        showMeridian: false,
+        disableFocus: false,
+        showWidget: true
+    }).focus(function() {
+        $(this).next().trigger('click');
+    });
+
+
+});
+</script>
+</body>
+</html>

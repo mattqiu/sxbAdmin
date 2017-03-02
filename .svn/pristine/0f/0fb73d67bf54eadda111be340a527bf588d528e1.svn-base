@@ -1,0 +1,18 @@
+<tr>
+
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td ><a href="/postage/area/id/{$item.id}/provincename/{$item.name}"> {$item.name}</a></td>
+    <td >{$item.zipcode}</td>
+    <td>{$item.active}</td>
+    <td>
+        <foreach name="item.send_warehome" key="key" item="value">
+            <div>
+                {$value}
+            </div>
+        </foreach>
+    </td>
+    <td>
+        <a href="/index.php?m=Postage&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Postage&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

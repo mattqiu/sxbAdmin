@@ -1,0 +1,46 @@
+<include file="Public:head"/>
+<form method="post" action="{:U('Goods/batchDone')}" id="goodsManger" onsubmit="return goodsManger();" >
+    <table class="list" cellpadding="0" cellspacing="0" >
+        <tbody>
+        <tr>
+            <th ><input type="checkbox" onclick="selAll(this);" class="1" />ID</th>
+            <th>订单号</th>
+            <th>时间</th>
+            <th>货号</th>
+            <th>颜色</th>
+            <th>尺码</th>
+            <th>下单数量</th>
+            <th>退货数量</th>
+            <th>网站售价</th>
+            <th>活动</th>
+            <th>活动分摊(满减)</th>
+            <th>实际售价</th>
+            <th>小计金额</th>
+            <th>备注</th>
+        </tr>
+        <foreach name="list" item="item" key="key">
+            <tr>
+                <td><input type="checkbox" name="id[]" value="{$item.id}" />{$item.id}</td>
+                <td>{$item.orderId}</td>
+                <td>{$item.created}</td>
+                <td>{$item.identifier}</td>
+                <td>{$item.goods_color}</td>
+                <td>{$item.goods_size}</td>
+                <td>{$item.goods_num}</td>
+                <td>{$item.return_num}</td>
+                <td>{$item.ctime|date="Y-m-d", ###}</td>
+                <td>{$item.from}</td>
+            </tr>
+        </foreach>
+        <tr>
+            <td class="noneBorder">&nbsp;</td>
+            <td colspan="2" class="noneBorder">
+            </td>
+            <td colspan="3" class="noneBorder" style="text-align: center;">
+                {$page}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<include file="Public:footer"/>

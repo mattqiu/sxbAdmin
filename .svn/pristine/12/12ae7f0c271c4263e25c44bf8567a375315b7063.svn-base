@@ -1,0 +1,91 @@
+<include file="Public:header"/>
+<form onsubmit="" action="{:U('bakup')}" method="post" name="theForm">
+<!-- start  list -->
+<div id="listDiv" class="list-div">
+<table cellspacing="1" cellpadding="3">
+  <tbody><tr>
+    <th colspan="2">备份类型</th>
+  </tr>
+  <tr>
+    <td >
+        <input type="radio" onclick="findobj('showtables', 'add')" class="radio" value="full" name="type">全部备份</td>
+    <td >备份数据库所有表</td>
+  </tr>
+  <tr>
+    <td >
+    <input type="radio" onclick="findobj('showtables', 'add')" checked="checked" class="radio" value="stand" name="type">标准备份(推荐)</td>
+    <td >备份常用的数据表</td>
+  </tr>
+  <tr>
+    <td >
+    <input type="radio" onclick="findobj('showtables', 'add')" class="radio" value="min" name="type">最小备份</td>
+    <td >仅包括商品表，订单表，用户表</td>
+  </tr>
+  <tr>
+    <td >
+    <input type="radio" onclick="findobj('showtables','')" class="radio" value="custom" name="type">自定义备份</td>
+    <td >根据自行选择备份数据表</td>
+  </tr>
+  </tbody>
+  <tbody id="showtables" class="none">
+  <tr>
+    <td colspan="2">
+      <table>
+        <tbody>
+        <tr>
+          <td colspan="4">
+          <input type="checkbox" onclick="selAll(this);" class="1" name="chkall"><b>全选</b></td>
+        </tr>
+        <tr> 
+        <foreach name="tableInfo" item="table" key="k">              
+            <td><input type="checkbox" value="{$table.Tables_in_时品网}" name="customtables[]" class="mr5">{$table.Tables_in_时品网}</td>
+            <if condition="$k%4 eq 0">
+            </tr>
+            <tr>
+            </if>
+       </foreach>
+        </tr>  
+        <tr><td>共{$count}张表</td></tr>      
+      </tbody>    
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<table cellspacing="1" cellpadding="3">
+  <tbody><tr>
+    <th colspan="2">其他选项</th>
+  </tr>
+  <tr>
+    <td >使用扩展插入(Extended Insert)方式</td>
+    <td ><input type="radio" value="1" class="radio" name="ext_insert">是&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" checked="checked" value="0" class="radio" name="ext_insert">否</td>
+  </tr>
+  <tr>
+    <td >分卷备份 - 文件长度限制(kb)</td>
+    <td ><input type="text" value="2048" name="vol_size"></td>
+  </tr>
+  <tr>
+    <td >备份文件名</td>
+    <td ><input type="text" value="{$bakupName}" name="sql_file_name">不带后缀.sql</td>
+  </tr>
+</tbody></table>
+<input type="hidden" value="dumpsql" name="act">
+<center><input type="submit" class="button" value="开始备份"></center>
+</div>
+<input type="hidden" name="step" value="2"/>
+<!-- end  list -->
+</form>
+<script type="text/javascript" src="__PUBLIC__/admin/js/data.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+

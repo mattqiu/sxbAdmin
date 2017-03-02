@@ -1,0 +1,13 @@
+<tr>
+
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.username}</td>
+    <td >{$item.password}</td>
+    <td >{$item.mobile}</td>
+    <td >{$item.user_head}</td>
+    <td >{$item.sex}</td>
+    <td>
+        <a href="/index.php?m=User&a=edituser&id={$item.id}">编辑</a>
+        <a href="/index.php?m=User&a=deluser&id={$item.id}">删除</a>
+    </td>
+</tr>

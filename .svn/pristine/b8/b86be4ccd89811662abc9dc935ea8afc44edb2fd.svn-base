@@ -1,0 +1,15 @@
+<tbody >
+<tr>
+    <td><input type="checkbox" id="check_all"/>{$item.id}</td>
+    <td>{$item.order_name}</td>
+    <td>{$item.rec_name}</td>
+    <td>{$item.rec_mobile}</td>
+    <td>{$item.product_name}</td>
+    <td>{$item.delivery_id}</td>
+    <td>{$item.import_jd_num}</td>
+    <td>{$item.print_num}</td>
+    <td>{$item.package_num}</td>
+    <td>{$item.status}</td>
+    <td>{$item.add_time}</td>
+</tr>
+</tbody>

@@ -1,0 +1,29 @@
+<tr>
+    <td ><input type="checkbox" /><a href="/index.php?m=GroupBuying&a=getgroupbuy_condition&tmp_id={$item.id}" target="_blank">{$item.id}</a></td>
+    <td ><img src="{$img_site}{$item.thum_photo}" alt="" width="60"> <br/>
+        {$item.product_name}</td>
+    <td >{$item.groupbuying_name}</td>
+    <td >{$item.groupbuying_price}</td>
+    <td >{$item.groupbuying_reqnums}</td>
+    <td >{$item.separatebuy_price}</td>
+    <td >{$item.condition_type}</td>
+    <td >{$item.condition_num}</td>
+    <td >{$item.state}</td>
+    <td >{$item.salenum}</td>
+    <td >{$item.postage}</td>
+    <td >{$item.canbuy_times}</td>
+    <td>
+        <div style="min-width: 80px">
+        <a href="{$frontSiteUrl}detail/groupbuy/{$item.id}" target="_blank">预览</a>
+        <a href="/index.php?m=GroupBuyingTml&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=GroupBuyingTml&a=del&id={$item.id}">删除</a>
+        </div>
+
+        <div style="min-width: 80px">
+        <a href="/index.php?m=GroupBuyingTml&a=clear_userlimit&id={$item.id}">清除参团限制</a>
+        </div>
+        <div style="min-width: 80px">
+        <a href="/index.php?m=GroupBuyingTml&a=clear_succ_userlimit&id={$item.id}">清除成团限制</a>
+        </div>
+    </td>
+</tr>

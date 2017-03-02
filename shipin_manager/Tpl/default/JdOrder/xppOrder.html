@@ -1,0 +1,939 @@
+<include file="Public:head_v3"/>
+<body>
+<style>
+    .order_status{color:#fff;width:100%;height:22px;line-height:20px;border-radius:3px;display:block;}
+    .tack{background-color:#3498DB;}
+    .sync{background-color:#f1c40f;}
+    .print{background-color:#9b59b6;}
+    .deliver{background-color:#2ecc71;}
+    .abnormal{background-color:#e74c3c;cursor:pointer}
+    .merger{background-color:#3b2ee7;}
+    .click_abnormal .delete{color:#fff !important; display:inline-block;font-weight:bold;font-size:12px;}
+    .delete:hover{color:#0000ff !important;text-decoration:none !important;}
+</style>
+<div id="theme-wrapper">
+
+    <include file="Public:header_v3"/>
+
+    <div id="page-wrapper" class="container">
+        <div class="row">
+
+            <include file="Public:sidebar_v3"/>
+
+            <div id="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol class="breadcrumb">
+                                    <li><a href="#">首页</a></li>
+                                    <li class="active"><span>订单管理</span></li>
+                                </ol>
+                                <h1>Advanced tables</h1>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="main-box clearfix">
+                                    <header class="main-box-header clearfix">
+                                        <h2>订单列表</h2>
+                                        <div class="main-box-header-act">
+                                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="export_order_dialog"
+                                                    id="export_order_btn">导出订单
+                                            </button>
+                                            <button class=" btn btn-primary mrg-b-lg" id="cancel_order">
+                                                取消订单
+                                            </button>
+                                            <p>
+                                            </p>
+                                        </div>
+
+                                        <form action="/{$Think.MODULE_NAME }/xppOrder" method="post" target="_self" role="form" id="order_search_form">
+                                            <div class="row">
+                                            <select  id="time" class="form-control w150 text-center form-inline-input-group" name="time" style="float:left;margin-left:90px;">
+                                                            <option value="11" <if condition="$post.time eq 11">selected</if>>---请选择时间---</option>
+                                                            <option value="1" <if condition="$post.time eq 1">selected</if>>----取出时间----</option>
+                                                            <option value="2" <if condition="$post.time eq 2">selected</if>>----导入时间----</option>
+                                                            <option value="3" <if condition="$post.time eq 3">selected</if>>----打印时间----</option>
+                                                    </select>
+                                                <div class="form-group col-md-5" style="width:405px;margin-left:5px;margin-right:8px;">
+                                                    <label for="datepickerDateFrom" class="form-inline-label" style="float:left;line-height:35px;">从：</label>
+                                                    <div class="input-group form-inline-input-group w150" style="float:left;margin-right:15px;">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                                        <input type="text" id="datepickerDateFrom" class="form-control" name="limit_date_From" value="{$post.limit_date_From}">
+                                                    </div>
+
+                                                    <div class="input-group input-append w150 bootstrap-timepicker" style=" float: left;">
+                                                        <input type="text" class="form-control timepicker" id="timepicker_From" name="limit_time_From"
+                                                               value="{$post.limit_time_From}" />
+                                                        <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-5 w370">
+                                                    <label for="datepickerDateTo" class="form-inline-label" style="float:left;line-height:35px;">到：</label>
+                                                    <div class="input-group form-inline-input-group w150" style="float:left;margin-right:15px;">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                                        <input type="text" id="datepickerDateTo" class="form-control" name="limit_date_To" value="{$post.limit_date_To}">
+                                                    </div>
+
+                                                    <div class="input-group input-append w150 bootstrap-timepicker" style=" float: left;">
+                                                        <input type="text" class="form-control timepicker" id="timepicker_To" name="limit_time_To"
+                                                               value="{$post.limit_time_To}" />
+                                                        <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-md-3 w370">
+                                                    <label for="status" class="form-inline-label">订单状态：</label>
+                                                    <select  id="status" class="form-control w150 text-center form-inline-input-group" name="status">
+                                                            <option value="11" <if condition="$post.status eq 11">selected</if>>----订单状态----</option>
+                                                            <option value="1" <if condition="$post.status eq 1">selected</if>>----已取出----</option>
+                                                            <option value="2" <if condition="$post.status eq 2">selected</if>>----已同步----</option>
+                                                            <option value="4" <if condition="$post.status eq 4">selected</if>>----已发货----</option>
+                                                            <option value="5" <if condition="$post.status eq 5">selected</if>>----已合并----</option>
+                                                            <option value="10" <if condition="$post.status eq 10">selected</if>>----异常----</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-3 w370">
+                                                    <label for="delivery_id" class="form-inline-label">运单号码：</label>
+                                                    <input type="text" name="delivery_id" class="form-control w150 form-inline-input-group" value="{$post.delivery_id}" id="delivery_id" />
+                                                </div>
+                                                <div class="form-group col-md-3 w370" >
+                                                    <label for="groupbuy_order_name" class="form-inline-label">团单号码：</label>
+                                                    <input type="text" name="groupbuy_order_name" class="form-control w150 form-inline-input-group" value="{$post.groupbuy_order_name}" id="groupbuy_order_name" />
+                                                </div>
+
+                                                <div class="form-group col-md-4 w370" >
+                                                    <label for="rec_mobile" class="form-inline-label">手机号码：</label>
+                                                    <input type="text" id="rec_mobile" name="rec_mobile" class="form-control w150 form-inline-input-group" value="{$post.rec_mobile}" />
+                                                </div>
+                                                
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-4 w370">
+                                                        <label for="order_name" class="form-inline-label">订单号码：</label>
+                                                        <input type="text" name="order_name" class="form-control w150 form-inline-input-group" value="{$post.order_name}" id="order_name" />
+                                                    </div>
+
+                                                    <div class="form-group col-md-4 w370" >
+                                                        <label for="product_name" class="form-inline-label">物品名称：</label>
+                                                        <input type="text" name="product_name" class="form-control w150 form-inline-input-group" value="{$post.product_name}" id="product_name" />
+
+                                                    </div>
+
+                                                    <div class="form-group col-md-4 w370">
+                                                        <label for="rec_name" class="form-inline-label">收件用户：</label>
+                                                        <input type="text" name="rec_name" id="rec_name" class="form-control w150 form-inline-input-group" value="{$post.rec_name}" />
+                                                    </div>
+                                                    <div class="form-group col-md-4 w370">
+                                                        <label for="rec_address" class="form-inline-label">收件地址：</label>
+                                                        <input type="text" name="rec_address" id="rec_address" class="form-control w150 form-inline-input-group" value="{$post.rec_address}" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-3 w370" >
+                                                        <label for="print_num" class="form-inline-label">是否打印：</label>
+                                                        <select  id="print_num" class="form-control w150 form-inline-input-group text-center" name="print_num" >
+                                                                <option value="11" <if condition="$post.print_num eq 11">selected</if>>------请选择-----</option>
+                                                                <option value="1" <if condition="$post.print_num eq 1">selected</if>>-----已打印-----</option>
+                                                                <option value="2" <if condition="$post.print_num eq 2">selected</if>>-----未打印-----</option>
+                                                        </select>
+                                                    </div>
+
+                                                <div class="form-group col-md-3 w370" >
+                                                    <label for="send_warehome_name" class="form-inline-label">发货仓名：</label>
+                                                    <select  id="send_warehome_name" class="form-control w100 form-inline-input-group" name="send_warehome_name">
+                                                        <option value="">请选择</option>
+                                                        <foreach name="warehome_list" item="item">
+                                                            <option value="{$item.id}"
+                                                            <if condition="$post.send_warehome_name eq $item.id">selected</if>
+                                                                    >{$item.name}</option>
+                                                        </foreach>
+                                                    </select>
+
+                                                </div>
+                                                <div class="form-group col-md-3 w370" >
+                                                    <label for="package_num" class="form-inline-label">包裹数量：</label>
+                                                    <select  id="package_num" class="form-control w150 text-center form-inline-input-group" name="package_num" >
+                                                            <option value="11" <if condition="$post.package_num eq 11">selected</if>>------请选择-----</option>
+                                                            <option value="1" <if condition="$post.package_num eq 1">selected</if>>-----1个包裹-----</option>
+                                                            <option value="2" <if condition="$post.package_num eq 2">selected</if>>----多个包裹----</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-3 w370">
+                                                    <label for="import_jd_num" class="form-inline-label">是否导入京东：</label>
+                                                    <select  id="import_jd_num" class="form-control w150 text-center form-inline-input-group" name="import_jd_num" >
+                                                            <option value="11" <if condition="$post.import_jd_num eq 11">selected</if>>-----请选择-----</option>
+                                                            <option value="1" <if condition="$post.import_jd_num eq 1">selected</if>>-----已导入-----</option>
+                                                            <option value="2" <if condition="$post.import_jd_num eq 2">selected</if>>-----未导入-----</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 w370" >
+                                                    <label for="shipping_status" class="form-inline-label">物流信息：</label>
+                                                    <select  id="shipping_status" class="form-control w150 text-center form-inline-input-group" name="shipping_status" >
+                                                            <option value="11" <if condition="$post.shipping_status eq 11">selected</if>>------请选择-----</option>
+                                                            <option value="1" <if condition="$post.shipping_status eq 1">selected</if>>-----没有信息-----</option>
+                                                            <option value="2" <if condition="$post.shipping_status eq 2">selected</if>>---有物流信息---</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-md-3 w370" >
+                                                    <label for="shipping_finish" class="form-inline-label">是否签收：</label>
+                                                    <select  id="shipping_finish" class="form-control w150 text-center form-inline-input-group" name="shipping_finish" >
+                                                            <option value="11" <if condition="$post.shipping_finish eq 11">selected</if>>------请选择-----</option>
+                                                            <option value="1" <if condition="$post.shipping_finish eq 1">selected</if>>------未签收------</option>
+                                                            <option value="2" <if condition="$post.shipping_finish eq 2">selected</if>>------已签收------</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-3 w370">
+                                                        <label for="jd_can_shipping" class="form-inline-label">是否发货：</label>
+                                                        <select  id="jd_can_shipping" class="form-control w150 form-inline-input-group text-center" name="jd_can_shipping">
+                                                                <option value="11" <if condition="$post.jd_can_shipping eq 11">selected</if>>----请选择----</option>
+                                                                <option value="1" <if condition="$post.jd_can_shipping eq 1">selected</if>>----未检查----</option>
+                                                                <option value="2" <if condition="$post.jd_can_shipping eq 2">selected</if>>----已查可发----</option>
+                                                                <option value="3" <if condition="$post.jd_can_shipping eq 3">selected</if>>---已查不可发---</option>
+                                                                <option value="4" <if condition="$post.jd_can_shipping eq 4">selected</if>>-已查需人工确认-</option>
+                                                        </select>
+                                                    </div>
+
+                                                <div class="form-group col-md-3 w370">
+                                                    <label for="is_export_to_warehome" class="form-inline-label">是否发邮件：</label>
+                                                    <select  id="is_export_to_warehome" class="form-control w150 form-inline-input-group text-center" name="is_export_to_warehome">
+                                                        <option value="" >----请选择----</option>
+                                                        <option value="1" <if condition="$post.is_export_to_warehome eq 1">selected</if>>----未发----</option>
+                                                        <option value="2" <if condition="$post.is_export_to_warehome eq 2">selected</if>>----已发----</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                 <div class="form-group col-md-2">
+                                                    <button id="sift_orders" type="submit"  class=" btn btn-primary mrg-b-lg">搜索</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </header>
+
+                                    <div class="page">
+                                        {$page}
+                                    </div>
+                                    <div class="main-box-body clearfix" style="margin-top:30px;">
+                                        <div class="table-responsive">
+                                            <table id="table-example-fixed" class="table table-hover text-center" >
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align:left;"><input type="checkbox" id="check_all"/>&nbsp;选择</th>
+                                                    <th class="text-center">订单号</th>
+                                                    <th class="text-center">收件人</th>
+                                                    <th class="text-center">收件地址</th>
+                                                    <th class="text-center">商品</th>
+                                                    <th class="text-center">快递单号</th>
+                                                    <th class="text-center">快递状态</th>
+                                                    <th class="text-center">打印</th>
+                                                    <th class="text-center">邮件(1未发，2已发)</th>
+                                                    <th class="text-center">包裹数</th>
+                                                    <th class="text-center">地址检查</th>
+                                                    <th class="text-center">发货仓</th>
+                                                    <th class="text-center">状态</th>
+                                                    <th class="text-center">
+
+                                                        <if condition="$type eq 3">打印时间
+                                                            <elseif condition="$type eq 2"/>导入时间
+                                                            <else/>取出时间
+                                                        </if>
+                                                    </th>
+                                                    <th class="text-center">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="list_order_tby">
+                                                <include file="index_item"/>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="page">
+                                        {$page}
+                                    </div>                                    
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <footer id="footer-bar" class="row">
+                    <p id="footer-copyright" class="col-xs-12">
+                        &copy; 2014 <a href="http://www.adbee.sk/" target="_blank">Adbee digital</a>. Powered by Centaurus Theme.
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+
+    <div id="config-tool-options">
+        <h4>Layout Options</h4>
+        <ul>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-header"/>
+                    <label for="config-fixed-header">
+                        Fixed Header
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-sidebar"/>
+                    <label for="config-fixed-sidebar">
+                        Fixed Left Menu
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-footer"/>
+                    <label for="config-fixed-footer">
+                        Fixed Footer
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-boxed-layout"/>
+                    <label for="config-boxed-layout">
+                        Boxed Layout
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-rtl-layout"/>
+                    <label for="config-rtl-layout">
+                        Right-to-Left
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <br/>
+        <h4>Skin Color</h4>
+        <ul id="skin-colors" class="clearfix">
+            <li>
+                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="md-modal md-effect-1" id="fetch_order_dialog">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">&times;</button>
+            <h4 class="modal-title">取出要发货的订单</h4>
+        </div>
+        <form action="/{$Think.MODULE_NAME}/fetchOrder" method="post" role="form" autocomplete="off" target="_blank">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-7">
+                        <label for="datepickerDate_fetch_From" class="form-inline-label">从：</label>
+                        <div class="input-group form-inline-input-group w150">
+                            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                            <input type="text" id="datepickerDate_fetch_From" class="form-control" name="limit_date_fetch_From" value="">
+                        </div>
+
+                        <div class="input-group input-append bootstrap-timepicker" style="width: 150px; float: right;">
+                            <input type="text" class="form-control timepicker" id="timepicker_fetch_From" name="limit_time_fetch_From"
+                                   value="" />
+                            <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-7">
+                        <label for="datepickerDate_fetch_To" class="form-inline-label">到：</label>
+                        <div class="input-group form-inline-input-group w150">
+                            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                            <input type="text" id="datepickerDate_fetch_To" class="form-control" name="limit_date_fetch_To" value="">
+                        </div>
+
+                        <div class="input-group input-append bootstrap-timepicker" style="width: 150px; float: right;">
+                            <input type="text" class="form-control timepicker" id="timepicker_fetch_To" name="limit_time_fetch_To"
+                                   value="" />
+                            <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="form-group col-md-2">
+                        <label for="order_status_sel_fetch" class="form-inline-label">订单状态：</label>
+                        <select  id="order_status_sel_fetch" class="form-control w100 form-inline-input-group" name="order_status_sel">
+                            <option value="4">待发货</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="send_channel_fetch" class="form-inline-label">发货渠道：</label>
+                        <select  id="send_channel_fetch" class="form-control w100 form-inline-input-group" name="send_channel">
+                            <option value="">请选择</option>
+                            <foreach name="supply_list" item="supply">
+                                <option value="{$supply.name}"
+                                <eq name="send_channel" value="$supply.name">selected="selected"</eq>
+                                >{$supply.real_name}</option>
+                            </foreach>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="do_fetch_order_btn">取出</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="md-modal md-effect-1" id="save_address_dialog">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">&times;</button>
+            <h4 class="modal-title">修改订单地址</h4>
+        </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-4 w370">
+                        <label for="save_order_name" class="form-inline-label">订单号码：</label>
+                        <input type="text" name="save_order_name" value="" class="form-control w150 form-inline-input-group"  id="save_order_name" disabled/>
+                    </div>
+
+                    <div class="form-group col-md-4 w370">
+                        <label for="save_groupbuy_order_name" class="form-inline-label">团单号码：</label>
+                        <input type="text" name="save_groupbuy_order_name" value="" class="form-control w150 form-inline-input-group"  id="save_groupbuy_order_name" disabled/>
+                    </div>
+
+                    <div class="form-group col-md-4 w370" >
+                        <label for="save_rec_name" class="form-inline-label">收件用户：</label>
+                        <input type="text" name="save_rec_name" value="" class="form-control w150 form-inline-input-group"  id="save_rec_name" />
+
+                    </div>
+
+                    <div class="form-group col-md-4 w370">
+                        <label for="save_rec_mobile" class="form-inline-label">收件电话：</label>
+                        <input type="text" name="save_rec_mobile" value="" id="save_rec_mobile" class="form-control w150 form-inline-input-group"  />
+
+                    </div>
+                     <div class="form-group col-md-5" style="width:600px;">
+                        <label for="save_rec_address" class="form-inline-label">收件地址：</label>
+                        <input type="text" name="save_rec_address" value="" id="save_rec_address" class="form-control w150 form-inline-input-group"  style="width:500px;"/>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="save_user_name" class="form-inline-label">用户昵称：</label>
+                        <input type="text" name="save_user_name" value="" id="save_user_name" class="form-control w150 form-inline-input-group" disabled/>
+
+                    </div>
+                        <input type="hidden" name="save_order_name_h" value="" class="form-control w150 form-inline-input-group"  id="save_order_name_h"/>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="save">确认修改</button>
+            </div>
+    </div>
+</div>
+
+<div class="md-modal md-effect-1" id="reissue_order_dialog">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">&times;</button>
+            <h4 class="modal-title">补发订单</h4>
+        </div>
+        <form action="/{$Think.MODULE_NAME}/bfFetchOrder" method="post" role="form" autocomplete="off">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-4 w370">
+                        <label for="order_name" class="form-inline-label">订单号码：</label>
+                        <input type="text" name="order_name" value="" class="form-control w150 form-inline-input-group order-name"  id="order_name"/>
+                    </div>
+
+                    <div class="form-group col-md-4 w370" >
+                        <label for="save_rec_name" class="form-inline-label">收件用户：</label>
+                        <input type="text" name="save_rec_name" value="" class="form-control w150 form-inline-input-group order-rec-name"  id="save_rec_name" disabled/>
+
+                    </div>
+
+                    <div class="form-group col-md-4 w370">
+                        <label for="save_rec_mobile" class="form-inline-label">收件电话：</label>
+                        <input type="text" name="save_rec_mobile" value="" id="save_rec_mobile" class="form-control w150 form-inline-input-group order-mobile"  disabled/>
+
+                    </div>
+                     <div class="form-group col-md-5" style="width:600px;">
+                        <label for="save_rec_address" class="form-inline-label">收件地址：</label>
+                        <input type="text" name="save_rec_address" value="" id="save_rec_address" class="form-control w150 form-inline-input-group order-address" disabled  style="width:500px;"/>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="reissue">确认补发</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="md-modal md-effect-1" id="save_send_dialog">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">&times;</button>
+            <h4 class="modal-title">修改发货仓</h4>
+        </div>
+            <div class="modal-body">
+                <div class="form-group col-md-3 w370" >
+                    <label for="save_send" class="form-inline-label">发货仓名：</label>
+                    <select  id="save_send" class="form-control w150 form-inline-input-group text-center" name="save_send" >
+                            <option value="" >------请选择-----</option>
+                            <volist name="warehome_list" id="vo">
+                                <option value="{$vo.id}" >---{$vo.name}---</option>
+                            </volist>
+
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="btn_save_send">确认修改</button>
+            </div>
+    </div>
+</div>
+
+<div class="md-modal md-effect-1" id="export_order_dialog">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">&times;</button>
+            <h4 class="modal-title">导出订单</h4>
+        </div>
+        <form action="/{$Think.MODULE_NAME}/xppExportOrder" method="post" role="form">
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group col-md-7">
+                        <label for="datepickerDate_fetch_From" class="form-inline-label">从：</label>
+                        <div class="input-group form-inline-input-group w150">
+                            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                            <input type="text"  class="form-control datepicker" name="limit_date_from" value="" />
+                        </div>
+
+                        <div class="input-group input-append bootstrap-timepicker" style="width: 150px; float: right;">
+                            <input type="text" class="form-control timepicker"  name="limit_time_from"
+                                   value="" />
+                            <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-5">
+                    <select  id="" class="form-control w150 form-inline-input-group text-center" name="jd_can_shipping">
+                        <option value="" <if condition="$post.jd_can_shipping eq 11">selected</if>>----是否可发京东----</option>
+                        <option value="1" <if condition="$post.jd_can_shipping eq 1">selected</if>>----未检查----</option>
+                        <option value="2" <if condition="$post.jd_can_shipping eq 2">selected</if>>----已查可发----</option>
+                        <option value="3" <if condition="$post.jd_can_shipping eq 3">selected</if>>---已查不可发---</option>
+                        <option value="4" <if condition="$post.jd_can_shipping eq 4">selected</if>>-已查需人工确认-</option>
+                    </select>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-7">
+                        <label for="datepickerDate_fetch_To" class="form-inline-label">到：</label>
+                        <div class="input-group form-inline-input-group w150">
+                            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                            <input type="text"  class="form-control datepicker" name="limit_date_to" value="" />
+                        </div>
+
+                        <div class="input-group input-append bootstrap-timepicker" style="width: 150px; float: right;">
+                            <input type="text" class="form-control timepicker"  name="limit_time_to"
+                                   value="" />
+                            <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="export_type" class="form-inline-label">导出类型：</label>
+                        <select  id="export_type" class="form-control w100 form-inline-input-group" name="export_type">
+                            <option value="">请选择</option>
+                            <option value="1">快递格式</option>
+                            <option value="2">生产出库单</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="send_warehome_id" class="form-inline-label">发货仓库：</label>
+                        <select  id="send_warehome_id" class="form-control w100 form-inline-input-group" name="send_warehome_id">
+                            <option value="">请选择</option>
+                            <foreach name="warehome_list" item="item">
+                                <option value="{$item.id}">{$item.name}</option>
+                            </foreach>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="export_type" class="form-inline-label">商品名称：</label>
+                        <input type="text" class="form-control w100 form-inline-input-group" name="product_name" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="do_export_order_btn">导出</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="md-overlay"></div>
+
+<script src="__PUBLIC__/admin/v3/js/demo-skin-changer.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.nanoscroller.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/demo.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.fixedHeader.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.tableTools.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.bootstrap.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/scripts.js"></script>
+<script src="__PUBLIC__/admin/v3/js/pace.min.js"></script>
+
+<!--模态弹出框专属-->
+<script src="__PUBLIC__/admin/v3/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/admin/v3/js/classie.js"></script>
+<script src="__PUBLIC__/admin/v3/js/modalEffects.js"></script>
+<script src="__PUBLIC__/admin/v3/js/shipinmmm/orders.js"></script>
+
+<!--时期时间选择器-->
+<script src="__PUBLIC__/admin/v3/js/bootstrap-datepicker.js"></script>
+<script src="__PUBLIC__/admin/v3/js/moment.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/daterangepicker.js" type="text/javascript"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/admin/js/plugins/base64.min.js"></script>
+
+<script>
+    $(function($){
+
+        $('.save_address').click(function(){
+            var _this = $(this);
+            var order_name = _this.next().val();
+            var groupbuy_order_name = _this.next().next().val();
+            var rec_name = _this.next().next().next().val();
+            var rec_mobile = _this.next().next().next().next().val();
+            var rec_address = _this.next().next().next().next().next().val();
+            $('#save_order_name').val(order_name);
+            $('#save_groupbuy_order_name').val(groupbuy_order_name);
+            $('#save_rec_name').val(rec_name);
+            $('#save_rec_mobile').val(rec_mobile);
+            $('#save_rec_address').val(rec_address);
+            $('#save_order_name_h').val(order_name);
+
+//            $.ajax({
+//                type : 'post',
+//                url : "{:U('JdOrder/searchUser')}",
+//                data : 'mobile=' + rec_mobile,
+//                dataType : 'json',
+//                success : function(data){
+//                    $('#save_user_name').val(data);
+//                },
+//            });
+
+        });
+        $('#save').click(function(){
+           if(confirm('您确定要修改此订单信息吗？')){
+                var save_rec_name = $('#save_rec_name').val();
+                var save_rec_mobile = $('#save_rec_mobile').val();
+                var save_rec_address = $('#save_rec_address').val();
+                var save_order_name_h = $('#save_order_name_h').val();
+               $.ajax({
+                   type : 'post',
+                   url :  "{:U('JdOrder/xppSaveAddress')}",
+                   data : 'save_rec_name='+save_rec_name+'&'+'save_rec_mobile='+save_rec_mobile+'&'+'save_rec_address='+save_rec_address+'&'+'save_order_name_h='+save_order_name_h,
+                   dataType : 'json',
+                   success : function(data){
+                       if(data){
+                          alert('修改成功请刷新页面或重新搜索查看');
+                       }
+                    },
+               });
+           }else{
+               return false;
+           }
+        });
+
+        $('.order-name').blur(function(){
+            var orderName = $('.order-name').val();
+            $.ajax({
+               type : 'post',
+               url :  "{:U('JdOrder/search')}",
+               data : 'order_name='+orderName,
+               dataType : 'json',
+               success : function(data){
+                   if(data){
+                       $('.order-rec-name').val(data['name']);
+                       $('.order-mobile').val(data['mobile']);
+                       $('.order-address').val(data['address']);
+                   }
+                },
+            });
+        });
+        $('#reissue').click(function(){
+           if(confirm('您确定要补发此订单吗？')){}else{
+               return false;
+           }
+        });
+
+
+        //picker
+        $('#datepickerDateFrom').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+        
+        //timepicker
+        $('#timepicker_From').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+
+        //picker
+        $('#datepickerDateTo').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+
+        //timepicker
+        $('#timepicker_To').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+
+
+        //picker
+        $('#datepickerDate_export_From').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+
+        //timepicker
+        $('#timepicker_export_From').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+        //picker
+        $('#datepickerDate_export_To').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+
+        //timepicker
+        $('#timepicker_export_To').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+
+        //取出要发货的订单 年月日 开始
+        $('#datepickerDate_fetch_From').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+
+        //取出要发货的订单 时分秒 开始
+        $('#timepicker_fetch_From').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+
+        //取出要发货的订单 年月日 截止
+        $('#datepickerDate_fetch_To').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+
+        //取出要发货的订单 时分秒 截止
+        $('#timepicker_fetch_To').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+
+
+        //导出订单的时间筛选
+        //picker
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'
+        });
+
+        //timepicker
+        $('.timepicker').timepicker({
+            minuteStep: 5,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: false,
+            showWidget: true
+        }).focus(function() {
+            $(this).next().trigger('click');
+        });
+
+        $("#page :last").addClass("last_page");
+
+        //批量选择表单
+        $('#check_all').on('change', function(){
+            var is_checked = document.getElementById("check_all").checked;
+            if(is_checked){
+                $('.checkOrder').prop('checked', true);
+            } else {
+                $('.checkOrder').prop('checked', false);
+            }
+        });
+    });
+
+    //缺货退款
+    $(function($){
+        $('#cancel_order').on('click', function(){
+            var checkedid = [];
+            $('.checkOrder:checked').each(function(){
+                checkedid.push($(this).val());
+            });
+
+            if(checkedid.length == 0){
+                alert('请选择要取消的订单');
+                return false;
+            }
+
+            if(confirm('您确定要取消吗？')){
+                $.ajax({
+                    type : 'post',
+                    url : "{:U('JdOrder/xppCancelOrder')}",
+                    data : 'id='+checkedid,
+                    dataType : 'json',
+                    success : function(result){
+                        var msg = '操作结果:';
+                        for(var i=0; i < result.length; i++){
+                            msg += result[i]['order_name'] + '=' + result[i]['msg'] + ' ';
+                        }
+
+                        alert(msg);
+                    },
+                });
+            }else{
+                return false;
+            }
+        });
+    });
+
+
+    function getFormParams(formId, data){
+        var _form = $('#' + formId);
+//        _form.find('input:text')
+
+    }
+</script>
+</body>
+</html>

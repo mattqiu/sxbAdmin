@@ -1,0 +1,813 @@
+<?php
+
+/**
+ * 阿里云rds 二进制日志
+ * Class RdsBinlogAction
+ */
+Vendor('aliyun/AcsRequest');
+Vendor('aliyun/RpcAcsRequest');
+Vendor('aliyun/DescribeBinlogFilesRequest');
+Vendor('aliyun/DefaultAcsClient');
+Vendor('aliyun/Auth/Credential');
+Vendor('aliyun/Auth/ISigner');
+Vendor('aliyun/Auth/ShaHmac1Signer');
+Vendor('aliyun/Auth/ShaHmac256Signer');
+Vendor('aliyun/Profile/DefaultProfile');
+class RdsBinlogAction extends CommonAction {
+
+    public function _init(){
+        set_time_limit(0);
+        header('"text/html; charset=UTF-8"');
+    }
+
+    //订单列表
+    public function index() {
+        $accessKey = 'P9n3Fv2K437YKLgP';
+        $accessSercetKey = 'FwE7zpVtLgCQyqKWJ7ppg6GHmLJ1RY';
+        $instanceId = 'rds2698sy20670yn6u76';
+        $url ='rds.aliyuncs.com';
+
+
+//        include_once '../aliyun-php-sdk-core/Config.php';
+//    use Ecs\Request\V20140526 as Ecs;
+
+        $iClientProfile = DefaultProfile::getProfile("cn-hangzhou", $accessKey, $accessSercetKey);
+        $client = new DefaultAcsClient($iClientProfile);
+
+        $request = new DescribeBinlogFilesRequest();
+        $request->setMethod("GET");
+        $request->setDBInstanceId($instanceId);
+        $request->setStartTime('2015-12-01T00:00:00Z');
+        $request->setEndTime('2015-12-10T15:00:00Z');
+        $response = $client->getAcsResponse($request);
+        print_r($response);
+
+
+        exit;
+
+        $credential = new Credential($accessKey, $accessSercetKey);
+
+
+        $binLog = new DescribeBinlogFilesRequest();
+        $binLog->setDBInstanceId($instanceId);
+
+
+//        $request = new DescribeBinlogFilesRequest();
+//        $request->setDBInstanceId('rds2698sy20670yn6u76');
+//        $request->setStartTime('2015-12-01T00:00:00.000Z');
+//        $request->getEndTime('2015-12-08T20:00:00.000Z');
+//
+//        $credential = new Credential($accessKey, $accessSercetKey);
+
+
+//        private  $ownerId;
+//        private  $resourceOwnerAccount;
+//        private  $resourceOwnerId;
+//        private  $dBInstanceId;
+//        private  $startTime;
+//
+//        private  $endTime;
+//
+//        private  $pageSize;
+//
+//        private  $pageNumber;
+//
+//        private  $ownerAccount;
+//
+
+//            exit;
+//        include_once '../aliyun-php-sdk-core/Config.php';
+//    use Ecs\Request\V20140526 as Ecs;
+//
+//        $iClientProfile = DefaultProfile::getProfile("cn-hangzhou", "<your accessKey>", "<your accessSecret>");
+//        $client = new DefaultAcsClient($iClientProfile);
+//
+//        $request = new Ecs\DescribeRegionsRequest();
+//        $request->setMethod("GET");
+//        $response = $client->getAcsResponse($request);
+//        print_r($response);
+
+
+
+
+
+        $parmas = array();
+
+        $parmas['Format'] = 'JSON';
+        $parmas['Version'] = '2014-08-15';
+        $parmas['AccessKeyId'] = $accessKey; //AccessKeyId 	String 	是 	阿里云颁发给用户的访问服务所用的密钥ID
+        $parmas['Signature'] = ''; //Signature 	String 	是 	签名结果串，关于签名的计算方法，请参见签名机制。
+        $parmas['SignatureMethod'] = 'HMAC-SHA1'; //SignatureMethod 	string 	是 	签名方式，目前支持 HMAC-SHA1
+        $parmas['Timestamp'] = str_replace(' ', 'T', date('Y-m-d H:i:s')) . 'Z';  //Timestamp 	String 	是 	请求的时间戳。 2013-08-15T12:00:00Z
+        $parmas['SignatureVersion'] = '1.0';  //SignatureVersion 	String 	是 	签名算法版本，目前版本是 1.0
+        $parmas['SignatureNonce'] = time() . rand(1111, 9999); //SignatureNonce 	String 	是 	唯一随机数，用于防止网络重放攻击。用户在不同请求间要使用不同的随机数值
+        $parmas['Action'] = 'DescribeBinlogFiles';
+        $parmas['DBInstanceId'] = 'rds2698sy20670yn6u76';
+        $parmas['StartTime'] = '2015-12-01T00:00:00.000Z';  //2012-12-25T09:47:52.000Z
+        $parmas['EndTime'] = '2015-12-08T20:00:00.000Z';
+//        $parmas['PageSize'] = '';
+//        $parmas['PageNumber'] = '';
+
+        $getUrl = $url . '?' . http_build_query($parmas);
+
+        $response = getCurlRequest($getUrl);
+
+//        签名机制
+//
+//RDS服务会对每个访问的请求进行身份验证，所以无论使用HTTP还是HTTPS协议提交请求，都需要在请求中包含签名（Signature）信息。RDS通过使用 Access Key ID和Access Key Secret进行对称加密的方法来验证请求的发送者身份。Access Key ID和Access Key Secret由阿里云官方颁发给访问者（可以通过阿里云官方网站申请和管理），其中Access Key ID用于标识访问者的身份；Access Key Secret是用于加密签名字符串和服务器端验证签名字符串的密钥，必须严格保密，只有阿里云和用户知道。
+//用户在访问时，按照下面的方法对请求进行签名处理：
+//
+//    使用请求参数构造规范化的请求字符串（Canonicalized Query String）
+//    a) 按照参数名称的字典顺序对请求中所有的请求参数（包括文档中描述的“公共请求参数”和给定了的请求接口的自定义参数，但不能包括“公共请求参数”中提到Signature参数本身）进行排序。
+//    注：当使用GET方法提交请求时，这些参数就是请求URI中的参数部分（即URI中“?”之后由“&”连接的部分）。
+//    b) 对每个请求参数的名称和值进行编码。名称和值要使用UTF-8字符集进行URL编码，URL编码的编码规则是：
+//    i. 对于字符 A-Z、a-z、0-9以及字符“-”、“_”、“.”、“~”不编码；
+//    ii. 对于其他字符编码成“%XY”的格式，其中XY是字符对应ASCII码的16进制表示。比如英文的双引号（”）对应的编码就是%22
+//    iii. 对于扩展的UTF-8字符，编码成“%XY%ZA…”的格式；
+//    iv. 需要说明的是英文空格（ ）要被编码是%20，而不是加号（+）。
+//    注：一般支持URL编码的库（比如Java中的java.net.URLEncoder）都是按照“application/x-www-form-urlencoded”的MIME类型的规则进行编码的。实现时可以直接使用这类方式进行编码，把编码后的字符串中加号（+）替换成%20、星号（*）替换成%2A、%7E替换回波浪号（~），即可得到上述规则描述的编码字符串。
+//    c) 对编码后的参数名称和值使用英文等号（=）进行连接。
+//    d) 再把英文等号连接得到的字符串按参数名称的字典顺序依次使用&符号连接，即得到规范化请求字符串。
+//    使用上一步构造的规范化字符串按照下面的规则构造用于计算签名的字符串：
+//
+//    StringToSign=
+//        HTTPMethod + “&” +
+//        percentEncode(“/”) + ”&” +
+//        percentEncode(CanonicalizedQueryString)
+//
+//    其中HTTPMethod是提交请求用的HTTP方法，比GET。
+//    percentEncode(“/”)是按照1.b中描述的URL编码规则对字符“/”进行编码得到的值，即“%2F”。
+//    percentEncode(CanonicalizedQueryString)是对第1步中构造的规范化请求字符串按1.b中描述的URL编码规则编码后得到的字符串。
+//    按照RFC2104的定义，使用上面的用于签名的字符串计算签名HMAC值。注意：计算签名时使用的Key就是用户持有的Access Key Secret并加上一个“&”字符(ASCII:38)，使用的哈希算法是SHA1。
+//    按照Base64编码规则把上面的HMAC值编码成字符串，即得到签名值（Signature）。
+//    将得到的签名值作为Signature参数添加到请求参数中，即完成对请求签名的过程。
+//    注意：得到的签名值在作为最后的请求参数值提交给RDS服务器的时候，要和其他参数一样，按照RFC3986的规则进行URL编码）。
+//    以DescribeDBInstances为例，签名前的请求URL为：
+//
+//    http://rds.aliyuncs.com/?TimeStamp=2013-06-01T10:33:56Z&Format=XML&AccessKeyId=testid&Action=DescribeDBInstances&SignatureMethod=HMAC-SHA1&RegionId=region1&SignatureNonce=NwDAxvLU6tFE0DVb&Version=2014-08-15&SignatureVersion=1.0
+//
+//    那么StringToSign就是：
+//
+//    GET&%2F&AccessKeyId%3Dtestid%26Action%DescribeDBInstances%26Format%3DXML%26RegionId%3Dregion1%26SignatureMethod%3DHMAC-SHA1%26SignatureNonce%3DNwDAxvLU6tFE0DVb%26SignatureVersion%3D1.0%26TimeStamp%3D2013-06-01T10%253A33%253A56Z%26Version%3D2014-08-15
+//
+//    假如使用的Access Key Id是“testid”，Access Key Secret是“testsecret”，用于计算HMAC的Key就是“testsecret&”，则计算得到的签名值是：
+//
+//    BIPOMlu8LXBeZtLQkJTw6iFvw1E=
+//
+//        签名后的请求URL为（注意增加了Signature参数）：
+//
+//    http://rds.aliyuncs.com/?TimeStamp=2013-06-01T10%3A33%3A56Z&Format=XML&AccessKeyId=testid&Action=DescribeDBInstances&SignatureMethod=HMAC-SHA1&RegionId=region1&SignatureNonce=NwDAxvLU6tFE0DVb&SignatureVersion=1.0&Version=2014-08-15&Signature=BIPOMlu8LXBeZtLQkJTw6iFvw1E%3D
+//
+//
+//
+
+//        公共请求参数
+//
+//公共请求参数是指每个接口都需要使用到的请求参数。
+//相关参数说明
+//名称 	类型 	是否必须 	描述
+//Format 	String 	否 	返回值的类型，支持JSON与XML。默认为XML
+//Version 	String 	是 	API版本号，为日期形式：YYYY-MM-DD，本版本对应为2014-08-15
+//AccessKeyId 	String 	是 	阿里云颁发给用户的访问服务所用的密钥ID
+//Signature 	String 	是 	签名结果串，关于签名的计算方法，请参见签名机制。
+//SignatureMethod 	string 	是 	签名方式，目前支持HMAC-SHA1
+//Timestamp 	String 	是 	请求的时间戳。日期格式按照ISO8601标准表示，并需要使用UTC时间。格式为：YYYY-MM-DDThh:mm:ssZ;例如，2013-08-15T12:00:00Z（为北京时间2013年8月15日20点0分0秒）
+//SignatureVersion 	String 	是 	签名算法版本，目前版本是1.0
+//SignatureNonce 	String 	是 	唯一随机数，用于防止网络重放攻击。用户在不同请求间要使用不同的随机数值
+//示例
+//
+//https://rds.aliyuncs.com/
+//?Format=xml
+//        &Version=2013-08-15
+//        &Signature=Pc5WB8gokVn0xfeu%2FZV%2BiNM1dgI%3D
+//        &SignatureMethod=HMAC-SHA1
+//        &SignatureNonce=15215528852396
+//        &SignatureVersion=1.0
+//        &AccessKeyId=key-test
+//        &OwnerId=12345678
+//        &Timestamp=2013-06-01T12:00:00Z
+//
+//
+
+//        请求参数
+//
+//名称	类型	是否必须	描述
+//Action	String	是	系统规定参数，取值：DescribeBinlogFiles
+//DBInstanceId	String	是	实例名
+//StartTime	String	是	查询开始时间，格式：yyyy-MM-dd’T’HH:mm:ssZ
+//EndTime	String	是	查询结束时间，格式：yyyy-MM-dd’T’HH:mm:ssZ，且大于查询开始时间
+//PageSize	Integer	否	每页记录数，取值：30/50/100/默认值：30
+//PageNumber	Integer	否	页码，大于0，且不超过Integer的最大值默认值：1
+
+        exit;
+
+        $where = array();
+
+        $model = M('tmp_jd_order');
+        $count = $model->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $model->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        $supplyM = M('supply');
+        $supplyList = $supplyM->where('status = 1')->select();
+        $this->assign("supply_list", $supplyList);
+
+        $manageOrderStatusArr = C('MANAGE_ORDER_STATUS');
+        $this->assign('manage_order_status', $manageOrderStatusArr);
+
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display();
+    }
+
+    public function ajaxOrderItem(){
+        $orderName = I('order_name', '');
+        $model = new OrderModel();
+        if(!empty($orderName)){
+            $whereArr[C('DB_PREFIX') . 'order.order_name'] = array('eq',  $orderName);
+        }
+        $this->assign('order_name', $orderName);
+        $result = $model->getOrdersList(0, $whereArr);
+        if(!empty($result['order_list'])){
+            $this->result['status'] = 1;
+            $this->assign('order', $result['order_list'][0]);
+        }
+
+        $this->result['data'] = $this->fetch('itemContent');
+        echo json_encode($this->result);
+    }
+
+
+    /**
+     *  按条件取出订单数据到ttgy_tmp_jd_order 表
+     */
+    public function fetchOrder(){
+        $whereArr = array();
+        $model = new OrderModel();
+        $orderStatus = 0;
+
+
+        if(isset($_REQUEST['order_status_sel'])){
+            $orderStatus = I('order_status_sel', 0);
+        }
+
+        if(isset($_REQUEST['send_channel'])){
+            $send_channel = I('send_channel', '');
+            if(!empty($send_channel)){
+                $whereArr[C('DB_PREFIX') . 'order_product.send_channel'] = array('eq', $send_channel);
+            }
+        }
+
+        $limitDate = array();
+        $limitTime = array();
+        if(!empty($_REQUEST['limit_date_fetch_From'])){
+            $limitDate[0] =$_REQUEST['limit_date_fetch_From'];
+            $limitTime[0] = $_REQUEST['limit_time_fetch_From'];
+        }
+        if(!empty($_REQUEST['limit_time_fetch_To'])){
+            $limitDate[1] = $_REQUEST['limit_date_fetch_To'];
+            $limitTime[1] = $_REQUEST['limit_time_fetch_To'];
+        }
+
+        if(count($limitDate) > 0)
+        {
+            //改成最后更新时间 chrisying 2015-11-26
+            $whereArr['last_modify_time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+            //            $whereArr['time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+
+        }
+
+        $result = $model->getFetchOrdersList($orderStatus, $whereArr);
+
+        if(!empty($result['order_list'])){
+            $tmp_jd_orderM= M('tmp_jd_order');
+            $productM = M('product');
+            $dataAll = array();
+            foreach($result['order_list'] as $item){
+                $data = array();
+                $where = array();
+                $where['order_name'] = array('eq', $item['order_name']);
+                $tmp_jd_orderM->where($where)->delete();
+                $data['order_name'] = $item['order_name'];
+                $data['rec_name'] = $item['name'];
+                $data['rec_mobile'] = $item['mobile'];
+                $data['rec_tel'] = $item['telephone'];
+                $data['rec_address'] = $item['address'];
+                $data['weight'] = 1;
+                $data['add_time'] = date('Y-m-d H:i:s', time());
+
+                if(!empty($item['order_product'])){
+                    foreach($item['order_product'] as $product){
+                        $productItem = $productM->where(array('id' => array('eq', $product['product_id'])))->find();
+                        $data['product_name'] = $productItem['product_name'];
+                        $data['remark'] = $productItem['product_name'];
+                        $data['num'] = $product['qty'];
+                        $data['product_standard'] = $product['gg_name'];
+                        $data['product_id'] = $product['product_id'];
+                        $dataAll[] = $data;
+                    }
+                }
+            }
+
+            if(!empty($dataAll)){
+                $tmp_jd_orderM->addAll($dataAll);
+            }
+        }
+
+        echo '取出成功';
+    }
+
+    /**
+     *  直接从临时表中导出京东快递表格 V3
+     */
+    public function exportOrder(){
+        $model = M('tmp_jd_order');
+        $productName = I('product_name', '');
+        $where = array();
+        if(!empty($productName)){
+            $where['product_name'] = array('eq', $productName);
+        }
+        $orderList = $model->where($where)->select();
+        //导出类型，默认是1快递格式，2是 捡货格式
+        $type = I('export_type', 2);
+        if($type == 1){
+            $xlsName  = date('y-m-d-His') . "_export_order_shipping";
+            $xlsResult = $this->getTmpJdXlsData($orderList);
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], 'export_order');
+        } else {
+            $xlsName  = date('y-m-d-His') . "_export_order_product";
+            $xlsResult = $this->getTmpGoodsXlsData($orderList);
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], 'export_send_channel_order');
+        }
+    }
+
+
+    /**
+     *  根据下单时间，订单状态和发货渠道导出订单功能
+     *  chrisying 2015-11-11
+     */
+    public function exportOrderV2(){
+        $whereArr = array();
+        $model = new OrderModel();
+        $orderStatus = 0;
+        //导出类型，默认是1快递格式，2是 捡货格式
+        $type = I('export_type', 2);
+
+        if(isset($_REQUEST['order_status_sel'])){
+            $orderStatus = I('order_status_sel', 0);
+        }
+
+        if(isset($_REQUEST['send_channel'])){
+            $send_channel = I('send_channel', '');
+            if(!empty($send_channel)){
+                $whereArr[C('DB_PREFIX') . 'order_product.send_channel'] = array('eq', $send_channel);
+            }
+        }
+
+        $limitDate = array();
+        $limitTime = array();
+        if(!empty($_REQUEST['limit_date_export_From'])){
+
+            $limitDate[0] =$_REQUEST['limit_date_export_From'];
+            $limitTime[0] = $_REQUEST['limit_time_export_From'];
+        }
+        if(!empty($_REQUEST['limit_time_export_To'])){
+            $limitDate[1] = $_REQUEST['limit_date_export_To'];
+            $limitTime[1] = $_REQUEST['limit_time_export_To'];
+        }
+
+        if(count($limitDate) > 0)
+        {
+            //改成最后更新时间 chrisying 2015-11-26
+            $whereArr['last_modify_time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+//            $whereArr['time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+
+        }
+
+        $result = $model->getExportOrdersList($orderStatus, $whereArr);
+
+        if($type == 1){
+            $xlsName  = date('y-m-d-His') . "_export_order_shipping";
+            $xlsResult = $this->getJdXlsData($result);
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], 'export_order');
+        } else {
+            $xlsName  = date('y-m-d-His') . "_export_order_product";
+            $xlsResult = $this->getGoodsXlsData($result);
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], 'export_send_channel_order');
+        }
+
+
+    }
+
+    /**
+     *  果园备货的xls文档内容
+     * @param $orderData
+     * @return array
+     */
+    private function getTmpGoodsXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+
+        $result['xls_cell']  = array(
+            array('product_name','商品品名'),
+            array('product_standard','规格'),
+            array('num','数量'),
+        );
+
+        $productArr = array();
+        if(!empty($orderData)){
+            foreach($orderData as $item){
+                $key = md5($item['product_name'] . $item['product_standard']);
+                if(isset($productArr[$key])){
+                    $productData = $productArr[$key];
+                    $productData['num'] = intval($productData['num']) + intval($item['num']);
+                } else {
+                    $productData = array('num'=> $item['num']
+                    , 'product_standard'=>$item['product_standard'], 'product_name' => $item['product_name']);
+                }
+
+                $productArr[$key] = $productData;
+            }
+        }
+
+        if(!empty($productArr)){
+            foreach($productArr as $pItem){
+                $result['xls_data'][] = $pItem;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     *  果园备货的xls文档内容
+     * @param $orderData
+     * @return array
+     */
+    private function getGoodsXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+
+        $orderAddressM = M('order_address');
+        $areaM = M('area');
+        $productM = M('product');
+
+        $result['xls_cell']  = array(
+            array('product_name','商品品名'),
+            array('product_standard','规格'),
+            array('product_num','数量'),
+        );
+
+        $xls_data = array();
+
+        if(!empty($orderData['order_list'])){
+            foreach($orderData['order_list'] as $item){
+                $dataItem = array();
+                $dataItem['order_name'] = $item['order_name'];
+                $dataItem['name'] = $item['name'];
+                $dataItem['mobile'] = $item['mobile'];
+                $dataItem['telephone'] = $item['telephone'];
+                $dataItem['address'] = $item['address'];
+
+                $cityName = '';
+                $orderAddressItem = $orderAddressM->where(array('order_id'=>array('eq', $item['id'])))->find();
+                if(!empty($orderAddressItem)){
+                    $areaItem = $areaM->where(array('id' => array('eq', $orderAddressItem['city'])))->find();
+                    if(!empty($areaItem)){
+                        $cityName = $areaItem['name'];
+                    }
+                }
+                $dataItem['recv_city'] = $cityName;
+                if(!empty($item['order_product'])){
+                    foreach($item['order_product'] as $product){
+                        $productItem = $productM->where(array('id' => array('eq', $product['product_id'])))->find();
+
+                        $dataItem['product_name'] = $productItem['product_name'];
+                        $dataItem['product_standard'] = $product['gg_name'];
+                        $dataItem['product_num'] = $product['qty'];
+
+                        $xls_data[] = $dataItem;
+                    }
+                }
+            }
+        }
+
+        $productArr = array();
+        if(!empty($xls_data)){
+            foreach($xls_data as $item){
+                $key = md5($item['product_name'] . $item['product_standard']);
+                if(isset($productArr[$key])){
+                    $productData = $productArr[$key];
+                    $productData['product_num'] = intval($productData['product_num']) + intval($item['product_num']);
+                } else {
+                    $productData = array('product_num'=> $item['product_num']
+                        , 'product_standard'=>$item['product_standard'], 'product_name' => $item['product_name']);
+                }
+
+                $productArr[$key] = $productData;
+            }
+        }
+
+        if(!empty($productArr)){
+            foreach($productArr as $pItem){
+                $result['xls_data'][] = $pItem;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     *  京东快递模板的订单列表
+     * @param $orderData
+     * @return array
+     */
+    private function getTmpJdXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+        $result['xls_cell']  = array(
+            array('order_name','关联订单'),
+            array('name','姓名'),
+            array('mobile','手机'),
+            array('telephone','座机'),
+            array('address','地址'),
+            array('product_info','物品内容'),
+            array('qty','包裹数量'),
+            array('weight','重量（kg）'),
+            array('insured','保价'),
+            array('insured_money','保价金额（元）'),
+            array('money','订单金额（元）'),
+            array('COD','代收货款'),
+            array('remark','备注信息'),
+            array('delivery_type','配送业务类型'),
+        );
+
+        if(!empty($orderData)){
+            foreach($orderData as $item){
+                $dataItem = array();
+                $dataItem['order_name'] = $item['order_name'];
+                $dataItem['name'] = $item['rec_name'];
+                $dataItem['mobile'] = $item['rec_mobile'];
+                $dataItem['telephone'] = $item['rec_tel'];
+                $dataItem['address'] = $item['rec_address'];
+                $dataItem['weight'] = 1;
+                $dataItem['insured'] = '否';
+                $dataItem['insured_money'] = 0;
+                $dataItem['money'] = 0;
+                $dataItem['COD'] = '否';
+                $dataItem['delivery_type'] = '普通';
+                $dataItem['product_info'] = $item['product_name'];
+                $dataItem['remark'] = $item['product_name'];
+                $dataItem['qty'] = $item['num'];
+                $result['xls_data'][] = $dataItem;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     *  京东快递模板的订单列表
+     * @param $orderData
+     * @return array
+     */
+    private function getJdXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+
+        $orderAddressM = M('order_address');
+        $areaM = M('area');
+        $productM = M('product');
+
+        $result['xls_cell']  = array(
+            array('order_name','关联订单'),
+            array('name','姓名'),
+            array('mobile','手机'),
+            array('telephone','座机'),
+            array('address','地址'),
+            array('product_info','物品内容'),
+            array('qty','包裹数量'),
+            array('weight','重量（kg）'),
+            array('insured','保价'),
+            array('insured_money','保价金额（元）'),
+            array('money','订单金额（元）'),
+            array('COD','代收货款'),
+            array('remark','备注信息'),
+            array('delivery_type','配送业务类型'),
+        );
+
+        if(!empty($orderData['order_list'])){
+            foreach($orderData['order_list'] as $item){
+                $dataItem = array();
+                $dataItem['order_name'] = $item['order_name'];
+                $dataItem['name'] = $item['name'];
+                $dataItem['mobile'] = $item['mobile'];
+                $dataItem['telephone'] = $item['telephone'];
+                $dataItem['address'] = $item['address'];
+                $dataItem['weight'] = 1;
+                $dataItem['insured'] = '否';
+                $dataItem['insured_money'] = 0;
+//                $dataItem['money'] = $item['money'];
+                $dataItem['money'] = 0;
+                //如果是货到付款的需要代收货款
+                if(4 === intval($item['pay_parent_id'])){
+                    $dataItem['COD'] = '是';
+                } else {
+                    $dataItem['COD'] = '否';
+                }
+                $dataItem['delivery_type'] = '普通';
+                $xlsData[] = $dataItem;
+
+                $orderNameArr[] = $item['order_name'];
+
+                if(!empty($item['order_product'])){
+                    foreach($item['order_product'] as $product){
+                        $productItem = $productM->where(array('id' => array('eq', $product['product_id'])))->find();
+
+                        $dataItem['product_info'] = $productItem['product_name'];
+                        $dataItem['remark'] = $productItem['product_name'];
+                        $dataItem['qty'] = $product['qty'];
+
+                        $result['xls_data'][] = $dataItem;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    //原来的导出订单功能,现已经废弃
+    public function exportOrderOld(){
+
+        $exportType = intval(I('export_type', 0));
+        switch($exportType){
+            case 1:
+                //未导出过的新订单
+                $orderM = new OrderModel();
+                //未导出过的, 待发货的订单
+                $where = 'has_export = 0 && (operation_id = 10 OR operation_id = 2) && (pay_status = 1 OR pay_parent_id = 4) AND time > "2015-10-13 21:00:00"';
+                $xlsName  = "export_new_order" . date('_YmdHis');
+
+                $xlsCell  = array(
+                    array('order_name','关联订单'),
+                    array('name','姓名'),
+                    array('mobile','手机'),
+                    array('telephone','座机'),
+                    array('address','地址'),
+                    array('product_info','物品内容'),
+                    array('qty','包裹数量'),
+                    array('weight','重量（kg）'),
+                    array('insured','保价'),
+                    array('insured_money','保价金额（元）'),
+                    array('money','订单金额（元）'),
+                    array('COD','代收货款'),
+                    array('remark','备注信息'),
+                    array('delivery_type','配送业务类型'),
+                );
+
+                $orderList  = $orderM->relation(true)->where($where)->select();
+                $orderNameArr = array();
+                $xlsData = array();
+                if(!empty($orderList)){
+                    foreach($orderList as $item){
+                        $dataItem = array();
+                        $dataItem['order_name'] = $item['order_name'];
+                        $dataItem['name'] = $item['name'];
+                        $dataItem['mobile'] = $item['mobile'];
+                        $dataItem['telephone'] = $item['telephone'];
+                        $dataItem['address'] = $item['address'];
+                        $dataItem['product_info'] = '';
+                        $dataItem['qty'] = 1;
+                        $dataItem['weight'] = 1;
+                        $dataItem['insured'] = '否';
+                        $dataItem['insured_money'] = 0;
+                        $dataItem['money'] = $item['money'];
+                        //如果是货到付款的需要代收货款
+                        if(4 === intval($item['pay_parent_id'])){
+                            $dataItem['COD'] = '是';
+                        } else {
+                            $dataItem['COD'] = '否';
+                        }
+                        $dataItem['delivery_type'] = '普通';
+                        $xlsData[] = $dataItem;
+
+                        $orderNameArr[] = $item['order_name'];
+                    }
+
+                    $orderM->where('order_name IN(' . implode(',', $orderNameArr) . ')')->save(array('has_export' => 1));
+                    $exportOrderLogM = M('order_export_log');
+                    $logData = array('export_name' => $xlsName, 'act_uid' => $_SESSION['admin_id']
+                    , 'export_orders' => serialize($orderNameArr)
+                        , 'add_time'=> time());
+                    $exportOrderLogM->add($logData);
+
+                }
+
+
+                $this->exportExcel($xlsName,$xlsCell,$xlsData, 'export_order');
+                break;
+
+            case 2:
+                //选中的订单
+
+                break;
+        }
+    }
+
+    public function importOrder(){
+        $file = '/home/wwwroot/sp.com/manage/Public/export_new_order_20150812160748.xls';
+        $this->importExecl($file);
+    }
+
+    /**
+     *  批量导入京东xls表格数据进行发货
+     */
+    public function importSendOrder(){
+        set_time_limit(0);
+        $file = '/mnt/wwwtest/testm1/trunk/manage/upload/orderrecord.xls';
+//        $file = '/Users/chrisying/Desktop/orderrecord_11_24.xls';
+        $result = $this->importExecl($file);
+        var_dump($result);
+        if(!empty($result['data'])){
+            $orderM = M('order');
+            $data = array();
+            $data['shipping_name'] = '京东快递';
+            $data['shipping_id'] = 'jd_delivery';
+            $data['is_send_jd'] = '1';
+            foreach($result['data'] as $key => $item){
+                if($key > 1){
+                    $where['order_name'] = array('eq', $item['C']);
+                    $data['delivery_id'] = $item['B'];
+                    $orderM->where($where)->save($data);
+                    $this->doSendGoods($item['C']);
+//                    $this->sendOrderMsg($item['C'], $item['I'], $item['B']);
+                }
+
+            }
+        }
+    }
+
+    /**
+     *  excel 表导入删除订单
+     */
+    public function importDelOrder(){
+        $savePath = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
+        $fileFix = explode('.', $_FILES['import_file']['name']);
+        $fileName = md5($_FILES['import_file']['name'] . time()) . '.' . $fileFix[1];
+        $uploadFile = $savePath . $fileName;
+        move_uploaded_file($_FILES['import_file']['tmp_name'], $uploadFile);
+        $result = $this->importExecl($uploadFile);
+
+        if(!empty($result['data'])){
+            $model = M('tmp_jd_order');
+            echo '删除的订单：<br/>';
+            foreach ($result['data'] as $key => $item) {
+                if($key > 2){
+                    $orderName = $item['A'];
+                    $where = array();
+                    $where['order_name'] = array('eq', $orderName);
+                    $model->where($where)->delete();
+                    echo $orderName . '<br/>';
+                }
+            }
+
+            echo '<br/><a href="/JdOrder/index">返回列表</a><br/>';
+        }
+    }
+
+    /**
+     *  excel表导入增加订单
+     */
+    public function importAddOrder(){
+        $savePath = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
+        $fileFix = explode('.', $_FILES['import_file']['name']);
+        $fileName = md5($_FILES['import_file']['name'] . time()) . '.' . $fileFix[1];
+        $uploadFile = $savePath . $fileName;
+        move_uploaded_file($_FILES['import_file']['tmp_name'], $uploadFile);
+        $result = $this->importExecl($uploadFile);
+
+        if(!empty($result['data'])){
+            $model = M('tmp_jd_order');
+            echo '增加的订单：<br/>';
+            foreach ($result['data'] as $key => $item) {
+                if($key > 2){
+                    $orderName = $item['A'];
+                    $where = array();
+                    $where['order_name'] = array('eq', $orderName);
+                    $model->where($where)->delete();
+                    $data = array();
+                    $model->add($data);
+                    echo $orderName . '<br/>';
+                }
+            }
+
+            echo '<br/><a href="/JdOrder/index">返回列表</a><br/>';
+        }
+    }
+
+
+
+    public function delAll(){
+        $model = M('tmp_jd_order');
+        $model->where('1=1')->delete();
+    }
+}

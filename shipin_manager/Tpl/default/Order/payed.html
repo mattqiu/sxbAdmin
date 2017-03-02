@@ -1,0 +1,47 @@
+<div id="payWin"  class="md-modal md-effect-1">
+    <div class="md-content">
+        <div class="modal-header">
+            <button class="md-close close">&times;</button>
+            <h4 class="modal-title">生成捡货单</h4>
+        </div>
+        <div class="modal-body">
+            <table>
+                <tr>
+                    <td>支付方式</td>
+                    <td>
+                        <select name="payments" id="payments">
+                            <option value="0">请选择支付方式</option>
+                            <option value="支付宝">支付宝</option>
+                            <option value="货到付款" selected="selected">货到付款</option>
+                        </select>
+                    </td>
+                    <td>
+                        付款人/支付账号
+                    </td>
+                    <td>
+                        <input type="text" name="buyer" id="buyer"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>付款金额</td>
+                    <td><input type="text" name="pay_price" value="{$order.pay_price}" id="pay_price"/></td>
+                    <td>支付单号</td>
+                    <td><input type="text" name="trade_no" id="trade_no"/></td>
+                </tr>
+                <tr>
+                    <td>交易费率</td>
+                    <td><input type="text" name="total_fee" id="total_fee" value=""/></td>
+                    <td></td>
+                    <td></td></tr>
+            </table>
+            <input type="hidden" name="o_id" value="{$order.id}" id="o_id"/>
+
+            <div style="position: absolute; text-align: right; right: 50px; bottom: 10px;">
+                <div id="confirmBtn"  style="cursor: pointer;">确定</div></div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">生成捡货单</button>
+        </div>
+    </div>
+</div>

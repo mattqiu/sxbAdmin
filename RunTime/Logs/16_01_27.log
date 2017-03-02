@@ -1,0 +1,422 @@
+[ 2016-01-27T11:39:13+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T11:58:10+08:00 ] 127.0.0.1 /index.php?s=/jd_order/saveAddress
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001500s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+SQL: SHOW COLUMNS FROM `ttgy_tmp_jd_order` [ RunTime:0.010501s ]
+SQL: SHOW COLUMNS FROM `ttgy_groupbuying_order` [ RunTime:0.002500s ]
+SQL: SHOW COLUMNS FROM `ttgy_order` [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `ttgy_order_address` [ RunTime:0.002500s ]
+
+[ 2016-01-27T11:58:17+08:00 ] 127.0.0.1 /index.php?s=/jd_order/saveAddress
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+SQL: SHOW COLUMNS FROM `ttgy_tmp_jd_order` [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ttgy_groupbuying_order` [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `ttgy_order` [ RunTime:0.002500s ]
+SQL: SHOW COLUMNS FROM `ttgy_order_address` [ RunTime:0.002001s ]
+
+[ 2016-01-27T11:58:19+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T11:58:26+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T11:58:38+08:00 ] 127.0.0.1 /index.php?s=/jd_order/saveAddress
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+SQL: SHOW COLUMNS FROM `ttgy_tmp_jd_order` [ RunTime:0.002500s ]
+SQL: SHOW COLUMNS FROM `ttgy_groupbuying_order` [ RunTime:0.002500s ]
+SQL: SHOW COLUMNS FROM `ttgy_order` [ RunTime:0.002501s ]
+SQL: SHOW COLUMNS FROM `ttgy_order_address` [ RunTime:0.002501s ]
+
+[ 2016-01-27T12:02:10+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T12:02:21+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T12:02:31+08:00 ] 127.0.0.1 /index.php?s=/jd_order/saveAddress
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001500s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+SQL: SHOW COLUMNS FROM `ttgy_tmp_jd_order` [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ttgy_groupbuying_order` [ RunTime:0.002500s ]
+SQL: SHOW COLUMNS FROM `ttgy_order` [ RunTime:0.002500s ]
+SQL: SHOW COLUMNS FROM `ttgy_order_address` [ RunTime:0.002000s ]
+SQL: UPDATE `ttgy_tmp_jd_order` SET `rec_name`='小王',`rec_mobile`='123456789',`rec_tel`='123456789',`rec_address`='123123213123213122321',`status`=1,`jd_can_shipping`=1,`check_can_jd_result`='' WHERE ( `order_name` = '1601121214031996' ) [ RunTime:0.070509s ]
+SQL: UPDATE `ttgy_groupbuying_order` SET `recv_name`='小王',`recv_phone`='123456789',`recv_address`='123123213123213122321' WHERE ( `order_name` = '1601121214031996' ) [ RunTime:0.223528s ]
+SQL: SELECT `id` FROM `ttgy_order` WHERE ( `order_name` = '1601121214031996' ) LIMIT 1   [ RunTime:0.000501s ]
+SQL: UPDATE `ttgy_order_address` SET `position`='123123213123213122321',`address`='123123213123213122321',`name`='小王',`telephone`='123456789',`mobile`='123456789' WHERE ( `order_id` = '132041' ) [ RunTime:0.410552s ]
+SQL: UPDATE `ttgy_order` SET `check_can_jd`=1,`check_can_jd_result`='',`jd_can_shipping`=1 WHERE ( `order_name` = '1601121214031996' ) [ RunTime:0.001500s ]
+
+[ 2016-01-27T12:02:34+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T12:03:02+08:00 ] 127.0.0.1 /index.php?s=/jd_order/saveAddress
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 338 行.
+SQL: SHOW COLUMNS FROM `ttgy_tmp_jd_order` [ RunTime:0.002501s ]
+SQL: SHOW COLUMNS FROM `ttgy_groupbuying_order` [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ttgy_order` [ RunTime:0.014502s ]
+SQL: SHOW COLUMNS FROM `ttgy_order_address` [ RunTime:0.002501s ]
+SQL: UPDATE `ttgy_tmp_jd_order` SET `rec_name`='小王',`rec_mobile`='123456789',`rec_tel`='123456789',`rec_address`='上海市上海区上海路上海号',`status`=1,`jd_can_shipping`=1,`check_can_jd_result`='' WHERE ( `order_name` = '1601121214031996' ) [ RunTime:0.093011s ]
+SQL: UPDATE `ttgy_groupbuying_order` SET `recv_name`='小王',`recv_phone`='123456789',`recv_address`='上海市上海区上海路上海号' WHERE ( `order_name` = '1601121214031996' ) [ RunTime:0.208027s ]
+SQL: SELECT `id` FROM `ttgy_order` WHERE ( `order_name` = '1601121214031996' ) LIMIT 1   [ RunTime:0.001500s ]
+SQL: UPDATE `ttgy_order_address` SET `position`='上海市上海区上海路上海号',`address`='上海市上海区上海路上海号',`name`='小王',`telephone`='123456789',`mobile`='123456789' WHERE ( `order_id` = '132041' ) [ RunTime:0.107014s ]
+SQL: UPDATE `ttgy_order` SET `check_can_jd`=1,`check_can_jd_result`='',`jd_can_shipping`=1 WHERE ( `order_name` = '1601121214031996' ) [ RunTime:0.001000s ]
+
+[ 2016-01-27T12:03:05+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T14:26:12+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-27T14:33:34+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+

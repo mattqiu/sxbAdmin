@@ -1,0 +1,329 @@
+<?php
+// +----------------------------------------------------------------------
+// | 时品
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://m.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id$ 
+
+
+/**
+ *  团购管理
+ * Class GroupBuyingAction
+ */
+class GroupBuyingAction extends CommonAction{
+
+    /**
+     *  所有团购
+     */
+    public function index(){
+
+        $where = '';
+
+        $groupBuyingM = new GroupbuyingModel();
+        $count = $groupBuyingM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $groupBuyingM->where($where)->relation(true)
+            ->limit($page->firstRow . ',' . $page->listRows)->order("groupbuying_begintime desc")->select();
+
+//         dump($list);
+        if(!empty($list)){
+            $userM = M('user');
+            $groupBuyingConf = C('GROUP_BUYING');
+            foreach($list as $key => $item){
+                $list[$key]['condition_type'] = $groupBuyingConf['condition_type'][$item['condition_type']];
+                $list[$key]['state'] = $groupBuyingConf['groupbuying_state'][$item['state']];
+
+                if(!empty($item['user_head'])){
+                    $list[$key]['user_head'] = unserialize($item['user_head']);
+                }
+
+                if(!empty($item['partake'])){
+                    $userIds = implode(',', json_decode($item['partake'], true));
+                    $userList = $userM->where('id IN (' . $userIds . ')')->select();
+                    $list[$key]['partake_list'] = $userList;
+                }
+
+                $list[$key]['groupbuying_begintime'] = date('y-m-d H:i:s', $item['groupbuying_begintime']);
+                $list[$key]['groupbuying_endtime'] = date('y-m-d H:i:s', $item['groupbuying_endtime']);
+                $list[$key]['create_time'] = date('y-m-d H:i:s', $item['create_time']);
+            }
+        }
+
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display();
+    }
+
+    /**
+     *  查询指定开团日期和状态的团购
+     */
+    public function getgroupbuy_condition(){
+        // dump($_POST);
+        $opentime_begin = strtotime(I('limit_date_From',0).' '.I('limit_time_From',0));
+        $opentime_end = strtotime(I('limit_date_To',0).' '.I('limit_time_To',0));
+        // dump($opentime_end);exit;
+        // $opentime_begin = I('opentime_begin', 0);
+        // $opentime_end = I('opentime_end', 0);
+        $groupbuystate = I('groupbuystate', 0);
+        $timetype = I('timetype', 0);
+        $where = '';
+
+        if($opentime_begin != 0)
+        {
+            if($timetype == 0)
+            {
+                $where = $where."create_time>=".$opentime_begin." AND create_time<=".$opentime_end;
+            }
+            else
+            {
+                $where = $where."groupbuying_endtime>=".$opentime_begin." AND groupbuying_endtime<=".$opentime_end;
+            }
+
+        }
+
+        if($groupbuystate != 0)
+        {
+            if(!empty($where))
+                $where = $where." AND state =".$groupbuystate;
+            else
+                $where = "state =".$groupbuystate;
+        }
+        $groupBuyingM = new GroupbuyingModel();
+        $count = $groupBuyingM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $groupBuyingM->where($where)->relation(true)
+            ->limit($page->firstRow . ',' . $page->listRows)->order("create_time desc")->select();
+            // echo $groupBuyingM->getLastSql();
+        if(!empty($list)){
+            $userM = M('user');
+            $groupBuyingConf = C('GROUP_BUYING');
+            foreach($list as $key => $item){
+                $list[$key]['condition_type'] = $groupBuyingConf['condition_type'][$item['condition_type']];
+                $list[$key]['state'] = $groupBuyingConf['groupbuying_state'][$item['state']];
+
+                if(!empty($item['user_head'])){
+                    $list[$key]['user_head'] = unserialize($item['user_head']);
+                }
+
+                if(!empty($item['partake'])){
+                    $userIds = implode(',', json_decode($item['partake'], true));
+                    $userList = $userM->where('id IN (' . $userIds . ')')->select();
+                    $list[$key]['partake_list'] = $userList;
+                }
+
+                $list[$key]['groupbuying_begintime'] = date('y-m-d H:i:s', $item['groupbuying_begintime']);
+                $list[$key]['groupbuying_endtime'] = date('y-m-d H:i:s', $item['groupbuying_endtime']);
+                $list[$key]['create_time'] = date('y-m-d H:i:s', $item['create_time']);
+                $list[$key]['groupbuying_endtime'] = date('y-m-d H:i:s', $item['groupbuying_endtime']);
+            }
+        }
+
+        if($opentime_begin == 0)
+        {
+
+        }
+        else
+        {
+            $datebegin=date('Y-m-d',$opentime_begin);
+            $dateend=date('Y-m-d',$opentime_end);
+
+            $choosetime = $datebegin." - ".$dateend;
+            $this->assign('choosetime',$choosetime);
+        }
+
+
+        $this->assign('post',$_POST);
+        $this->assign('timetype',$timetype);
+        $this->assign('groupbuystate',$groupbuystate);
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display("index");
+    }
+
+    public function joinindex()
+    {
+        $opentime_begin = strtotime(I('limit_date_From',0).' '.I('limit_time_From',0));
+        $opentime_end = strtotime(I('limit_date_To',0).' '.I('limit_time_To',0));
+        //$nowdate=time();
+        // $opentime_begin = I('opentime_begin', 0);
+        // $opentime_end = I('opentime_end', 0);
+        $groupbuystate = 1;//进行中
+        $timetype = I('timetype', 0);
+        $where = '';
+
+        if($opentime_begin != 0)
+        {
+            if($timetype == 0)
+            {
+                $where = $where."create_time>=".$opentime_begin." AND create_time<=".$opentime_end;
+            }
+            else
+            {
+                $where = $where."groupbuying_endtime>=".$opentime_begin." AND groupbuying_endtime<=".$opentime_end;
+            }
+
+        }
+
+        if($groupbuystate != 0)
+        {
+            if(!empty($where))
+                $where = $where." AND state =".$groupbuystate;
+            else
+                $where = "state =".$groupbuystate;
+        }
+
+        $groupBuyingM = new GroupbuyingModel();
+        $count = $groupBuyingM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $groupBuyingM->where($where)->relation(true)
+            ->limit($page->firstRow . ',' . $page->listRows)->order("id desc")->select();
+
+
+        if(!empty($list)){
+            $userM = M('user');
+            $groupBuyingConf = C('GROUP_BUYING');
+            foreach($list as $key => $item){
+                $list[$key]['condition_type'] = $groupBuyingConf['condition_type'][$item['condition_type']];
+                $list[$key]['state'] = $groupBuyingConf['groupbuying_state'][$item['state']];
+
+                if(!empty($item['user_head'])){
+                    $list[$key]['user_head'] = unserialize($item['user_head']);
+                }
+
+                if(!empty($item['partake'])){
+                    $userIds = implode(',', json_decode($item['partake'], true));
+                    $userList = $userM->where('id IN (' . $userIds . ')')->select();
+                    $list[$key]['partake_list'] = $userList;
+                }
+
+                $list[$key]['groupbuying_begintime'] = date('y-m-d H:i:s', $item['groupbuying_begintime']);
+                $list[$key]['groupbuying_endtime'] = date('y-m-d H:i:s', $item['groupbuying_endtime']);
+                $list[$key]['create_time'] = date('y-m-d H:i:s', $item['create_time']);
+            }
+        }
+
+        if($opentime_begin == 0)
+        {
+
+        }
+        else
+        {
+            $datebegin=date('Y-m-d',$opentime_begin);
+            $dateend=date('Y-m-d',$opentime_end);
+
+            $choosetime = $datebegin." - ".$dateend;
+            $this->assign('choosetime',$choosetime);
+        }
+
+
+        $this->assign('timetype',$timetype);
+        $this->assign('groupbuystate',$groupbuystate);
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display("joinindex");
+    }
+    public function pingtuan()
+    {
+        $id = I('id', 0);
+        $where = 'id='.$id;
+        $groupBuyingM = new GroupbuyingModel();
+        $list = $groupBuyingM->where($where)->select();
+        $this->assign('item', $list[0]);
+        $this->display("joinedit");
+    }
+
+    public function addjoinnum()
+    {
+        $id = I('id', 0);
+        if($id == 0) {
+            echo '更新失败';
+            return;
+        }
+
+        $addnum = I('addnum', 0);
+
+        $where = 'id<10000';//机器人
+
+        $groupBuyingM = new GroupbuyingModel();
+        $userM = M('user');
+        $count = $userM->where($where)->count();
+
+        if($count<$addnum)
+        {
+            echo '更新失败';
+            return;
+        }
+
+        $randuseridarray=array();
+        $maxiduser = $userM->where('id<10000')->order('id desc')->limit(0 . ',' . 1)->select();
+        $findcount=0;
+        for($inum=0;$inum<$addnum;$inum++)
+        {
+            $ranid = rand(1,$maxiduser[0]['id']);
+
+            if(in_array($ranid,$randuseridarray))
+            {
+                $inum--;//随机的id有错，再随机一次；
+                continue;
+            }
+
+            $whereid = 'id='.$ranid;
+            //先查询用户
+
+            $userlist = $userM->where($whereid)->select();
+            if(empty($userlist))
+            {
+                $findcount = $findcount+1;
+                if($findcount>999)
+                {
+                    //找了1000次都没找到一个用户，继续下一个
+                }
+                else
+                {
+                    $inum--;//随机的id有错，再随机一次；
+                }
+            }
+            else
+            {
+                $findcount = 0;
+
+                $randuseridarray[]=$ranid;
+
+                $wheregroupbuy='id='.$id;
+                $groupbuylist = $groupBuyingM->where($wheregroupbuy)->select();
+
+                $nownum = $groupbuylist[0]['groupbuying_nownums'] + 1;
+                if($nownum < $groupbuylist[0]['groupbuying_reqnums'])//至少留一个空位置，如果没有真实用户进来，这个团就不管了。
+                {
+                    $partake = json_decode($groupbuylist[0]['partake']);
+
+                    if(!in_array($userlist[0]['id'],$partake))
+                    {
+                        array_push($partake,$userlist[0]['id']);//插入元素
+
+                        $data = array();
+                        $data['groupbuying_nownums']= $nownum;
+                        $data['partake']=json_encode($partake);
+
+                        $res = $groupBuyingM->where($wheregroupbuy)->save($data);
+                        if ($res > 0)
+                            echo $userlist[0]['id'].'加团成功';
+                        else
+                            echo $userlist[0]['id'].'加团失败';
+                    }
+
+                }
+
+            }
+        }
+
+    }
+} 

@@ -1,0 +1,109 @@
+<div class="orderInfo">
+    <ul class="">
+        <li class="wp15">订单号：<span class="fadeOut">{$sOrder.orderId}</span></li>
+        <li class="wp15">下单时间： <span class="fadeOut">{$sOrder.add_time|date="Y-m-d H:i",###}</span></li>
+        <li class="wp15">会员：<span class="fadeOut">{$sOrder.account}</span></li>
+        <li class="wp15">
+            <if condition="$sOrder.returns eq 1">异常：<span class="highlight">连续退货</span>
+            </if>
+            <php>if(1 == $sOrder['Users']['order_num'] && in_array($sOrder['supportmetho'], array(7, 8, 9))){
+                echo '异常：<span class="highlight">新会员货到付款</span>';
+                }</php>
+        </li>
+        <li class="wp15">状态：
+            <div valign="top" nowrap="nowrap" class="orderStatus">{$sOrder.status_name}
+                <if condition="count($sOrder['actionButton']) gt 0">
+                    <ul class="actionStatus">
+                        <foreach name="sOrder.actionButton" item="status" key="key">
+                            <if condition="$status.disable eq false">
+                                <li><a href="javascript:void(0);" data-id="{$status.act}">{$status.label}</a></li>
+                            </if>
+                        </foreach>
+                    </ul>
+                </if>
+            </div>
+        </li>
+        <li class="wp10">审核状态：
+            <div id="orderCheckStatus_{$sOrder.id}" data-id="{$sOrder.order_status}">{$sOrder.order_status_name}</div>
+        </li>
+    </ul>
+</div>
+<div class="goodsInfo">
+    <table class="wp95 mAuto goodsTb">
+        <thead>
+        <tr>
+            <th class="wp20">商品</th>
+            <th class="wp10">品牌</th>
+            <th class="wp10">发货方</th>
+            <th class="wp10">货号</th>
+            <th class="wp10">条形码值</th>
+            <th class="wp5">颜色码</th>
+            <th class="wp5">单价</th>
+            <th class="wp5">优惠</th>
+            <th class="wp5">购买数</th>
+            <th class="wp5">退货数</th>
+            <th class="wp5">小计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="sOrder['OrdersDetail']" item="goods">
+            <tr>
+                <td>
+                    <a href="/navbar-brand/node/b_id/{$goods.b_id}/nid/{$goods.d_id}" target="_blank"><img src="{$goods.img}!gpreview" width="39" alt="" style="vertical-align:middle;"/>
+                        {$goods.good_name} </a>&nbsp;&nbsp;
+                    尺码：{$goods.goods_size} 颜色：{$goods.factory_color}
+                </td>
+                <td class="txtCenter"><a href="/navbar-brand/info/id/{$goods['navbar-brand']['id']}" target="_blank">{$goods['navbar-brand']['name']}</a></td>
+                <td class="txtCenter">
+
+                    <eq name="goods['navbar-brand']['send_goods']" value="1"><span class="highlight">美荟</span></eq>
+                    <eq name="goods['navbar-brand']['send_goods']" value="2"><span style="color: #f6a828;">供应商</span></eq>
+                </td>
+                <td class="txtCenter">{$goods.identifier}</td>
+                <td class="txtCenter">{$goods.prod_num}</td>
+                <td class="txtCenter">{$goods.factory_color_num}</td>
+                <td class="txtCenter">{$goods.goods_price}</td>
+                <td class="txtCenter">{$goods.acts_money}</td>
+                <td class="txtCenter">{$goods.goods_num}</td>
+                <td class="txtCenter">{$goods.return_num}</td>
+                <td class="txtCenter">{$goods.goods_pay_money}</td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
+<div class="orderBuyer">
+    <ul class="pFlex">
+        <li class="wp50">收货信息：{$sOrder.address_name}&nbsp;&nbsp;&nbsp;[电话: {$sOrder.mobile}],
+            {$sOrder.province} &nbsp; {$sOrder.city} &nbsp; {$sOrder.address}
+        </li>
+        <li class="wp10">支付：
+                <span class="fadeOut">
+                <php> $payMethod = C("SUPPORT_METHO"); echo $payMethod[$sOrder['supportmetho']];</php>
+                </span>
+        </li>
+        <li class="wp20">总金额： <span class="highlight h3">￥{$sOrder.order_price}</span>
+            优惠后金额：<span class="highlight h3">￥{$sOrder.pay_price}</span>
+        </li>
+        <li class="txtCenter wp15">操作：
+            <a target="_blank" href="{:U('orderShow', 'id='.$sOrder['orderId'])}">查看</a>
+            <a href="{:U('printOrder', 'id='.$sOrder['orderId'])}" target="_blank">打印</a>
+        </li>
+    </ul>
+    <ul class="express">
+        <li>发货快递：<php>
+            $expressCom = $expressComList[$sOrder['express_com']]['code'];
+            $freeCode = str_replace(' ', '', $sOrder['freecode']);
+            echo $expressComList[$sOrder['express_com']]['name'];</php> </li>
+        <li>发货单号：
+            <if condition="$expressCom eq 'shunfeng'">
+                <a href="http://www.sf-express.com/cn/sc/dynamic_functions/waybill/#search/bill-number/{$freeCode}" target="_blank"><span class="highlight">{$freeCode}</span></a>
+                <elseif condition="$expressCom eq 'yuantong'" />
+                <a href="http://www.shipinmmm.com/kd/yto/Number/{$freeCode}" target="_blank"><span class="highlight">{$freeCode}</span></a>
+                <else/>
+                <a href="{:U('Kd/getKd', array('code'=>$expressCom, 'no' => $freeCode))}" target="_blank"><span class="highlight">{$freeCode}</span></a>
+            </if>
+        </li>
+        <li><if condition="!empty($sOrder['fahuo_time'])">发货时间：{$sOrder.fahuo_time|date="Y-m-d H:i:m", ###}</if></li>
+    </ul>
+</div>

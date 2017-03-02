@@ -1,0 +1,258 @@
+<?php
+
+/**
+ * Created by PhpStorm.
+ * User: chrisying
+ * Date: 15/10/19
+ * Time: 下午9:40
+ */
+class TaskModel extends CommonModel{
+
+    private $groupbuyingM;
+    private $groupbuyingOrderM;
+    private $orderRefundM;
+    private $orderPaymentM;
+
+    public function _initialize(){
+        $this->groupbuyingM = M('groupbuying');
+        $this->groupbuyingOrderM = M('groupbuying_order');
+        $this->orderRefundM = M('order_refund');
+        $this->orderPaymentM = M('order_payment');
+    }
+
+    /**
+     *  对使用名单券的0元订单的未成团操作
+     * @param $order_name
+     */
+    public function doZeroOrderRefund($groupbuyOrder){
+        $groupbuyingM = M('groupbuying');
+        $groupbuyingOrderM = M('groupbuying_order');
+        $orderM = M('order');
+        $orderOpM = M('order_op');
+        $groupbuyingOrderM->where('groupbuy_order_name = "' . $groupbuyOrder['groupbuy_order_name'] . '"')->save(array('state' => 4));
+        $orderM->where('order_name = "' . $groupbuyOrder['order_name'] . '"')->save(array('operation_id' => 5));
+
+        //如果不是单独退款
+        $groupbuyingM->where('id = ' . $groupbuyOrder['groupbuying_id'])->save(array('state' => 3));
+        $orderOpMsg = '0元拼团订单到期未成团退款';
+        $orderOpM->add(array('manage' => 'auto_task', 'pay_msg' => $orderOpMsg, 'operation_msg' => $orderOpMsg, 'discription' => $orderOpMsg, 'time' => time(), 'order_name' => $groupbuyOrder['order_name']));
+    }
+
+    public function doGroupOrderRefund($groupbuyOrder, $singleRefund = 0){
+        if(in_array($groupbuyOrder['state'], array(0,3,4))){
+            //未付款，已取消，已退款的订单不能再进行退款
+            return;
+        }
+
+        $orderRefundData = $this->orderRefundM->where('order_name = "' . $groupbuyOrder['order_name'] . '" AND type=1 AND status = 1')->find();
+        Log::write('当前订单是否存在于订单退款表中有未完成的记录===' . json_encode($orderRefundData) . '===sql===' . $this->orderRefundM->getLastSql());
+        if(empty($orderRefundData)) {
+            $orderRefundData = array();
+            $orderRefundData['payment_id'] = createPaymentId();
+            $hasPaymentId = $this->orderRefundM->where('payment_id ="' . $orderRefundData['payment_id'] . '"')->find();
+            while (!empty($hasPaymentId)) {
+                $orderRefundData['payment_id'] = createPaymentId();
+            }
+
+            $orderRefundData['money'] = $groupbuyOrder['pay_money'];
+            $orderRefundData['pay_parent_id'] = $groupbuyOrder['pay_parent_id'];
+            $orderRefundData['pay_name'] = $groupbuyOrder['pay_name'];
+            $orderRefundData['order_name'] = $groupbuyOrder['order_name'];
+            $orderRefundData['type'] = 1;     //类型，1为拼团未成团全额退款
+            $orderRefundData['status'] = 1; //'1, 未完成，2，支付成功，3，支付失败',
+            $orderRefundData['msg'] = '未成团订单退款';
+            $orderRefundData['remark'] = '';
+            $orderRefundData['act_user_id'] = 0; // 后台任务
+            $orderRefundData['act_user_name'] = 'auto_task'; // 后台任务
+            $orderRefundData['last_time'] = time();
+            $orderRefundData['add_time'] = time();
+            $orderRefundData['id'] = $this->orderRefundM->add($orderRefundData);
+        }
+
+        if(in_array($orderRefundData['pay_parent_id'], array(7, 9))) {
+            //如微信支付则调用微信支付退款接口
+            $url = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
+
+            $wxParams = array();
+            $wxParams['appid'] = C('WX_APP_ID');
+            $wxParams['mch_id'] = C('WX_PAY_MCHID');
+            $wxParams['nonce_str'] = C('WX_JSSDK_NONCESTR');
+            $wxParams['out_trade_no'] = $groupbuyOrder['groupbuy_order_name'];
+            $wxParams['out_refund_no'] = $orderRefundData['payment_id'];
+            $wxParams['total_fee'] = floatval($groupbuyOrder['pay_money']) * 100;
+            $wxParams['refund_fee'] = floatval($groupbuyOrder['pay_money']) * 100;
+            $wxParams['op_user_id'] = C('WX_PAY_MCHID');
+
+            $wxParams['sign'] = $this->makeWxSign($wxParams);
+
+            $wxParams['ssl_cert'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/apiclient_cert.pem';
+            $wxParams['ssl_key'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/apiclient_key.pem';
+
+            //如果需要用时品的支付账号退款
+            $isShipin = false;
+            $shipinRefundGroupbuyOrder = array();
+            $shipinRefundGroupbuyOrder[] = '151123009710';
+            $shipinRefundGroupbuyOrder[] = '151123588985';
+            //取 2015-11-30 23:08:38 之后的订单,之前的订单是用时品的支付账号支付的，要用时品的账号退款
+            if(in_array($groupbuyOrder['groupbuy_order_name'], $shipinRefundGroupbuyOrder) || $groupbuyOrder['pay_time'] < 1448896118){
+                //1448843920
+                //老订单
+                $isShipin=true;
+            }
+            if($isShipin){
+                $wxParams = array();
+                $wxParams['appid'] = 'wx50d24bb15d0567a0';
+                $wxParams['mch_id'] = '1261897201';
+                $wxParams['nonce_str'] = 'spai689898djjduejdud';
+                $wxParams['out_trade_no'] = $groupbuyOrder['groupbuy_order_name'];
+                $wxParams['out_refund_no'] = $orderRefundData['payment_id'];
+                $wxParams['total_fee'] = floatval($groupbuyOrder['pay_money']) * 100;
+                $wxParams['refund_fee'] = floatval($groupbuyOrder['pay_money']) * 100;
+                $wxParams['op_user_id'] = '1261897201';
+
+                $wxParams['sign'] = $this->makeWxSign($wxParams);
+
+                $wxParams['ssl_cert'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/shipin/apiclient_cert.pem';
+                $wxParams['ssl_key'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/shipin/apiclient_key.pem';
+            }
+
+            $result = getCurlRequestXML($url, $wxParams);
+
+            $resultArr = fromXml($result);
+            //微信支付退款成功
+
+            deBugLog($wxParams, __FILE__);
+            deBugLog($resultArr, __FILE__);
+
+            $refundStatus = false;
+            if(isset($resultArr['result_code']) && 'SUCCESS' == $resultArr['result_code']) {
+                $wxSign = $resultArr['sign'];
+                $sign = $this->makeWxSign($resultArr);
+                if($sign == $wxSign) {
+                    $paymentId = $resultArr['out_refund_no'];
+                    $groupOrderName = $resultArr['out_trade_no'];
+                    $wxRefundId = $resultArr['refund_id'];
+                    $refundFee = $resultArr['refund_fee'] / 100;
+                    $refundStatus = true;
+                }
+            }
+
+            if($refundStatus){
+                $this->upOrderRefund($refundStatus, $orderRefundData['payment_id']
+                    , $orderRefundData, $groupbuyOrder, $refundFee, $singleRefund);
+            } else {
+                $this->failOrderRefund($orderRefundData['payment_id']);
+            }
+
+        } elseif(1 == $orderRefundData['pay_parent_id']) {
+            $payLog = $this->orderPaymentM->where('pay_parent_id = 1 AND order_name ="' . $groupbuyOrder['order_name'] .  '"' )->order('time DESC')->find();
+            if(!empty($payLog['out_bill_id'])){
+                $this->orderRefundM->where('payment_id = "' . $orderRefundData['payment_id'] . '"')->save(array('out_bill_id' => $payLog['out_bill_id']));
+            }
+        }
+    }
+
+    /**
+     * 生成签名
+     * @return 签名，本函数不覆盖sign成员变量，如要设置签名需要调用SetSign方法赋值
+     */
+    public function makeWxSign($data) {
+        if(isset($data['sign'])){
+            unset($data['sign']);
+        }
+        //签名步骤一：按字典序排序参数
+        ksort($data);
+        $string = $this->toUrlParams($data);
+        //签名步骤二：在string后加入KEY
+        $string = $string . "&key=6a50ea01b41e4239a991f6419d19c0b3";
+        //签名步骤三：MD5加密
+        $string = md5($string);
+        //签名步骤四：所有字符转为大写
+        $result = strtoupper($string);
+
+        return $result;
+    }
+
+    /**
+     * 格式化参数格式化成url参数
+     */
+    public function toUrlParams($data) {
+        $buff = "";
+        foreach ($data as $k => $v) {
+            if($v != "" && !is_array($v)) {
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+
+        $buff = trim($buff, "&");
+
+        return $buff;
+    }
+
+    public function failOrderRefund($paymentId){
+        deBugLog(array('failOrderRefund' => '====failOrderRefund=====' . json_encode($paymentId)), __FILE__);
+        $this->upOrderRefund(false, $paymentId);
+    }
+
+    /**
+     * 订单退款后更新状态
+     * @param bool|false $status
+     * @param string $paymentId
+     * @param array $orderRefundData
+     * @param array $groupbuyOrder
+     * @param int $refundFee
+     */
+    public function upOrderRefund($status = false, $paymentId = '', $orderRefundData = array()
+        , $groupbuyOrder = array(), $refundFee = 0, $singleRefund = 0) {
+
+        $groupbuyingM = M('groupbuying');
+        $groupbuyingOrderM = M('groupbuying_order');
+        $orderRefundM = M('order_refund');
+        $orderM = M('order');
+        $orderOpM = M('order_op');
+        $refundUpData = array();
+        if($status) {
+            if(($orderRefundData['money']) == $refundFee) {
+                //'1, 未完成，2，支付成功，3，支付失败,4,部分支付，5，超额支付(一般不会存在此情况)'
+                $refundUpData['status'] = 2;
+
+                $groupbuyingOrderM->where('groupbuy_order_name = "' . $groupbuyOrder['groupbuy_order_name'] . '"')->save(array('state' => 4));
+                $orderM->where('order_name = "' . $groupbuyOrder['order_name'] . '"')->save(array('operation_id' => 5));
+
+                if($singleRefund == 0){
+                    //如果不是单独退款
+                    $groupbuyingM->where('id = ' . $groupbuyOrder['groupbuying_id'])->save(array('state' => 3));
+                    $orderOpMsg = '拼团订单到期未成团退款';
+                    $orderOpM->add(array('manage' => 'auto_task', 'pay_msg' => $orderOpMsg, 'operation_msg' => $orderOpMsg, 'discription' => $orderOpMsg, 'time' => date('Y-m-d H:i:s', time()), 'order_name' => $groupbuyOrder['order_name']));
+                } else {
+                    $orderOpMsg = '单独对某订单进行退款';
+                    $orderOpM->add(array('manage' => $_SESSION['admin_id'], 'pay_msg' => $orderOpMsg, 'operation_msg' => $orderOpMsg, 'discription' => $orderOpMsg, 'time' => date('Y-m-d H:i:s', time()), 'order_name' => $groupbuyOrder['order_name']));
+                }
+
+                //更新订单发货表中的状态
+                $tmpJdOrder = M('tmp_jd_order');
+                $jdOrderData = array();
+                $jdOrderData['status'] = 20;
+                $jdOrderWhere = array();
+                $jdOrderWhere['order_name'] = $groupbuyOrder['order_name'];
+                $tmpJdOrder->where($jdOrderWhere)->save($jdOrderData);
+            } else {
+                if(($orderRefundData['money']) > $refundFee) {
+                    //部分退款
+                    $refundUpData['status'] = 4;
+                } else {
+                    //多退款
+                    $refundUpData['status'] = 5;
+                }
+            }
+            $refundUpData['payed_money'] = $refundFee;
+        } else {
+            $refundUpData['status'] = 3;
+        }
+
+        $refundUpData['last_time'] = time();
+
+        $orderRefundM->where('payment_id ="' . $paymentId . '"')->save($refundUpData);
+    }
+
+}

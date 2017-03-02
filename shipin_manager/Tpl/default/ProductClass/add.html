@@ -1,0 +1,225 @@
+<include file="Public:head_v3"/>
+<body>
+
+<div id="theme-wrapper" class="rushToPurchase">
+
+    <include file="Public:header_v3"/>
+    <div id="page-wrapper" class="container">
+        <div class="row">
+            <include file="Public:sidebar_v3"/>
+            <div id="content-wrapper">
+
+                <div class="md-content">
+                    <div class="modal-header">
+                        <button class="md-close close">&times;</button>
+                        <h4 class="modal-title">添加商品分类</h4>
+                    </div>
+                    <form action="/ProductClass/save" enctype="multipart/form-data" method="post" role="form" id="add_form">
+                        <div class="modal-body">
+                            <table style="table-layout: fixed; word-wrap:break-word;">
+                                <tbody><tr  class="tr">
+                                    <td align="right"> 所属栏目：</td>
+                                    <td>
+                                        <select name="parent_id">
+                                            <option value="0">请选择栏目...</option>
+                                            <foreach name="class_top_list" item="item">
+                                                <option value="{$item.id}">{$item.name}</option>
+                                            </foreach>
+                                        </select>  添加顶级分类请勿选择
+                                    </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td width="22%" align="right"> 名称：</td>
+                                    <td width="75%"><input type="text" value="" size="25" id="name" name="name">    </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td width="22%" align="right"> 描述：</td>
+                                    <td width="75%"><input type="text" value="" size="25" id="ename" name="ename">    </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td width="22%" align="right"> 快速推荐商品：</td>
+                                    <td width="75%"><input type="text" value="" size="25" id="product_id" name="product_id">*填写商品id用英文,隔开   </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td width="22%" align="right"> 分类icon图片：</td>
+                                    <td width="75%">
+                                        <input type="file" id="photo" name="photo">
+                                        <a target="_blank" href="../"></a>
+                                        <input type="hidden" value="" name="old_photo">
+                                    </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td width="22%" align="right"> 热门图片:</td>
+                                    <td width="75%">
+                                        <input type="file" id="class_photo" name="class_photo">
+                                        <a target="_blank" href="../"></a>
+                                        <input type="hidden" value="" name="old_class_photo">
+                                    </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td width="22%" align="right"> 自定义链接：</td>
+                                    <td width="75%"><input type="text" value="" size="100" id="link" name="link">    </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td align="right">  排序：</td>
+                                    <td>
+                                        <input type="text" value="0.00" size="4" id="order_id" name="order_id">      </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td align="right">  是否展示：</td>
+                                    <td>
+                                        <input type="checkbox" value="1" id="is_show" name="is_show">      </td>
+                                </tr>
+                                <tr  class="tr">
+                                    <td align="right">  是否分隔：</td>
+                                    <td>
+                                        <input type="checkbox" value="1" id="is_split" name="is_split">      </td>
+                                </tr>
+                                <tr><td align="right">  是否热门：</td>
+                                    <td>
+                                        <input type="checkbox" value="1" id="is_hot" name="is_hot">      </td>
+                                </tr>
+                                <!--<tr  class="tr">-->
+                                    <!--<td align="right"> 展示地区：</td>-->
+                                    <!--<td>-->
+                                        <!--<a id="select_region" style="text-decoration: underline;cursor: pointer;" href="javascript:void(0);">选择地区</a>-->
+                                        <!-- -->
+                                    <!--</td>-->
+                                <!--</tr>-->
+
+                                <input type="hidden" value="1,54351,106092,106340,143949,143967,143983,143996,144005,144035,144039,144045,144051,144224,144252,144370,144379,144387,144412,144443,144522,144551,144595,144627,144643,144795,145843,145855" id="send_region" name="send_region">
+
+                                </tbody>
+                            </table>
+                            <input type="hidden" value="" size="4" id="id" name="id">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="form_save" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+
+    <div id="config-tool-options">
+        <h4>Layout Options</h4>
+        <ul>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-header"/>
+                    <label for="config-fixed-header">
+                        Fixed Header
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-sidebar"/>
+                    <label for="config-fixed-sidebar">
+                        Fixed Left Menu
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-fixed-footer"/>
+                    <label for="config-fixed-footer">
+                        Fixed Footer
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-boxed-layout"/>
+                    <label for="config-boxed-layout">
+                        Boxed Layout
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox-nice">
+                    <input type="checkbox" id="config-rtl-layout"/>
+                    <label for="config-rtl-layout">
+                        Right-to-Left
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <br/>
+        <h4>Skin Color</h4>
+        <ul id="skin-colors" class="clearfix">
+            <li>
+                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                </a>
+            </li>
+            <li>
+                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+<script src="__PUBLIC__/admin/v3/js/demo-skin-changer.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/v3/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.nanoscroller.min.js"></script>
+<script src="__PUBLIC__/admin/v3/js/demo.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.fixedHeader.js"></script>
+<script src="__PUBLIC__/admin/v3/js/dataTables.tableTools.js"></script>
+<script src="__PUBLIC__/admin/v3/js/jquery.dataTables.bootstrap.js"></script>
+
+<script src="__PUBLIC__/admin/v3/js/scripts.js"></script>
+<script src="__PUBLIC__/admin/v3/js/pace.min.js"></script>
+
+<!-- 配置文件 -->
+<script src="__PUBLIC__/admin/js/ueditor143/ueditor.config.js" ype="text/javascript"></script>
+<!-- 编辑器源码文件 -->
+<script src="__PUBLIC__/admin/js/ueditor143/ueditor.all.js" ype="text/javascript"></script>
+<script src="__PUBLIC__/admin/js/ajaxfileupload.js" ype="text/javascript"></script>
+<script src="__PUBLIC__/admin/js/table_tr_add_remove.js" ype="text/javascript"></script>
+
+<!--模态弹出框专属-->
+<script src="__PUBLIC__/admin/v3/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/admin/v3/js/classie.js"></script>
+<script src="__PUBLIC__/admin/v3/js/modalEffects.js"></script>
+</body>
+</html>

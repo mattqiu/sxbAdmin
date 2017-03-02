@@ -1,0 +1,17 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.name}</td>
+    <td >{$item.trigger}</td>
+    <td >{$item.scope}</td>
+    <td >{$item.rank}</td>
+    <td >{$item.is_mutex}</td>
+    <td >{$item.class_name}</td>
+    <td >{$item.tml_ids}</td>
+    <td >{$item.add_time}</td>
+    <td>
+        <a href="/{$Think.MODULE_NAME}/del/id/{$item.id}">删除</a>
+        <a href="/{$Think.MODULE_NAME}/edit/id/{$item.id}">编辑</a>
+    </td>
+</tr>
+
+

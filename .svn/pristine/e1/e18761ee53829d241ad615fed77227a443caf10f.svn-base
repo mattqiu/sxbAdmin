@@ -1,0 +1,61 @@
+<include file="Public:head"/>
+<div class="tab-div">
+  <div id="tabbar-div">
+      <p>
+          <span class="tab-front" id="general-tab" onclick="tarChange(this);">通用信息</span>
+      </p>
+   </div>
+   <div id="tabbody-div">
+        <form  action="{$done.url}" method="post" enctype="multipart/form-data" name="theForm" >
+            <table class="table"  id="general-table">
+                <tbody>
+                <tr>
+                    <td>图片：</td>
+                    <td>
+                        <if condition="!empty($info['img'])">
+                            <img src="{$info.img}!normal" alt="" height="60px;"/>
+                        </if>
+                        <br/>
+                        <input type="file" name="file"  id="uploadImg"
+                               data-policy="{$upSign['policy']}"
+                               data-sign="{$upSign['sign']}"
+                               size="28" onchange="uploadImage(this);" />
+                        <span class="tips"></span>
+                        <input type="hidden" name="img" value="{$info.img}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>链接地址：</td>
+                    <td><input type="text" name="url" value="{$info.url}"/></td>
+                </tr>
+
+                <tr>
+                    <td>权重：</td>
+                    <td><input type="text" name="weight" value="{$info.weight}"/></td>
+                </tr>
+                <tr>
+                    <td>是否显示：</td>
+                    <td>
+                        <select name="is_show" id="">
+                            <option value="1"
+                                    <eq name="item.is_show" value="1">selected</eq>
+                                    >显示</option>
+                            <option value="0"
+                            <eq name="item.is_show" value="0">selected</eq>
+                                    >不显示</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align: center;"> <input type="hidden" name="id" value="{$Think.get.id}" />
+                <input type="submit" value="确定" class="button"  />
+                <input type="reset" value="重置" class="button" /></div>
+        </form>
+   </div> 
+</div>
+<include file="Public:footer"/>
+<script type="text/javascript" src="__PUBLIC__/admin/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/validate.js"></script>

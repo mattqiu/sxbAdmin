@@ -1,0 +1,16 @@
+<table>
+    <foreach name="product_gifts" item="gifts">
+        <tr>
+            <td>
+                图片: <img src="{$img_site}/{$gifts.gift_photo}" alt="" width="60" />
+                名称:<input   size="20" type="text" value="{$gifts.gname}" />
+                编号:<input  size="10" type="text" value="{$gifts.gno}" />
+                数量:<input  size="5" type="text" value="{$gifts.gnum}" />
+                价值:￥<input  size="5" type="text" value="{$gifts.gprice}" />元&nbsp;
+                重量:<input  size="5" type="text" value="{$gifts.gift_weight}" />kg
+                排序：<input  value="{$gifts.order_id}" size="2" type="text" />
+                <a href="javascript:del_product_gift({$gifts.pid},{$gifts.id})">删除</a>
+            </td>
+        </tr>
+    </foreach>
+</table>

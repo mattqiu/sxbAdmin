@@ -1,0 +1,15 @@
+<table border="1" cellpadding="0" cellspacing="0" >
+    <tr>
+        <th style="text-align: center;">品名</th>
+        <th style="text-align: center;">规格</th>
+        <th style="text-align: center;">数量</th>
+    </tr>
+
+    <volist name="goods_num_list" id="item" empty="$empty">
+        <tr>
+            <td style="padding: 3px;">{$item.product_name}</td>
+            <td style="padding: 3px;">{$item.product_standard}</td>
+            <td style="padding: 3px;">{$item.num}</td>
+        </tr>
+    </volist>
+</table>

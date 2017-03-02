@@ -1,0 +1,175 @@
+<include file="Public:head"/>
+<div class="form-div">
+  <form action="{:U('search')}" name="searchForm"  method="get">
+    <img src="__PUBLIC__/admin/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+    <select name="cat_id" >
+      <option value="0">全部分类</option>
+      <foreach name="news_cat" item="cat">
+      <option value="{$cat.cat_id}">{$cat.cat_name}</option>
+      <foreach name="cat.cat_son" item="son">
+               <option value="{$son.cat_id}">&nbsp;&nbsp;&nbsp;&nbsp;{$son.cat_name}</option>
+      </foreach>  
+      </foreach>
+    </select>
+    新闻标题 <input type="text" name="keyword" id="keyword" value="{$Think.get.keyword}" />
+    <input type="hidden" name="a" value="search" />
+    <input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+    <input type="submit" value="搜索" class="button" />
+  </form>
+</div>
+
+<form method="POST" action="{:U('News/done')}" name="listForm">
+<!-- start cat list -->
+<div class="list-div" id="listDiv">
+<style>
+.list_table th{text-align: center;}
+.list_table th,.list_table td{border: 1px solid #f2f2f2;}
+tr:hover td{background:#f2f2f2;}
+</style>
+<table cellspacing='1' cellpadding='3' id='list-table' class="list_table">
+  <tr>
+      <th>
+         <input type="checkbox" onclick="selAll(this);" class="1" /><a href="">编号</a>
+      </th>
+      <th>
+         <a href="">新闻标题</a>
+      </th>
+      <th><a href="">新闻分类</a></th>
+      <th><a href="">新闻重要性</a></th>
+      <th><a href="">审核</a></th>
+      <th><a href="">添加日期</a></th>
+      <th>操作</th>
+  </tr>
+  <foreach name="news_info" item="list" key="key">
+  <tr>
+    <td align="center">
+        <span>
+            <input name="checkboxes[]" type="checkbox" value="{$list.news_id}" {if $list.cat_id <= 0 }disabled="true"{/if}/>
+                    {$list.news_id}
+        </span>
+    </td>
+    <td class="first-cell">
+        <span onclick="javascript:listTable.edit(this, 'edit_title', {$list.news_id})">
+          {$list.title} 
+        </span>
+    </td>
+    <td align="left">
+            <span>
+                {$list.cat_name}
+            </span>
+    </td>
+    <td align="center">
+            <span>
+                <switch name="list.news_type">
+                    <case value="2"><span style="color:blue;">栏目置顶</span></case>
+                    <case value="3"><span style="color:red;">全局置顶</span></case>
+                <default/>
+                    <span style="color:green">普通</span>
+                </switch>
+            </span>
+    </td>
+    <td align="center">
+        <span>
+            <img src="__PUBLIC__/admin/images/<eq name="list.is_open" value="1">yes.gif" value="1"<else/>no.gif" value="0"</eq> name="{$list.news_id}" class="actIsOpen" />
+        </span>
+    </td>
+    <td  align="center">
+        <span onclick="listTable.edit(this, 'edit_date', {$list.news_id})" title="添加日期" style="">
+            {$list.add_time|date="Y-m-d",###}
+        </span>
+    </td>
+    <td align="center" nowrap="true"><span>
+          <a href="http://{$Think.server.http_host}/help/cate/c_id/{$list.cat_id}/n_id/{$list.news_id}" target="_blank" title="预览">
+                <img src="__PUBLIC__/admin/images/icon_view.gif" border="0" height="16" width="16" />
+          </a>&nbsp;
+          <a href="{:U('News/edit', 'id='.$list['news_id'])}" title="编辑">
+                <img src="__PUBLIC__/admin/images/icon_edit.gif" border="0" height="16" width="16" />
+          </a>&nbsp;
+          <!-- {if $list.cat_id > 0} -->
+          <a href="{:U('News/del', 'id='.$list['news_id'])}" title="删除" onclick="return warning();">
+                <img src="__PUBLIC__/admin/images/icon_drop.gif" border="0" height="16" width="16"></a>
+          <!-- {/if} -->
+          </span>
+    </td>
+   </tr>
+   </foreach>
+  <empty name="news_info">
+  <tr>
+    <td class="no-records" colspan="10">
+        {$lang.no_article}
+    </td>
+  </tr>
+  </empty> 
+  <tr>
+    <td align="right" nowrap="true" colspan="8">
+        {$page}
+    </td>
+  </tr>
+</table>
+
+</div>
+
+<div>
+  <input type="hidden" name="act" value="batch" />
+    <select id="selAction" name="type">
+        <option value="">请选择...</option>
+        <option value="button_remove">批量删除</option>
+        <option value="button_hide">批量隐藏</option>
+        <option value="button_show">批量显示</option>
+        <option value="move_to">转移到分类</option>
+    </select>
+  <select name="target_cat" style="display:none">
+    <option value="0">{$lang.select_please}</option>
+    {$cat_select}
+  </select>
+  <input type="submit" value="确定" id="btnSubmit" name="btnSubmit" class="button" />
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+   //审核是否通过 
+   $(".actIsOpen").click(function(){
+        var url     = $("#root_url").html();
+        var nid     = $(this).attr("name");     
+        var is_open = $(this).attr("value"); 
+        $.ajax({
+            url:url+'/News/isOpen',
+            data:{news_id:nid, is_open:is_open},
+            type:'post',
+            complete:function(){
+                location.reload();
+            }
+        });
+   });
+   //批量操作选项不为空时释放提交按键
+   $("#btnSubmit").click(function(){
+        //获取所有勾选的checkbox的值
+        var news_id = getChkvalue();
+        var msg = '';
+        if(news_id == false)
+            msg += '请选择要操作的项 \n';
+        if($("#selAction option:selected").val() == false)
+            msg += '请选择要操作的类型';
+        if(msg)
+        {
+            alert(msg);
+            return false;
+        }       
+   });
+});
+function warning()
+{
+    if(!confirm("确定删除？"))
+        return false;
+}
+</script>
+
+
+
+
+
+
+
+
+
+

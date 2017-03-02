@@ -1,0 +1,18 @@
+<tr>
+
+    <td class="merchant_id">{$item.id}</td>
+    <td>{$item.o2o_name}</td>
+    <td>{$item.province}</td>
+    <td>{$item.city}</td>
+    <td>{$item.area}</td>
+    <td>{$item.town}</td>
+    <td class="text-left">{$item.address}</td>
+    <td>{$item.phone}</td>
+    <td>
+        <a href="javaScript:;" class="o2oCreate">开团</a>
+    </td>
+    <td>
+        <a href="/index.php?m=Omerchant&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Omerchant&a=del&id={$item.id}" id="del">删除</a>
+    </td>
+</tr>

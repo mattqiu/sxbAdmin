@@ -1,0 +1,37 @@
+<table>
+    <tbody>
+    <foreach name="product_price" item="item">
+        <tr>
+            <td>
+                <div style="">量:<input value="{$item.volume}" onblur="update_product_gg({$item.product_id},{$item.id},'volume',this.value)" size="10" type="text">
+                    编号:<input  value="{$item.product_no}" size="10" ppid="{$item.id}" pid="{$item.product_id}" type="text">
+                    编号(手机):<input value="{$item.mobile_product_no}" onblur="update_product_gg({$item.product_id},{$item.id},'mobile_product_no',this.value)" size="10" type="text">
+                    价格:￥<input value="{$item.price}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'price',this.value)" type="text">
+                    价格(手机):￥<input value="{$item.mobile_price}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'mobile_price',this.value)" type="text">
+                    单位:<input value="{$item.unit}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'unit',this.value)" type="text">
+                    排序:<input value="{$item.order_id}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'order_id',this.value)" type="text">
+                    原价:<input value="{$item.old_price}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'old_price',this.value)" type="text">
+                    库存:<input value="{$item.stock}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'stock',this.value)" type="text">
+                    重量:<input value="{$item.weight}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'weight',this.value)" type="text"> kg
+                    勋章:<select onblur="update_product_gg({$item.product_id},{$item.id},'mem_lv',this.value)">
+                        <option value="">请选择勋章...</option>
+                        <option label="普通会员" value="1" <if condition="$item.mem_lv eq 1">selected="selected"</if>>普通会员</option>
+                        <option label="鲜果达人" value="2" <if condition="$item.mem_lv eq 2">selected="selected"</if>>鲜果达人</option>
+                        <option label="水果王" value="3" <if condition="$item.mem_lv eq 3">selected="selected"</if>>水果王</option>
+                    </select>
+                    勋章价:￥<input value="{$item.mem_lv_price}" size="6" onblur="update_product_gg({$item.product_id},{$item.id},'mem_lv_price',this.value)" type="text">
+                    允许普通购买:<input checked="checked" value="1"
+                                  onchange="update_product_gg_checkbox({$item.product_id},{$item.id},'can_mem_buy',this.value)" type="checkbox">
+                    <!-- update_product_gg(4506,37,'can_mem_buy',this.value) -->
+                    开始时间:<input value="0000-00-00 00:00:00" size="22" onblur="update_product_gg({$item.product_id},{$item.id},'start_time',this.value)"
+                                type="text">
+                    结束时间:<input value="0000-00-00 00:00:00" size="22" onblur="update_product_gg({$item.product_id},{$item.id},'over_time',this.value)"
+                                type="text">
+                    <a href="javascript:del_product_gg({$item.product_id},{$item.id})">删除</a>
+                </div>
+            </td>
+        </tr>
+    </foreach>
+
+    </tbody>
+</table>

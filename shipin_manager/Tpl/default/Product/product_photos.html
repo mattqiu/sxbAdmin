@@ -1,0 +1,39 @@
+
+    <ul class="plist-ul">
+        <foreach name="list" item="item">
+            <li>
+                <img src="{$img_site}{$item.thum_photo}" alt="" width="100" height="100"> <br>
+                <input onblur="jquery_photo_list_update({$item.product_id},{$item.id},this.value)" value="{$item.order_id}" size="5" type="text">
+                <a href="javascript:jquery_photo_list_del({$item.product_id},{$item.id})">删除</a>
+            </li>
+        </foreach>
+    </ul>
+    <table width="100%" id="gallery-table" class="add_photo_tbl">
+        <tbody><tr>
+            <td>
+                &#12288; 图:<input type="file"  name="photo[]" /> 排序:<input type="text" size="4" value="0.00"  name="order_id[]" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <!-- <a href="javascript:;" onClick="addImg(this)">[+]</a>-->
+                &#12288; 图:<input type="file"  name="photo[]">
+                排序:<input type="text" size="4" value="0.00"  name="order_id[]">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <!-- <a href="javascript:;" onClick="addImg(this)">[+]</a>-->
+                &#12288; 图:<input type="file"  name="photo[]">
+                排序:<input type="text" size="4" value="0.00"  name="order_id[]">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <!-- <a href="javascript:;" onClick="addImg(this)">[+]</a>-->
+                &#12288; 图:<input type="file"  name="photo[]">
+                排序:<input type="text" size="4" value="0.00"  name="order_id[]">
+            </td>
+        </tr>
+        </tbody></table>
+    <input type="hidden" value="{$product_id}" name="product_id">

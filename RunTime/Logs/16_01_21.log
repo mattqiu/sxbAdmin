@@ -1,0 +1,133 @@
+[ 2016-01-21T18:09:25+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:10:45+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:11:18+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:11:54+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:11:56+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:12:07+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:12:10+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:16:45+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:18:14+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:18:46+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:19:51+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:20:07+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:22:19+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:22:36+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T18:22:38+08:00 ] 127.0.0.1 /Public/admin/v3/js/jquery.nanoscroller.min.map
+ERR: 非法操作:admin
+
+[ 2016-01-21T20:14:19+08:00 ] 127.0.0.1 /index.php?s=/GroupBuying/choujiangindex
+ERR: 非法操作:choujiangindex
+
+[ 2016-01-21T20:14:25+08:00 ] 127.0.0.1 /index.php?s=/GroupBuying/choujiangindex
+ERR: 非法操作:choujiangindex
+
+[ 2016-01-21T20:14:57+08:00 ] 127.0.0.1 /Sendwarehome/selectJson
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [2] Illegal string offset 'act_name' E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+NOTIC: [8] Undefined index: act_name E:\wamp\www\sxb\shipin_manager\Lib\Action\CommonAction.class.php 第 337 行.
+SQL: SHOW COLUMNS FROM `ttgy_supply` [ RunTime:0.002000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ttgy_supply` LIMIT 1   [ RunTime:0.000000s ]
+SQL: SELECT * FROM `ttgy_supply` ORDER BY id desc LIMIT 0,20   [ RunTime:0.000000s ]
+
+[ 2016-01-21T21:54:34+08:00 ] 127.0.0.1 /index.php?s=/GroupBuying/choujiangindex
+ERR: 非法操作:choujiangindex
+
+[ 2016-01-21T21:54:37+08:00 ] 127.0.0.1 /index.php?s=/GroupBuying/choujiangindex
+ERR: 非法操作:choujiangindex
+

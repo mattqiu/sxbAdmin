@@ -1,0 +1,67 @@
+<include file="Public:head"/>
+
+<div class="tab-div">
+  <div id="tabbar-div">
+    <p>
+      <span class="tab-front" id="general-tab" onclick="tarChange(this);">通用信息</span>
+    </p>
+   </div>
+   <div id="tabbody-div">
+        <form  action="{$done.url}" method="post" enctype="multipart/form-data" name="theForm" onsubmit="return validate();">
+                <table width="90%" id="general-table" >
+                       <tr>
+                            <td class="narrow-label">分类名称</td>
+                            <td>
+                                <input type="text" name="cat_name" size ="40" maxlength="60" value="{$info.cat_name}" />
+                                <span class="require-field">*</span>
+                            </td>
+                        </tr>
+                      <tr>
+                                <td class="narrow-label">所属分类</td>
+                                <td>
+                                  <select name="parent_id" onchange="catChanged()">
+                                    <option value="0">顶级分类</option>
+                                    <foreach name="news_cat" item="cat">
+                                    <option value="{$cat.cat_id}" <eq name="info.parent_id" value="$cat['cat_id']">selected="selected"</eq>>{$cat.cat_name}</option>
+                                    <foreach name="cat.cat_son" item="son">
+                                    <option value="{$son.cat_id}" <eq name="info.parent_id" value="$son['cat_id']">selected="selected"</eq>>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{$son.cat_name}
+                                    </option>
+                                        <if condition="!empty($son['sub_cat'])">
+                                            <foreach  name="son.sub_cat" item="sub_cat">
+                                                <option value="{$sub_cat.cat_id}" <eq name="info.parent_id" value="$sub_cat['cat_id']">selected="selected"</eq>>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$sub_cat.cat_name}
+                                                </option>
+                                            </foreach>
+                                        </if>
+                                    </foreach>
+                                    </foreach>
+                                  </select>
+                                 {$lang.require_field}</td>
+                      </tr>
+                      <tr>
+                            <td class="narrow-label">排序</td>
+                            <td>
+                                <input type="text" name="sort_order" value="{$info.sort_order}"/>
+                            </td>
+                    </tr>
+                          <tr>
+        <td class="narrow-label">关键词</td>
+        <td><input type="text" name="keywords" maxlength="60" value="{$info.keywords}" /></td>
+                        </tr>
+                    <tr>
+                        <td class="narrow-label">分类简介</td>
+                        <td><textarea name="cat_desc" id="" cols="30" rows="10">{$info.cat_desc}</textarea></td>
+                    </tr>
+      </table>
+      <div class="button-div">
+      <input type="hidden" name="step" value="2" />
+      <input type="hidden" name="act" value="{$act}" />
+      <input type="hidden" name="id" value="{$info.cat_id}" />
+      <input type="submit" value="确定" class="button"  />
+      <input type="reset" value="重置" class="button" />
+    </div>
+        </form>
+   </div> 
+</div>
+<include file="footer" />

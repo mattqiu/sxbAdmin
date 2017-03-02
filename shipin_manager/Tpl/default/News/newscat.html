@@ -1,0 +1,94 @@
+<include file="Public:head"/>
+<style>
+tr,td,th{border: 1px solid #f2f2f2;}
+#list-table th{text-align: center;}
+</style>
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+    <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+      <tr>
+        <th>文章分类名称</th>
+        <th>分类类型</th>
+        <th>描述</th>
+        <th>排序</th>
+        <th>操作</th>
+      </tr>
+      <foreach name="newscat" item="cat">
+      <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
+        <td align="left" class="first-cell nowrap" valign="top" >
+          <notempty name="cat.cat_son">
+          <img src="__PUBLIC__/admin/img/home/menu_plus.gif" id="icon_{$cat.level}_{$cat.cat_id}" width="9" height="9" border="0" style="margin-left:{$cat.level}em" />
+          <else/>
+          <img src="__PUBLIC__/admin/img/home/menu_minus.gif" width="9" height="9" border="0" style="margin-left:{$cat.level}em" />
+          </notempty>
+          <span><a href="/help/cate/c_id/{$cat.cat_id}" target="_blank">{$cat.cat_name}</a></span>
+        </td>
+        <td class="nowrap" valign="top" style="text-align: center;">
+          <eq name="cat.cat_type" value="1">普通分类</eq>
+        </td>
+        <td align="left" valign="top">
+          {$cat.cat_desc}
+        </td>
+        <td width="10%" align="right" class="nowrap" valign="top">
+            <span onclick="listTable.edit(this, 'edit_sort_order', {$cat.cat_id})">{$cat.sort_order}</span></td>
+        <td width="24%" align="right" class="nowrap" valign="top">
+            <a href="{:U('News/news')}?c_id={$cat.cat_id}">查看内容</a>
+            <a href="{:U('News/editNewsCat')}?id={$cat.cat_id}">编辑</a>|
+            <a href="{:U('News/delNewsCat')}?&id={$cat.cat_id}" title="删除分类">删除</a>
+        </td>
+      </tr>
+      <notempty name="cat.cat_son">
+      <foreach name="cat.cat_son" item="son">
+          <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
+            <td align="left" class="first-cell nowrap pl10" valign="top" >
+
+              <img src="__PUBLIC__/admin/img/home/menu_minus.gif" width="9" height="9" border="0" style="margin-left:2em" />
+              <span><a href="/help/cate/c_id/{$son.cat_id}" target="_blank">{$son.cat_name}</a></span>
+            </td>
+            <td class="nowrap" valign="top" style="text-align: center;">
+              <eq name="son.cat_type" value="1">普通分类</eq>
+            </td>
+            <td align="left" valign="top">
+              {$son.cat_desc}
+            </td>
+            <td width="10%" align="right" class="nowrap" valign="top">
+                <span onclick="listTable.edit(this, 'edit_sort_order', {$cat.cat_id})">{$son.sort_order}</span></td>
+            <td width="24%" align="right" class="nowrap" valign="top">
+                <a href="{:U('News/news')}?c_id={$son.cat_id}">查看内容</a>
+                <a href="{:U('News/editNewsCat')}?id={$son.cat_id}">编辑</a>|
+                <a href="{:U('News/delNewsCat')}?&id={$son.cat_id}" title="删除分类">删除</a>
+            </td>
+          </tr>
+          <if condition="!empty($son['sub_cat'])">
+            <foreach name="son.sub_cat" item="sub_cat">
+                <tr aligin="center">
+                    <td>
+                        <img src="__PUBLIC__/admin/img/home/menu_minus.gif" width="9" height="9" border="0" style="margin-left:4em" />
+                        <span><a href="/help/cate/c_id/{$sub_cat.cat_id}" target="_blank"> {$sub_cat.cat_name}</a></span>
+
+                    </td>
+                    <td class="nowrap" valign="top" style="text-align: center;">
+                        <eq name="sub_cat.cat_type" value="1">普通分类</eq>
+                    </td>
+                    <td align="left" valign="top">
+                        {$sub_cat.cat_desc}
+                    </td>
+                    <td width="10%" align="right" class="nowrap" valign="top">
+                        <span onclick="listTable.edit(this, 'edit_sort_order', {$cat.cat_id})">{$sub_cat.sort_order}</span></td>
+
+                    <td width="24%" align="right" class="nowrap" valign="top">
+                        <a href="{:U('News/news')}?c_id={$sub_cat.cat_id}">查看内容</a>
+                        <a href="{:U('News/editNewsCat')}?id={$sub_cat.cat_id}">编辑</a>|
+                        <a href="{:U('News/delNewsCat')}?&id={$sub_cat.cat_id}" title="删除分类">删除</a>
+                    </td>
+                </tr>
+
+            </foreach>
+          </if>
+      </foreach>                     
+      </notempty>
+      
+    </foreach>
+    </table>
+</div>
+</form>

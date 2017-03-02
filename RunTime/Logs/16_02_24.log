@@ -1,0 +1,21 @@
+[ 2016-02-24T10:44:28+08:00 ] 127.0.0.1 /index.php?s=/DataReport/group
+ERR: Redis server went away
+
+[ 2016-02-24T10:44:50+08:00 ] 127.0.0.1 /index.php?s=/DataReport/group
+ERR: 系统不支持:redis
+
+[ 2016-02-24T10:45:07+08:00 ] 127.0.0.1 /index.php?s=/DataReport/group
+ERR: Redis server went away
+
+[ 2016-02-24T16:10:41+08:00 ] 127.0.0.1 /index.php?s=/DataReport/group
+ERR: Redis server went away
+
+[ 2016-02-24T16:23:31+08:00 ] 127.0.0.1 /index.php?s=/DataReport/group
+ERR: Redis server went away
+
+[ 2016-02-24T16:45:15+08:00 ] 127.0.0.1 /DataReport/group
+ERR: Redis server went away
+
+[ 2016-02-24T16:50:57+08:00 ] 127.0.0.1 /DataReport/group
+ERR: Redis server went away
+

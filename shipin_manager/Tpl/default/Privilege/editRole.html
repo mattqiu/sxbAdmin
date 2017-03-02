@@ -1,0 +1,91 @@
+<include file="Public:head"/>
+<div class="tab-div">
+    <div id="tabbar-div">
+        <p>
+            <span class="tab-front" id="general-tab" onclick="tarChange(this);">通用信息</span>
+        </p>
+    </div>
+    <div id="tabbody-div">
+        <form  action="{$done.url}" method="post" enctype="multipart/form-data" name="theForm" >
+            <table class="table"  id="general-table">
+                <tbody>
+                <tr>
+                    <td>角色名称：</td>
+                    <td><input type="text" size="25" name="name" value="{$info.name}"/></td>
+                </tr>                
+
+                <tr>
+                    <td>状态：</td>
+                    <td><input name="status" type="radio" value="1" id="isUsed"
+                        <eq name="info.status" value="1">checked</eq> />
+                        <label for="isUsed" style="padding-right: 30px;">启用</label>
+                        <input type="radio"  name="status" value="0" id="notUsed"
+                        <eq name="info.status" value="0">checked</eq> />
+                        <label for="notUsed">禁用</label></td>
+                </tr>
+                <tr>
+                    <td>备注：</td>
+                    <td><textarea name="remark" id="remark" cols="50" rows="5">
+                        {$info.remark}
+                    </textarea></td>
+                </tr>
+                <tr>
+                    <td>权限分配：</td>
+                    <td>
+                        <div>
+                            <ul id="checkedPrivilege">
+                                <li><input type="checkbox" name="checkAll" id="checkAll"/><label for="checkAll">全选</label></li>
+                                <foreach name="nodeTree" item="node">
+                                    <li value="{$node.id}" data-level="2" >
+                                        <input type="checkbox" name="node[]" value="{$node.id}_2"
+                                               <if condition="in_array($node['id'], $accessList)">checked</if>
+                                               id="node_{$node.id}"/>
+                                        <label for="node_{$subNode.id}">{$node.title}</label>
+                                    </li>
+                                    <if condition="!empty($node['subList'])">
+                                        <foreach name="node.subList" item="subNode">
+                                            <li value="{$node.id}" data-level="3"
+                                            >&nbsp;&nbsp;
+                                                <input type="checkbox" name="node[]" value="{$subNode.id}_3"
+                                                <if condition="in_array($subNode['id'], $accessList)">checked</if>
+                                                       id="node_{$subNode.id}"  class="subNode_{$node.id}" />
+                                                <label for="node_{$subNode.id}">{$subNode.title}</label></li>
+                                            <if condition="!empty($subNode['subList'])">
+                                                <foreach name="subNode.subList" item="subNode2">
+                                                    <li value="{$subNode2.id}" data-level="4"
+                                                    >&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <input type="checkbox" name="node[]" value="{$subNode2.id}_4"
+                                                        <if condition="in_array($subNode2['id'], $accessList)">checked</if>
+                                                               id="node_{$subNode2.id}" class="subNode_{$subNode.id}" />
+                                                        <label for="node_{$subNode2.id}">{$subNode2.title}</label>
+                                                        </li>
+                                                </foreach>
+                                            </if>
+                                        </foreach>
+                                    </if>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <div style="text-align: center;"> <input type="hidden" name="id" value="{$Think.get.id}" />
+                <input type="submit" value="确定" class="button"  />
+                <input type="reset" value="重置" class="button" /></div>
+        </form>
+    </div>
+</div>
+<script>
+    $('#checkAll').on('change', function(){
+        var _this = $(this);
+        if(_this.checked()){
+            $('#checkedPrivilege input[type="checkbox"]').attr('checked', 'checked');
+        } else {
+            $('#checkedPrivilege input[type="checkbox"]').attr('checked', '');
+        }
+    });
+</script>
+<include file="Public:footer"/>

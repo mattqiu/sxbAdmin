@@ -1,0 +1,55 @@
+<tr>
+    <td colspan="9">
+        <table width="100%">
+            <tr>
+                <td colspan="7">
+                    <input type="checkbox" name="check_order[]" value="{$order.order_name}" class="checkOrder"/>
+                    订单号:     {$order.order_name}
+                    <neq name="order.groupbuy_order_name" value="">
+                    <span>团单号：{$order.groupbuy_order_name}</span>
+                </neq>
+                    <span>{$order.pay_name}  {$order.pay_status_name}</span> {$order.shipping_name} {$order.delivery_id}</td>
+                <td colspan="2"><a href="{:U('Order/detail')}&order_name={$order.order_name}" target="_blank">查看详情</a> <a href="">备注</a></td>
+            </tr>
+            <foreach name="order.order_product" item="product" key="productKey">
+                <tr>
+                    <td></td>
+                    <td><img src="{$product.thum_min_photo}" alt="{$product.product_name}" width="45"></td>
+                    <td>{$product.price} x {$product.qty}</td>
+                    <if condition="$productKey eq 0">
+                        <td rowspan="{$order.order_product_num}">
+                            <if condition="($order.has_export eq 1) ">
+                                <span class="f_gre">已导出</span>
+                                <else />
+                                <span class="f_red">未导出</span>
+                            </if>
+                        </td>
+                        <td rowspan="{$order.order_product_num}">  </td>
+                        <td rowspan="{$order.order_product_num}">{$order.username}</td>
+                        <td rowspan="{$order.order_product_num}">{$order.time}</td>
+                        <td rowspan="{$order.order_product_num}">
+                            {$order.order_status_name}
+
+                            <div  class="orderStatus">订单操作
+                                <ul class="actionStatus" style="display: none;">
+                                    <foreach name="order.action_button" item="act">
+                                        <li><a href="javascript:void(0);" data-id="{$act.act}">{$act.label}</a></li>
+                                    </foreach>
+                                </ul>
+                            </div>
+                        </td>
+                        <td>{$order.money}</td>
+                    </if>
+                </tr>
+            </foreach>
+
+            <tr>
+                <td colspan="9">收件人： {$order.name}  {$order.mobile}  送货时间：{$order.shtime}<br/>收货地址：{$order.address}</td>
+            </tr>
+
+        </table>
+
+
+
+    </td>
+</tr>

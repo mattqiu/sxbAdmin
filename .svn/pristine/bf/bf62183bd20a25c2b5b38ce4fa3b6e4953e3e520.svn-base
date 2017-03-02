@@ -1,0 +1,187 @@
+<?php
+// +----------------------------------------------------------------------
+// | 时品
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://m.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id$ 
+
+
+
+class JdDeliveryIdModel extends CommonModel{
+
+    public  $jdConf = array();
+    public $oauthUrl = 'https://oauth.jd.com/oauth/authorize';
+    public $routerJsonUrl = 'http://gw.api.jd.com/routerjson';
+
+    public function _initialize(){
+        $this->jdConf = C('JD_APP');
+    }
+
+    public function getDeliveryId(){
+        $url = 'http://gw.api.jd.com/routerjson';
+        $params =  array();
+        $params['v'] = '2.0';
+        $params['method'] = 'jingdong.etms.waybillcode.get';
+        $params['app_key'] = $this->jdConf['APP_KEY'];
+        $params['access_token'] = F('access_token');
+        $params['preNum'] = '15';
+        $params['customerCode'] = $this->jdConf['CUSTOMER_CODE'];
+        $params['timestamp'] = date('Y-m-d H:i:s', time());
+        $params['format'] = 'json';
+        ksort($params);
+        $params['sign'] = $this->getJdSign($params);
+        $result = getCurlRequest($url, $params);
+
+        if(isset($result['jingdong_etms_waybillcode_get_responce']['resultInfo'])){
+            $resultInfo = $result['jingdong_etms_waybillcode_get_responce']['resultInfo'];
+            if(isset($resultInfo['deliveryIdList']) && count($resultInfo['deliveryIdList']) > 0){
+                $deliveryData = array();
+                $deliveryIdM = M('jd_delivery_id');
+                $nowTime = time();
+                foreach($resultInfo['deliveryIdList'] as $item){
+                    $deliveryData[] = array('delivery_id' => $item, 'add_time' => $nowTime, 'is_used' => 0);
+                }
+
+                $deliveryIdM->addAll($deliveryData);
+            }
+        }
+    }
+
+    /**
+     *  提交运单信息到青龙系统
+     *
+     */
+    public function sendWayBill($order){
+        $params =  array();
+        $params['v'] = '2.0';
+        $params['method'] = 'jingdong.etms.waybill.send';
+        $params['app_key'] = $this->jdConf['APP_KEY'];
+        $params['access_token'] = F('access_token');
+        $params['customerCode'] = $this->jdConf['CUSTOMER_CODE'];
+        $params['timestamp'] = date('Y-m-d H:i:s', time());
+        $params['format'] = 'json';
+        $params['deliveryId'] = $order['delivery_id'];
+        $params['salePlat'] = '0030001';
+        $params['selfPrintWayBill'] = '0';
+        $params['orderId'] = $order['order_name'];     //（最多支持20个字符）
+        $params['senderName'] = '董涛';     //寄件人姓名（最大支持25个汉字）
+        $params['senderAddress'] = '上海市浦东区康花路316号';     //寄件人地址（最大支持128个汉字）
+        $params['senderTel'] = '';     //寄件人电话
+        $params['senderMobile'] = '15800750916';     //寄件人手机(寄件人电话、手机至少有一个不为空)
+        $params['receiveName'] = $order['name'];     //收件人名称（最大支持25个汉字）
+        $params['receiveAddress'] = $order['address'];     //收件人地址（最大支持128个汉字）
+        $params['receiveTel'] = $order['telephone'];
+        $params['receiveMobile'] = $order['mobile'];
+        $params['packageCount'] = '1';     //包裹数(大于0，小于1000)
+        $params['weight'] = '0';     //重量(单位：kg，保留小数点后两位) 可默认为0
+        $params['vloumn'] = '0';     //体积(单位：cm3，保留小数点后两位) 可默认为0
+        $params['remark'] = '进m.shuxiaobai.com有好货。叔小白';
+        ksort($params);
+        $params['sign'] = $this->getJdSign($params);
+        $result = getCurlRequest($this->routerJsonUrl, $params);
+        Log::write('提交运单信息到青龙系统：'.json_encode($result), Log::INFO);
+
+        $result['status'] = isset($result['jingdong_etms_waybill_send_responce']['resultInfo']['code'])
+            &&  intval($result['jingdong_etms_waybill_send_responce']['resultInfo']['code']) == 100 ? true : false;
+
+        $result['code'] = 0;
+        if(isset($result['jingdong_etms_waybill_send_responce']['resultInfo']['code'])){
+            $result['code'] = $result['jingdong_etms_waybill_send_responce']['resultInfo']['code'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 查询京东快递物流跟踪信息
+     * @param $deliveryId
+     * @return mixed|null
+     */
+    public function getDeliveryTrace($deliveryId){
+        $params =  array();
+        $params['v'] = '2.0';
+        $params['method'] = 'jingdong.etms.trace.get';
+        $params['app_key'] = $this->jdConf['APP_KEY'];
+        $params['access_token'] = F('access_token');
+        $params['timestamp'] = date('Y-m-d H:i:s', time());
+        $params['format'] = 'json';
+        $params['waybillCode'] = $deliveryId;
+
+        ksort($params);
+        $params['sign'] = $this->getJdSign($params);
+        $result = getCurlRequest($this->routerJsonUrl, $params);
+
+        Log::write('查询京东快递物流跟踪信息 ：'.json_encode($result), Log::INFO);
+        return $result;
+    }
+
+    /**
+     * 获取京东快递运单打印
+     * @param $deliveryId
+     * @return mixed|null
+     */
+    public function getOrderPrint($deliveryId){
+        $params =  array();
+        $params['v'] = '2.0';
+        $params['method'] = 'jingdong.etms.order.print';
+        $params['app_key'] = $this->jdConf['APP_KEY'];
+        $params['access_token'] = F('access_token');
+        $params['customerCode'] = $this->jdConf['CUSTOMER_CODE'];
+        $params['timestamp'] = date('Y-m-d H:i:s', time());
+        $params['format'] = 'json';
+        $params['deliveryId'] = $deliveryId;
+        ksort($params);
+        $params['sign'] = $this->getJdSign($params);
+        $result = getCurlRequest($this->routerJsonUrl, $params);
+        Log::write('获取京东快递运单打印 ：'.json_encode($result), Log::INFO);
+
+        return $result;
+    }
+
+    /**
+     *  修改京东快递包裹数
+     * @param $deliveryId
+     * @param $num
+     * @return mixed|null
+     */
+    public function updatePackageNum($deliveryId, $num){
+        $params =  array();
+        $params['v'] = '2.0';
+        $params['method'] = 'jingdong.etms.package.update';
+        $params['app_key'] = $this->jdConf['APP_KEY'];
+        $params['access_token'] = F('access_token');
+        $params['customerCode'] = $this->jdConf['CUSTOMER_CODE'];
+        $params['timestamp'] = date('Y-m-d H:i:s', time());
+        $params['format'] = 'json';
+        $params['deliveryId'] = $deliveryId;
+        $params['packageCount'] = $num;
+        ksort($params);
+        $params['sign'] = $this->getJdSign($params);
+        $result = getCurlRequest($this->routerJsonUrl, $params);
+        Log::write('修改京东快递包裹数  ：'.json_encode($result), Log::INFO);
+
+        return $result;
+
+
+    }
+
+
+
+    private  function getJdSign($params){
+        $sign = '';
+        foreach($params as $k=>$item){
+            $sign .= $k . $item;
+        }
+
+        $sign = $this->jdConf['APP_SECRET'] . $sign . $this->jdConf['APP_SECRET'];
+        $sign = strtoupper(md5($sign));
+        return  $sign;
+    }
+
+
+} 

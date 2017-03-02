@@ -1,0 +1,15 @@
+[ 2016-03-22T10:30:33+08:00 ] 127.0.0.1 /index.php?s=/public/toLogin
+ERR: 系统不支持:mysql
+
+[ 2016-03-22T10:43:29+08:00 ] 127.0.0.1 /sxb/index.php?s=/public/toLogin
+ERR: Base 'shshipin' inconnue
+
+[ 2016-03-22T10:43:42+08:00 ] 127.0.0.1 /sxb/index.php?s=/public/toLogin
+ERR: Base 'shshipin' inconnue
+
+[ 2016-03-22T12:02:02+08:00 ] 127.0.0.1 /sxb/index.php?s=/GroupBuying/setWxMiddlePage
+ERR: 非法操作:setwxmiddlepage
+
+[ 2016-03-22T12:02:12+08:00 ] 127.0.0.1 /sxb/index.php?s=/GroupBuying/returnMoney_LuckDraw
+ERR: 非法操作:returnmoney_luckdraw
+

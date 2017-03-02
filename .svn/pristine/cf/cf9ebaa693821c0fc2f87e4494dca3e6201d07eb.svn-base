@@ -1,0 +1,510 @@
+<?php
+// +----------------------------------------------------------------------
+// | 上海时品信息科技有限公司
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://www.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id: OrdersModel.class.php 869 2014-10-06 13:22:43Z yihua.ying $ 
+
+
+
+class OrderModel extends RelationModel {
+    protected $_link=array(
+        'User'=>array(
+            'mapping_type'  =>BELONGS_TO,
+            //当前类的外键，默认为主键
+            'mapping_key' => 'id',
+            'foreign_key'   =>'uid',
+            'class_name' => 'User',
+            'as_fields' => 'username,email',
+        ) ,
+        //order_address 是返回内容中的数组下标
+        'order_address' => array(
+            'mapping_type' => HAS_ONE,
+            'mapping_key' => 'id',
+            'foreign_key' => 'order_id',
+            'class_name' => 'OrderAddress',
+            'as_fields' => 'position,address,name,email,telephone,mobile,province,city,area',
+        ),
+        'order_product' => array(
+            'mapping_type' => HAS_MANY,
+            'mapping_key' => 'id',
+            'foreign_key' => 'order_id',
+            'class_name' => 'OrderProduct',
+        ),
+    );
+
+    public  function getOrdersList($status = 0, $whereArr = array()) {
+        $result = array('order_list' => array(), 'page' => '');
+        $payStatusArr = C('PAY_STATUS');
+        $orderStatusArr = C('ORDER_STATUS');
+        $manageOrderStatusArr = C('MANAGE_ORDER_STATUS');
+        $productM = M('product');
+        import('ORG.Util.Page');
+
+        switch ($status) {
+            //1=>'待审核',
+            case 1:
+                $whereArr['operation_id'] = array('eq', 0);
+                break;
+
+            //2=>'待付款',
+            case 2:
+                $whereArr['pay_status'] = array('eq', 0);
+                $whereArr['pay_parent_id'] = array('neq', 4);
+                break;
+
+            //3=>'已付款',
+            case 3:
+                $whereArr['pay_status'] = array('eq', 1);
+                $whereArr['pay_parent_id'] = array('eq', 4, 'or');
+                break;
+
+            //4=>'待发货',
+            case 4:
+                $whereArr['operation_id'] = array('eq', 10);
+                break;
+
+            //5=>'已发货',
+            case 5:
+                $whereArr['operation_id'] = array('eq', 2);
+                break;
+
+            //6=>'已完成',
+            case 6:
+                $whereArr['operation_id'] = array('eq', 3);
+                break;
+
+            //7=>'已取消',
+            case 7:
+                $whereArr['operation_id']= array('eq', 5);
+                break;
+
+            //8=>'退货中',
+            case 8:
+                $whereArr['operation_id']= array('eq', 7);
+                break;
+
+            //9=>'换货中',
+            case 9:
+                $whereArr['operation_id']= array('eq', 8);
+                break;
+            //10=>'已退货'
+        }
+
+        $joinArr = array();
+        if(isset($whereArr[C('DB_PREFIX') . 'order_product.product_name'])){
+            // $joinArr[] = C('DB_PREFIX') . 'order_product ON ' . C('DB_PREFIX') . 'order_product.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_product.send_channel'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_product ON ' . C('DB_PREFIX') . 'order_product.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_address.name']) || isset($whereArr['_string'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_address ON ' . C('DB_PREFIX') . 'order_address.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_payment.out_bill_id'])) {
+            $joinArr[] = C('DB_PREFIX') . 'order_payment ON ' . C('DB_PREFIX') . 'order_payment.order_name = ' . C('DB_PREFIX') . 'order.order_name';
+        }
+
+        //$where = whereArrToStr($whereArr, $whereOrArr);
+        $count = $this->join($joinArr)->where($whereArr)->count();
+        $page = new Page($count, 100);
+        $strPage = $page->show();
+        $orderInfo = $this->field(C('DB_PREFIX') . 'order.*')->join($joinArr)->where($whereArr)->relation(true)
+            ->limit($page->firstRow . ',' . $page->listRows)->group( C('DB_PREFIX') . 'order.order_name')->order( C('DB_PREFIX') . 'order.id DESC')->select();
+
+        import('@.ORG.Orders');
+        $ordersObj = new Orders();
+        $orderList = array();
+
+
+       // echo '========订单搜索sql===' . $this->getLastSql() . '<br/>';
+
+        foreach ($orderInfo as $key => $item) {
+            $item['pay_status_name'] = $payStatusArr[$item['pay_status']];
+            switch($item['operation_id']){
+                case 0:
+                    $item['order_status_name'] = $manageOrderStatusArr[1];
+                    break;
+                case 10:
+                    $item['order_status_name'] = $manageOrderStatusArr[4];
+                    break;
+                case 2:
+                    $item['order_status_name'] = $manageOrderStatusArr[5];
+                    break;
+                case 3:
+                    $item['order_status_name'] = $manageOrderStatusArr[6];
+                    break;
+                case 5:
+                    $item['order_status_name'] = $manageOrderStatusArr[7];
+                    break;
+                case 7:
+                    $item['order_status_name'] = $manageOrderStatusArr[8];
+                    break;
+                case 8:
+                    $item['order_status_name'] = $manageOrderStatusArr[9];
+                    break;
+
+                default:
+                    if($item['pay_status'] == 0 && $item['pay_parent_id'] !=4){
+                        $item['order_status_name'] = $manageOrderStatusArr[2];
+                    }
+
+                    if($item['pay_status'] == 1 ){
+                        $item['order_status_name'] = $manageOrderStatusArr[3];
+                    }
+                    break;
+            }
+
+//            $item['order_status_name'] = $manageOrderStatusArr[$status];
+
+            //每个订单可以进行的操作
+            $actionButton = $ordersObj->getActionButton($item);
+            $item['action_button'] = $actionButton;
+            $item['order_product_num'] = count($item['order_product']);
+            $imgSite = C('IMG_SITE_URL');
+            $sendChannelConf = C('SEND_CHANNEL');
+            if(!empty($item['order_product'])){
+                foreach($item['order_product']  as $pKey => $product){
+                    $productInfo = $productM->where('id = ' . $product['product_id'])->find();
+                    $item['order_product'][$pKey]['photo'] = $imgSite . $productInfo['photo'];
+                    $item['order_product'][$pKey]['thum_photo'] = $imgSite . $productInfo['thum_photo'];
+                    $item['order_product'][$pKey]['middle_photo'] = $imgSite . $productInfo['middle_photo'];
+                    $item['order_product'][$pKey]['bphoto'] = $imgSite . $productInfo['bphoto'];
+                    $item['order_product'][$pKey]['thum_min_photo'] = $imgSite . $productInfo['thum_min_photo'];
+
+                    $item['order_product'][$pKey]['send_channel'] = $sendChannelConf[intval($product['send_channel'])];
+                }
+            }
+
+            $orderList[] = $item;
+        }
+
+        $result['order_list'] = $orderList;
+        $result['page'] = $strPage;
+        $result['page_data'] = $page->data();
+        return $result;
+    }
+
+    public  function getExportOrdersList($status = 0, $whereArr = array()) {
+        $result = array('order_list' => array(), 'page' => '');
+        $payStatusArr = C('PAY_STATUS');
+        $orderStatusArr = C('ORDER_STATUS');
+        $manageOrderStatusArr = C('MANAGE_ORDER_STATUS');
+        $productM = M('product');
+        import('ORG.Util.Page');
+
+        switch ($status) {
+            //1=>'待审核',
+            case 1:
+                $whereArr['operation_id'] = array('eq', 0);
+                break;
+
+            //2=>'待付款',
+            case 2:
+                $whereArr['pay_status'] = array('eq', 0);
+                $whereArr['pay_parent_id'] = array('neq', 4);
+                break;
+
+            //3=>'已付款',
+            case 3:
+                $whereArr['pay_status'] = array('eq', 1);
+                $whereArr['pay_parent_id'] = array('eq', 4, 'or');
+                break;
+
+            //4=>'待发货',
+            case 4:
+                $whereArr['operation_id'] = array('eq', 10);
+                break;
+
+            //5=>'已发货',
+            case 5:
+                $whereArr['operation_id'] = array('eq', 2);
+                break;
+
+            //6=>'已完成',
+            case 6:
+                $whereArr['operation_id'] = array('eq', 3);
+                break;
+
+            //7=>'已取消',
+            case 7:
+                $whereArr['operation_id']= array('eq', 5);
+                break;
+
+            //8=>'退货中',
+            case 8:
+                $whereArr['operation_id']= array('eq', 7);
+                break;
+
+            //9=>'换货中',
+            case 9:
+                $whereArr['operation_id']= array('eq', 8);
+                break;
+            //10=>'已退货'
+        }
+
+        $joinArr = array();
+        if(isset($whereArr[C('DB_PREFIX') . 'order_product.product_name'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_product ON ' . C('DB_PREFIX') . 'order_product.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_product.send_channel'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_product ON ' . C('DB_PREFIX') . 'order_product.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_address.name']) || isset($whereArr['_string'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_address ON ' . C('DB_PREFIX') . 'order_address.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_payment.out_bill_id'])) {
+            $joinArr[] = C('DB_PREFIX') . 'order_payment ON ' . C('DB_PREFIX') . 'order_payment.order_name = ' . C('DB_PREFIX') . 'order.order_name';
+        }
+
+        //$where = whereArrToStr($whereArr, $whereOrArr);
+        $count = $this->join($joinArr)->where($whereArr)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $orderInfo = $this->field(C('DB_PREFIX') . 'order.*')->join($joinArr)->where($whereArr)->relation(true)
+            ->limit(0, 3000)->group( C('DB_PREFIX') . 'order.order_name')->order( C('DB_PREFIX') . 'order.id DESC')->select();
+
+        import('@.ORG.Orders');
+        $ordersObj = new Orders();
+        $orderList = array();
+
+
+
+        foreach ($orderInfo as $key => $item) {
+            $item['pay_status_name'] = $payStatusArr[$item['pay_status']];
+            switch($item['operation_id']){
+                case 0:
+                    $item['order_status_name'] = $manageOrderStatusArr[1];
+                    break;
+                case 10:
+                    $item['order_status_name'] = $manageOrderStatusArr[4];
+                    break;
+                case 2:
+                    $item['order_status_name'] = $manageOrderStatusArr[5];
+                    break;
+                case 3:
+                    $item['order_status_name'] = $manageOrderStatusArr[6];
+                    break;
+                case 5:
+                    $item['order_status_name'] = $manageOrderStatusArr[7];
+                    break;
+                case 7:
+                    $item['order_status_name'] = $manageOrderStatusArr[8];
+                    break;
+                case 8:
+                    $item['order_status_name'] = $manageOrderStatusArr[9];
+                    break;
+
+                default:
+                    if($item['pay_status'] == 0 && $item['pay_parent_id'] !=4){
+                        $item['order_status_name'] = $manageOrderStatusArr[2];
+                    }
+
+                    if($item['pay_status'] == 1 ){
+                        $item['order_status_name'] = $manageOrderStatusArr[3];
+                    }
+                    break;
+            }
+
+            //            $item['order_status_name'] = $manageOrderStatusArr[$status];
+
+            //每个订单可以进行的操作
+            $actionButton = $ordersObj->getActionButton($item);
+            $item['action_button'] = $actionButton;
+            $item['order_product_num'] = count($item['order_product']);
+            $imgSite = C('IMG_SITE_URL');
+            $sendChannelConf = C('SEND_CHANNEL');
+            if(!empty($item['order_product'])){
+                foreach($item['order_product']  as $pKey => $product){
+                    $productInfo = $productM->where('id = ' . $product['product_id'])->find();
+                    $item['order_product'][$pKey]['photo'] = $imgSite . $productInfo['photo'];
+                    $item['order_product'][$pKey]['thum_photo'] = $imgSite . $productInfo['thum_photo'];
+                    $item['order_product'][$pKey]['middle_photo'] = $imgSite . $productInfo['middle_photo'];
+                    $item['order_product'][$pKey]['bphoto'] = $imgSite . $productInfo['bphoto'];
+                    $item['order_product'][$pKey]['thum_min_photo'] = $imgSite . $productInfo['thum_min_photo'];
+
+                    $item['order_product'][$pKey]['send_channel'] = $sendChannelConf[intval($product['send_channel'])];
+                }
+            }
+
+            $orderList[] = $item;
+        }
+
+        $result['order_list'] = $orderList;
+        $result['page'] = $strPage;
+        $result['page_data'] = $page->data();
+        return $result;
+    }
+
+    /**
+     *  取出订单数据到京东临时表
+     * @param int $status
+     * @param array $whereArr
+     * @return array
+     */
+    public  function getFetchOrdersList($status = 0, $whereArr = array()) {
+        $result = array('order_list' => array(), 'page' => '');
+        $payStatusArr = C('PAY_STATUS');
+        $orderStatusArr = C('ORDER_STATUS');
+        $manageOrderStatusArr = C('MANAGE_ORDER_STATUS');
+        $productM = M('product');
+        import('ORG.Util.Page');
+
+        switch ($status) {
+            //1=>'待审核',
+            case 1:
+                $whereArr['operation_id'] = array('eq', 0);
+                break;
+
+            //2=>'待付款',
+            case 2:
+                $whereArr['pay_status'] = array('eq', 0);
+                $whereArr['pay_parent_id'] = array('neq', 4);
+                break;
+
+            //3=>'已付款',
+            case 3:
+                $whereArr['pay_status'] = array('eq', 1);
+                $whereArr['pay_parent_id'] = array('eq', 4, 'or');
+                break;
+
+            //4=>'待发货',
+            case 4:
+                $whereArr['operation_id'] = array('eq', 10);
+                break;
+
+            //5=>'已发货',
+            case 5:
+                $whereArr['operation_id'] = array('eq', 2);
+                break;
+
+            //6=>'已完成',
+            case 6:
+                $whereArr['operation_id'] = array('eq', 3);
+                break;
+
+            //7=>'已取消',
+            case 7:
+                $whereArr['operation_id']= array('eq', 5);
+                break;
+
+            //8=>'退货中',
+            case 8:
+                $whereArr['operation_id']= array('eq', 7);
+                break;
+
+            //9=>'换货中',
+            case 9:
+                $whereArr['operation_id']= array('eq', 8);
+                break;
+            //10=>'已退货'
+        }
+
+        $joinArr = array();
+        if(isset($whereArr[C('DB_PREFIX') . 'order_product.product_name'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_product ON ' . C('DB_PREFIX') . 'order_product.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_product.send_channel'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_product ON ' . C('DB_PREFIX') . 'order_product.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_address.name']) || isset($whereArr['_string'])){
+            $joinArr[] = C('DB_PREFIX') . 'order_address ON ' . C('DB_PREFIX') . 'order_address.order_id = ' . C('DB_PREFIX') . 'order.id';
+        }
+
+        if(isset($whereArr[C('DB_PREFIX') . 'order_payment.out_bill_id'])) {
+            $joinArr[] = C('DB_PREFIX') . 'order_payment ON ' . C('DB_PREFIX') . 'order_payment.order_name = ' . C('DB_PREFIX') . 'order.order_name';
+        }
+
+        //$where = whereArrToStr($whereArr, $whereOrArr);
+        $count = $this->join($joinArr)->where($whereArr)->count();
+        $page = new Page($count, 2000);
+        $strPage = $page->show();
+        $orderInfo = $this->field(C('DB_PREFIX') . 'order.*')->join($joinArr)->where($whereArr)->relation(true)->limit($page->firstRow, $page->listRows)->group(C('DB_PREFIX') . 'order.order_name')->order( C('DB_PREFIX') . 'order.id DESC')->select();
+
+        import('@.ORG.Orders');
+        $ordersObj = new Orders();
+        $orderList = array();
+
+
+
+        foreach ($orderInfo as $key => $item) {
+            $item['pay_status_name'] = $payStatusArr[$item['pay_status']];
+            switch($item['operation_id']){
+                case 0:
+                    $item['order_status_name'] = $manageOrderStatusArr[1];
+                    break;
+                case 10:
+                    $item['order_status_name'] = $manageOrderStatusArr[4];
+                    break;
+                case 2:
+                    $item['order_status_name'] = $manageOrderStatusArr[5];
+                    break;
+                case 3:
+                    $item['order_status_name'] = $manageOrderStatusArr[6];
+                    break;
+                case 5:
+                    $item['order_status_name'] = $manageOrderStatusArr[7];
+                    break;
+                case 7:
+                    $item['order_status_name'] = $manageOrderStatusArr[8];
+                    break;
+                case 8:
+                    $item['order_status_name'] = $manageOrderStatusArr[9];
+                    break;
+
+                default:
+                    if($item['pay_status'] == 0 && $item['pay_parent_id'] !=4){
+                        $item['order_status_name'] = $manageOrderStatusArr[2];
+                    }
+
+                    if($item['pay_status'] == 1 ){
+                        $item['order_status_name'] = $manageOrderStatusArr[3];
+                    }
+                    break;
+            }
+
+            //            $item['order_status_name'] = $manageOrderStatusArr[$status];
+
+
+            $item['order_product_num'] = count($item['order_product']);
+            $imgSite = C('IMG_SITE_URL');
+            $sendChannelConf = C('SEND_CHANNEL');
+            if(!empty($item['order_product'])){
+                foreach($item['order_product']  as $pKey => $product){
+                    $productInfo = $productM->where('id = ' . $product['product_id'])->find();
+                    $item['order_product'][$pKey]['photo'] = $imgSite . $productInfo['photo'];
+                    $item['order_product'][$pKey]['thum_photo'] = $imgSite . $productInfo['thum_photo'];
+                    $item['order_product'][$pKey]['middle_photo'] = $imgSite . $productInfo['middle_photo'];
+                    $item['order_product'][$pKey]['bphoto'] = $imgSite . $productInfo['bphoto'];
+                    $item['order_product'][$pKey]['thum_min_photo'] = $imgSite . $productInfo['thum_min_photo'];
+
+                    $item['order_product'][$pKey]['send_channel'] = $sendChannelConf[intval($product['send_channel'])];
+                }
+            }
+
+            $orderList[] = $item;
+        }
+
+        $result['order_list'] = $orderList;
+        $result['page'] = $strPage;
+        $result['page_data'] = $page->data();
+        return $result;
+    }
+
+    private function getManageOrderStatusId(){
+
+    }
+}

@@ -1,0 +1,245 @@
+<?php
+
+/**
+ * 评论管理
+ * Created by PhpStorm.
+ * User: chrisying
+ * Date: 15/10/15
+ * Time: 下午3:22
+ */
+class UserAction extends CommonAction{
+
+    /**
+     *  用户管理
+     */
+    public function index(){
+        $where = 'id>10000';//小于10000的为机器人
+
+        $userM = M('user');
+        $count = $userM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $userM->where($where)->limit($page->firstRow . ',' . $page->listRows)->order('id DESC')->select();
+        foreach($list as $key=>$val){
+            $list[$key]['user_head'] = unserialize($val['user_head'])['small'];
+        }
+
+//        var_dump($list);
+        $this->assign('list', $list);
+        $this->assign('result',$arr);
+        $this->assign('page', $strPage);
+        $this->display('index');
+    }
+
+    /**
+     *  机器人管理
+     */
+
+    public function user_robot()
+    {
+        $where = 'id<10000';//小于10000的为机器人
+
+        $userM = M('user');
+        $count = $userM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $userM->where($where)->limit($page->firstRow . ',' . $page->listRows)->order('id DESC')->select();
+
+        $this->assign('list', $list);
+
+        $this->assign('page', $strPage);
+        $this->display('index');
+    }
+
+    public function adduser()
+    {
+        $this->display("useradd");
+    }
+
+    public function edituser()
+    {
+        $id = I('id', 0);
+        $userM = M('user');
+        $item = $userM->where('id =' . $id)->find();
+
+        $this->assign('item', $item);
+        $this->display("useredit");
+    }
+
+    public function saveedituser(){
+        $id = I('id', 0);
+        $username=I('username',0);
+        $password = I('password','0');
+        $mobile = I('mobile',0);
+        $user_head = I('user_head',0);
+        $sex = I('sex',0);
+
+        $userM = M('user');
+
+        $avatarM = M('collect_avatar');
+        $where='id='.$user_head;
+        $headlist = $avatarM->where($where)->select();
+
+        $data = array();
+        $data['id']=$id;
+        $data['username']=$username;
+        $data['password']=$password;
+        $data['mobile']=$mobile;
+        $data['user_head']=$headlist[0]['avatar_img'];
+        $data['sex']=$sex;
+
+        $res = $userM->where('id = ' . $id)->save($data);
+        //echo $areaM->getLastSql();
+        if($res > 0)
+            $this->success('用户信息修改成功!',U("User/index"));
+        else
+            $this->error("用户信息修改失败!");
+
+    }
+
+    public function saveadduser(){
+        $id = I('id', 0);
+        $username=I('username',0);
+        $password = I('password','0');
+        $mobile = I('mobile',0);
+        $user_head = I('user_head',0);
+        $sex = I('sex',0);
+
+        $userM = M('user');
+
+        $avatarM = M('collect_avatar');
+        $where='id='.$user_head;
+        $headlist = $avatarM->where($where)->select();
+
+
+        $data = array();
+        $data['id']=$id;
+        $data['username']=$username;
+        $data['password']=$password;
+        $data['mobile']=$mobile;
+        $data['user_head']=$headlist[0]['avatar_img'];
+        $data['sex']=$sex;
+
+        $insert_id =$userM->add($data);
+        if($insert_id != 0)
+            $this->success('用户添加成功!',U("User/index"));
+        else
+            $this->error("用户添加失败!");
+
+    }
+
+    public function deluser(){
+        $id = I('id', 0);
+        if($id > 0){
+            $userM = M('user');
+            $res = $userM->where('id = ' . $id)->delete();
+
+            if($res > 0)
+                $this->success('用户删除成功!',U("User/index"));
+            else
+                $this->error("用户删除失败!");
+        }
+
+    }
+
+    /**
+     * 微信表中账号去重
+     */
+    public function removeRepeatUserWx(){
+        $userWxM = M('user_wx');
+        $moreOpenidArr = array();
+        $sql = 'select count(*) as cnum, ttgy_user_wx.id, ttgy_user_wx.uid,ttgy_user_wx.nickname,ttgy_user_wx.openid, ttgy_user_wx.sxb_openid  from ttgy_user_wx where 1
+  GROUP BY openid ORDER BY cnum desc  limit 0, 1300';
+        $moreList = $userWxM->query($sql);
+        if(!empty($moreList)){
+            foreach($moreList as $item){
+                if($item['cnum'] > 1){
+                    $moreOpenidArr[] = '"' . $item['openid'] . '"';
+                }
+            }
+        }
+
+        $uidArr = array();
+        $uidList = $userWxM->where('openid IN(' . implode(',', $moreOpenidArr) . ')')->limit(0, 600)->select();
+        echo '<br/>' . $userWxM->getLastSql() . '<br/>';
+
+        if(!empty($uidList)){
+            foreach($uidList as $uidItem){
+                $uidArr[] = $uidItem['uid'];
+            }
+        }
+
+        $hasOrderUidArr = array();
+        $noOrderUidArr = array();
+        if(!empty($uidArr)){
+            $orderM = M('order');
+            foreach($uidArr as $uid){
+                $order = $orderM->where('uid = ' . $uid)->find();
+                if(!empty($order)){
+                    $hasOrderUidArr[] = $uid;
+                } else {
+                    $noOrderUidArr[] = $uid;
+                }
+            }
+        }
+
+        echo '有订单的用户id=====' . implode(',', $hasOrderUidArr) . '<br/>' . count($hasOrderUidArr) . '<br/><br/>';
+        echo '无订单的用户id=====' . implode(',', $noOrderUidArr) . '<br/>' . count($noOrderUidArr) . '<br/><br/>';
+        Log::write('有订单的用户id=====' . implode(',', $hasOrderUidArr) . '<br/>' . count($hasOrderUidArr) . '<br/><br/>');
+        Log::write('无订单的用户id=====' . implode(',', $noOrderUidArr) . '<br/>' . count($noOrderUidArr) . '<br/><br/>');
+
+        echo '无订单用户id找订单确认<br/>';
+        $noOrderListCheck = $orderM->where('uid IN (' . implode(',', $noOrderUidArr) . ')')->select();
+        var_dump($noOrderListCheck);
+        if(empty($noOrderListCheck)){
+            $noOrderUserList = $userWxM->where('uid IN (' . implode(',', $noOrderUidArr) . ')')->select();
+            if(!empty($noOrderUserList)){
+                foreach($noOrderUserList as $item){
+                    $data = array();
+                    $data['openid'] = $item['openid'] . '========' . rand(10000, 99999);
+                    $id = $userWxM->where('uid = ' . $item['uid'])->save($data);
+                    Log::write('更新无订单的user_wx openid=====' . $id);
+                }
+            }
+        }
+
+        echo '有订单用户id找订单确认<br/>';
+        $hasOrderListCheck = $orderM->where('uid IN (' . implode(',', $hasOrderUidArr) . ')')->group('uid')->select();
+        echo count($hasOrderListCheck);
+
+
+
+    }
+
+    public function addCollectUser(){
+        $excelList = $this->importExecl('/home/wwwroot/com.shuxiaobai/manage/upload/username.xlsx');
+        $data = $excelList['data'];
+        if(!empty($data)){
+            $userM = M('user');
+            $collectAvatarM = M('collect_avatar');
+            foreach($data as $name){
+                if(empty($name)){
+                    continue;
+                }
+                $where=array();
+                $where['id'] = array('lt', 28000);
+                $largeUser = $userM->where($where)->order('id desc')->find();
+                $headItem = $collectAvatarM->where(array('id'=>$largeUser['id'] + 1))->find();
+                        $data = array();
+                        $data['id']=$largeUser['id'] + 1;
+                        $data['username']=$name;
+                        $data['password']=md5(1236540 . rand(100, 999));
+                        $data['mobile']='';
+                        $data['user_head']=$headItem['avatar_img'];
+                        $data['sex']=1;
+
+                        $insert_id =$userM->add($data);
+                echo '新uid===' . $insert_id . '<br/>';
+            }
+        } else {
+            echo 'error';
+            var_dump($data);
+        }
+    }
+
+}

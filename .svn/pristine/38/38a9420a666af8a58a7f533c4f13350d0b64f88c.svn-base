@@ -1,0 +1,55 @@
+<include file="Public:header"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/comm.css" />
+<div id="listDiv" class="list-div">
+  <form enctype="multipart/form-data" action="{:U('import')}" method="post">
+  <table cellspacing="1" cellpadding="3">
+  <tbody><tr>
+    <th colspan="2">恢复备份</th>
+  </tr>
+  <tr>
+    <td >本地sql文件</td>
+    <td ><input type="file" size="50" name="sqlfile"></td>
+  </tr>
+  <tr>
+    <td >&nbsp;</td>
+    <td ><input type="hidden" value="upload_sql" name="act"><input type="submit" class="button" value="上传并执行sql文件"></td>
+  </tr>
+  </tbody></table>
+  </form>
+</div>
+
+<div id="listDiv" class="list-div">
+<form onsubmit="return confirm('你确定要删除选中数据吗？');" method="POST" name="file_list" action="{:U('remove')}">
+<table id="list-table">
+  <tbody>
+  <tr>
+    <th style="text-align: left;" colspan="7">服务器上备份文件</th>
+  </tr>
+  <tr>
+    <th width="48" align="right"><input type="checkbox" onclick="selAll(this);" class="1" name="chkall">移除</th>
+    <th>文件名</th>
+    <th>版本</th>
+    <th>时间</th>
+    <th>大小</th>
+    <th>卷</th>
+    <th>操作</th>
+  </tr>
+  <foreach name="file" item="f">
+  <tr>
+    <td><input type="checkbox" name="bakup_name[]" value="{$f.file}" /></td>  
+    <td><a href="{:U('show', 'file='.$f['file'])}">{$f.file}</a></td>
+    <td></td>
+    <td>{$f.time|date="Y-m-d H:i:s",###}</td>
+    <td>{$f.size|byte_format=###}</td>
+    <td>{$f.vol}</td>
+    <td><a href="{:U('import', 'file='.$f['file'])}">[导入]</a></td>
+  </tr>
+  </foreach>
+    <tr>
+    <td align="center" colspan="7"><input type="submit" class="button" value="删除">
+  </td></tr>
+</tbody>
+
+</table>
+
+</form></div>

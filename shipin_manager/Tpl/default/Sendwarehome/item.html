@@ -1,0 +1,12 @@
+<tr>
+    <td style="text-align:left;text-indent:3px;"><input type="checkbox" />&nbsp;{$item.id}</td>
+    <td >{$item.name}</td>
+    <td >{$item.en_name}</td>
+    <td >{$item.supply_id}</td>
+    <td >{$item.supply_name}</td>
+    <td >{$item.source_city}</td>
+    <td>
+        <a href="/index.php?m=Sendwarehome&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Sendwarehome&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

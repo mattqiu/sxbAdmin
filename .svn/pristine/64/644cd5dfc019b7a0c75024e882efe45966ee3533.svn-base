@@ -1,0 +1,12 @@
+<tr>
+
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.order_id}</td>
+    <td > {$item.uid}</td>
+    <td >{$item.content}</td>
+    <td >{$item.star}</td>
+    <td>
+        <a href="/index.php?m=Comment&a=edittml&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Comment&a=deltml&id={$item.id}">删除</a>
+    </td>
+</tr>

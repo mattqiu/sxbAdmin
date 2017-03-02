@@ -1,0 +1,345 @@
+<?php
+// +----------------------------------------------------------------------
+// | 时品
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://m.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id$ 
+
+
+
+class JdAction extends Action{
+    public  $jdConf = array();
+    public $jdUrl = 'https://oauth.jd.com/oauth/authorize?';
+    public $routerJsonUrl = 'http://gw.api.jd.com/routerjson';
+    public $refreshTokenUrl = '';
+
+    public function _initialize(){
+        header("Content-type: text/html; charset=utf-8");
+        $passKey = I('pass_key', md5('abc12376446'));
+        $this->jdConf = C('JD_APP');
+        if($this->jdConf['PASS_KEY'] != $passKey){
+            return;
+        }
+    }
+
+    public function getCode(){
+//        3.1 获取code
+//https://oauth.jd.com/oauth/authorize?response_type=code&client_id=CE47EFEEEC014076C95527A394AE05CE&
+//redirect_uri=http%3a%2f%2f121.43.225.46%3a81%2findex.php%3fm%3dJd%26a%3dcallback&state=021K23664
+//
+//授权后回调：
+//http://121.43.225.46:81/index.php?m=Jd&a=callback&state=021K23664&code=D3cNxR
+
+//        $url = $this->jdUrl;
+
+    }
+
+    public function getSign(){
+
+    }
+
+    public function callback(){
+        $code = I('code');
+        $signUrl = 'https://oauth.jd.com/oauth/token?grant_type=authorization_code&client_id=CE47EFEEEC014076C95527A394AE05CE&redirect_uri=http%3a%2f%2fv1manage.shipinmmm.com%2findex.php%3fm%3dJd%26a%3dcallback&code=' . $code . '&state=021K23664&client_secret=2f712524b7d84676b476e1d2e70b2707';
+
+        echo $signUrl;
+        redirect($signUrl);
+    }
+
+    /**
+     *  预获取京东快递单号
+     * 每天1点每隔6分钟取一次运单号
+     * 每次取100条  最多每天可以取5000条
+     */
+    public function getDeliveryId(){
+//        • 签名方式为 md5(appsecret + key+ value .... key + value+appsecret)然后转大写字母，其中key、value对是除签名所有请求参数按key做的升序排列，value无需编码。
+
+        $accessToken = F('access_token');
+        $refreshToken = F('refresh_token');
+
+        $url = 'http://gw.api.jd.com/routerjson';
+        $params =  array();
+        $params['v'] = '2.0';
+        $params['method'] = 'jingdong.etms.waybillcode.get';
+        $params['app_key'] = $this->jdConf['APP_KEY'];
+        $params['access_token'] = F('access_token');
+        $params['preNum'] = '100';
+        $params['customerCode'] = $this->jdConf['CUSTOMER_CODE'];
+        $params['timestamp'] = date('Y-m-d H:i:s', time());
+        $params['format'] = 'json';
+        ksort($params);
+        $params['sign'] = $this->getJdSign($params);
+        $result = getCurlRequest($url, $params);
+
+        var_dump($result);
+
+        if(isset($result['jingdong_etms_waybillcode_get_responce']['resultInfo'])){
+            $resultInfo = $result['jingdong_etms_waybillcode_get_responce']['resultInfo'];
+            if(isset($resultInfo['deliveryIdList']) && count($resultInfo['deliveryIdList']) > 0){
+                $deliveryData = array();
+                $deliveryIdM = M('jd_delivery_id');
+                $nowTime = time();
+                foreach($resultInfo['deliveryIdList'] as $item){
+                    $deliveryData[] = array('delivery_id' => $item, 'add_time' => $nowTime, 'is_used' => 0);
+                }
+
+                $deliveryIdM->addAll($deliveryData);
+            }
+        }
+
+        var_dump($deliveryData);
+    }
+
+    /**
+     *  提交运单信息到青龙系统
+     *  在后台运行每10分钟运行一次，如果有新订单则发送请求到青龙系统
+     */
+    public function sendWayBill(){
+        $sendOrderNames = I('order_names', '');
+        if(!empty($sendOrderNames)){
+            $where = 'order_name IN(' . $sendOrderNames . ')';
+        } else {
+            $where = 'order_type = 1 AND order_status = 1 AND operation_id = 10 AND pay_status = 1 AND delivery_id = "" AND is_send_jd = 0';
+        }
+        //// 订单类型(1:普通订单,2:试吃订单,3:o2o配送订单,4:o2o自提订单，5:预售订单)
+//        $where = 'order_type = 1 && order_status = 1 && operation_id =1 && (pay_status = 1 OR pay_parent_id = 4) && delivery_id = ""';
+        //目前没有货到付款的订单,  如果用户付款了直接发货不用审核
+//        $where = 'order_type = 1 AND order_status = 1 AND operation_id IN(0,1) AND pay_status = 1 AND delivery_id = "" AND is_send_jd = 0';
+        $where = 'order_type = 1 AND order_status = 1 AND operation_id = 10 AND pay_status = 1 AND delivery_id = "" AND is_send_jd = 0';
+        $orderM = D('Order');
+        $groupbuingOrderM = M('groupbuying_order');
+        $orderList = $orderM->relation(true)->where($where)->select();
+
+        //如果是团购订单，排除未成团的
+//        foreach($orderList as $key => $item){
+//            if(!empty($item['groupbuy_order_name'])){
+//                $groupbuyOrder = $groupbuingOrderM->where('groupbuy_order_name = "' . $item['groupbuy_order_name'] . '"')
+//                    ->find();
+//                if(isset($groupbuyOrder['state']) && intval($groupbuyOrder['state']) != 2){
+//                    unset($orderList[$key]);
+//                }
+//            }
+//        }
+
+        echo '<br/>普通订单＝＝＝＝＝＝' . $orderM->getLastSql();
+        var_dump($orderList);
+//        deBugLog(array('msg' => '订单列表', 'order_list' => $orderList), 'sendWayBill_orderList');
+
+        $orderNum = count($orderList);
+        if($orderNum > 0){
+            $orderM->startTrans();
+            $deliveryIdM = D('JdDeliveryId');
+            $expirtTime = time() - (3600 * 24 * 86);
+            $deliveryIdList = $deliveryIdM->where('is_used = 0 AND add_time > ' . $expirtTime)->limit(0, $orderNum)->select();
+            while(count($deliveryIdList) < $orderNum){
+                $this->getDeliveryId();
+
+                $deliveryIdList = $deliveryIdM->where('is_used = 0 AND add_time > ' . $expirtTime)->limit(0, $orderNum)->select();
+            }
+
+            foreach($orderList as  $key => $order){
+                $order['delivery_id'] = $deliveryIdList[$key]['delivery_id'];
+                $result = $deliveryIdM->sendWayBill($order);
+                if($result['status']){
+                    //订单状态更新成已发货
+                    //是否团购订单
+                    if(!empty($order['groupbuy_order_name'])){
+//                        $groupbuingOrderM->where('groupbuy_order_name = "' . $order['groupbuy_order_name'] . '"')
+//                            ->save(array('state' => 5));
+                    }
+
+                    echo '======<br/>===更新状态=========';
+
+
+                    $orderM->where('order_name = ' . $order['order_name'])
+                        ->save(array('shipping_name' => '京东快递', 'shipping_id' => 'jd_delivery', 'delivery_id' => $order['delivery_id'], 'is_send_jd' => 1));
+                    $orderUpdateSql = $orderM->getLastSql();
+                    $deliveryIdM->where('id = ' . $deliveryIdList[$key]['id'])->save(array('is_used' => 1));
+
+                    deBugLog(array('msg' => '运单号' . $order['delivery_id']
+                        . '， 订单：' . $order['order_name'], 'orderUpdateSql' => $orderUpdateSql), 'sendWayBill_succ');
+                } else {
+                    deBugLog(array('msg' => '运单号' . $order['delivery_id']
+                        . '出错， 订单：' . $order['order_name'], 'result'=>$result), 'sendWayBill_error');
+                    switch($result['code']){
+                        case 118:
+                            //运单号不存在或者已使用
+                            $deliveryIdM->where('delivery_id = "' . $order['delivery_id'] . '"')->save(array('is_used' => 1));
+                            $lastSql = $deliveryIdM->getLastSql();
+                            deBugLog(array('msg' => '运单号' . $order['delivery_id']
+                                . '已使用或不存在， 订单：' . $order['order_name']) . '===lastsql=' . $lastSql, 'sendWayBill_error');
+                            break;
+                    }
+                }
+
+            }
+
+            $orderM->commit();
+        }
+        deBugLog($orderList, 'sendWayBill');
+    }
+
+    protected function _afterSendJd($result, $delivery_id){
+        switch($result['code']){
+            case 118:
+                //运单号不存在或者已使用
+                $deliveryIdM = D('JdDeliveryId');
+                $deliveryIdM->where('delivery_id = "' . $delivery_id . '"')->save(array('is_used' => 1));
+                $lastSql = $deliveryIdM->getLastSql();
+                deBugLog(array('msg' => '运单号' . $delivery_id
+                        . '已使用或不存在， 订单：' . '===lastsql=' . $lastSql), 'sendWayBill_error');
+                break;
+        }
+    }
+
+    /**
+     *  手工下单到京东
+     */
+    public function sendWayBillOne(){
+//        name/胡雪/phone/15504162919/addr/辽宁省沈阳市大东区辽宁省沈阳市大东区联合路望花南街21号沈阳大学北院
+
+        $name = I('name', '');
+        $phone = I('phone', '');
+        $tel = I('tel', '');
+        $addr = I('addr', '');
+        $deliveryIdM = D('JdDeliveryId');
+        $order = array();
+        $expirtTime = time() - (3600 * 24 * 86);
+        $deliveryItem = $deliveryIdM->where('is_used = 0 AND add_time > ' . $expirtTime)->limit(0, 1)->find();
+
+        while(empty($deliveryItem)){
+            $this->getDeliveryId();
+            $deliveryItem = $deliveryIdM->where('is_used = 0 AND add_time > ' . $expirtTime)->limit(0, 1)->select();
+        }
+        $deliveryIdM->startTrans();
+        $order['delivery_id'] = $deliveryItem['delivery_id'];
+        $order['order_name'] = date('Ymd', time()) . time() . rand(10, 99);     //（最多支持20个字符）
+        $order['name'] = $name;     //收件人名称（最大支持25个汉字）
+        $order['address'] = $addr;     //收件人地址（最大支持128个汉字）
+        $order['telephone'] = $tel;
+        $order['mobile'] = $phone;
+
+        if(!empty($order['name']) && !empty($order['address']) && (!empty($order['mobile']) || !empty($order['telephone']))){
+            $result = $deliveryIdM->sendWayBill($order);
+            $this->_afterSendJd($result, $deliveryItem['delivery_id']);
+            var_dump($result);
+        }
+        $deliveryIdM->commit();
+//        echo $deliveryIdM->getLastSql();
+    }
+
+    /**
+     *  查询物流信息
+     */
+    public function getDeliveryTrace(){
+        $deliveryId = I('delivery_id', 'VB06687715392');
+        $deliveryIdM = D('JdDeliveryId');
+        $result = $deliveryIdM->getDeliveryTrace($deliveryId);
+        var_dump($result);
+    }
+
+    /**
+     *  获取京东快递单打印数据
+     */
+    public function getOrderPrint(){
+        $deliveryId = I('delivery_id', 'VB06687715392');
+        $deliveryIdM = D('JdDeliveryId');
+        $result = $deliveryIdM->getOrderPrint($deliveryId);
+        $data = base64_decode($result['jingdong_etms_order_print_responce']['response']['pdfArr']);
+        var_dump($result);
+        echo '<br/><br/>==================<br/><br/>';
+        var_dump($data);
+        $fileName='2015-12-14-print.pdf';
+        $fp = fopen($fileName, 'a');
+        file_put_contents($fileName,$data);
+    }
+
+    /**
+     *  修改京东快递包裹数
+     */
+    public function updatePackageNum(){
+        $deliveryId = I('delivery_id', 'VB06687715392');
+        $deliveryIdM = D('JdDeliveryId');
+        $result = $deliveryIdM->updatePackageNum($deliveryId, 3);
+        var_dump($result);
+    }
+
+    /**
+     * 刷新token来延长token有效期
+     * 每1个小时运行一次
+     */
+    public function refreshToken(){
+
+        $refreshToken = F('refresh_token');
+      //  $refreshToken = 'ba758e2a-7773-4629-92b2-e87692df1da9';
+        $refreshUrl = 'https://oauth.jd.com/oauth/token?client_id=CE47EFEEEC014076C95527A394AE05CE&client_secret=2f712524b7d84676b476e1d2e70b2707&grant_type=refresh_token&refresh_token=' . $refreshToken;
+
+        $resultArr = array();
+        $result = getCurlRequest($refreshUrl);
+
+        if(!is_array($result)){
+            $result = iconv('GB2312', 'UTF-8', str_replace(' ', '', $result));
+            $resultArr = json_decode($result, true);
+        } else {
+            $resultArr = $result;
+        }
+
+        F('access_token', $resultArr['access_token']);
+        F('refresh_token', $resultArr['refresh_token']);
+
+        $resultArr['refresh_url'] = $refreshUrl;
+        var_dump($resultArr);
+        deBugLog($resultArr, 'refreshJdToken');
+    }
+
+    /**
+     *  初始化token
+     */
+    public function initToken(){
+        $accessToken = F('access_token');
+        $refreshToken = F('refresh_token');
+        F('access_token', '80e55a22-0bf2-4279-bec2-eb6d43be6492');
+        F('refresh_token', '5364b606-d946-4cbf-9024-07912f3675fd');
+//
+//        {
+//
+//            "access_token": "80e55a22-0bf2-4279-bec2-eb6d43be6492",
+//    "code": 0,
+//    "expires_in": 27034605,
+//    "refresh_token": "5364b606-d946-4cbf-9024-07912f3675fd",
+//    "time": "1444983536502",
+//    "token_type": "bearer",
+//    "uid": "2601024203",
+//    "user_nick": "时品买买买"
+//
+//}
+
+
+        $accessToken = F('access_token');
+        $refreshToken = F('refresh_token');
+    }
+
+    public function showToken(){
+        $accessToken = F('access_token');
+        $refreshToken = F('refresh_token');
+
+        echo '$accessToken===' . $accessToken . '<br/>';
+        echo '$refreshToken===' . $refreshToken . '<br/>';
+    }
+
+    private  function getJdSign($params){
+        $sign = '';
+        foreach($params as $k=>$item){
+            $sign .= $k . $item;
+        }
+
+        $sign = $this->jdConf['APP_SECRET'] . $sign . $this->jdConf['APP_SECRET'];
+        $sign = strtoupper(md5($sign));
+        return  $sign;
+    }
+} 

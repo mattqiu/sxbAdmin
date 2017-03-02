@@ -1,0 +1,99 @@
+<include file="Public:header"/>
+<div class="main-div">
+<form onsubmit="return validate();" action="{$act}" enctype="multipart/form-data" method="post" name="theForm">
+<table width="100%">
+  <tbody><tr>
+    <td class="label">用户名</td>
+    <td>
+      <input type="text" size="34" value="{$admin.admin_name}" maxlength="20" name="user_name"><span class="require-field">*</span></td>
+  </tr>
+  <tr>
+    <td class="label">Email地址</td>
+    <td>
+      <input type="text" size="34" value="{$admin.email}" name="email"><span class="require-field">*</span></td>
+  </tr>
+  <eq name="Think.ACTION_NAME" value="edit">
+  <tr>
+    <td class="label">
+    </a>旧密码</td>
+    <td>
+      <input type="password" size="34" name="old_password" id="old_password"><span class="require-field">*</span>      <br><span id="passwordNotic" style="display:block" class="notice-span">如果要修改密码,请先填写旧密码,如留空,密码保持不变</span></td>
+  </tr>
+  </eq>
+   <tr>
+    <td class="label">密  码</td>
+    <td>
+      <input type="password" size="34" maxlength="32" name="password"><span class="require-field">*</span></td>
+  </tr>
+  <tr>
+    <td class="label">确认密码</td>
+    <td>
+      <input type="password" size="34" maxlength="32" name="pwd_confirm"><span class="require-field">*</span></td>
+  </tr>
+  <tr>
+      <td class="label">账号状态</td>
+      <td>
+          <input type="radio" name="status" value="1" id="statusOn"
+                  <eq name="admin.status" value="1">checked</eq>
+                  /><label for="statusOn">启用</label>
+          <input type="radio" name="status" value="0" id="statusOff"
+          <eq name="admin.status" value="0">checked</eq>
+                  /><label for="statusOff">禁用</label>
+      </td>
+  </tr>
+           <tr>
+   <td class="label">角色选择</td>
+    <td>
+        <ul>
+      <foreach name="roleList" item="role">
+          <li><input type="checkbox" name="role[]" value="{$role.id}" id="role_{$role.id}"
+                     <php>if(in_array($role['id'], $userRoleIds)){ echo 'checked';}</php>
+                     id="role_{$role.id}"/><label for="role_{$role.id}">{$role.name}</label></li>
+      </foreach>
+        </ul>
+    </td>
+  </tr>
+      <tr>
+    <td align="center" colspan="2">
+      <input type="submit" class="button" value=" 确定 ">&nbsp;&nbsp;&nbsp;
+      <input type="reset" class="button" value=" 重置 ">
+      <input type="hidden" value="2" name="step">
+      <input type="hidden" value="" name="id"></td>
+  </tr>
+</tbody></table>
+</form>
+</div>
+<literal>
+<script type="text/javascript">
+function validate() {
+    var frm = new  Validator('theForm');    
+    frm.required('user_name', '用户名不能为空');
+    frm.isEmail('email', 'email不合法');
+    frm.required('password', '密码不能为空');
+    frm.required('pwd_confirm', '确认密码不能为空');
+    frm.eqaul('password', 'pwd_confirm', '两次密码不一样');
+    if($('#old_password')) {
+        if($('#old_password').val() == false ) {
+            frm.addErrorMsg('旧密码不能为空'); 
+        }            
+    }
+    return frm.passed();
+}
+</script>
+</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

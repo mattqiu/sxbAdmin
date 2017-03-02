@@ -1,0 +1,86 @@
+<include file="Public:head"/>
+<div class="tab-div">
+    <div id="tabbar-div">
+        <p>
+            <span class="tab-front" id="general-tab" onclick="tarChange(this);">通用信息</span>
+        </p>
+    </div>
+    <div id="tabbody-div">
+        <form  action="{$done.url}" method="post" enctype="multipart/form-data" name="theForm" >
+            <table class="table"  id="general-table">
+                <tbody>
+                <tr>
+                    <td>节点名称：</td>
+                    <td><input type="text" size="25" name="name" value="{$info.name}"/></td>
+                </tr>
+                <tr>
+                    <td>节点标题：</td>
+                    <td><input type="text" size="25" name="title" value="{$info.title}"/></td>
+                </tr>
+                <tr>
+                    <td>父级节点：</td>
+                    <td>
+                        {$info.pid}<eq name="info.pid" value="16">selected</eq>
+
+                        <select name="pid" id="pid">
+                            <option value="0" data-level="1">顶级节点</option>
+                            <foreach name="nodeTree" item="node">
+                                <option value="{$node.id}" data-level="2"
+                                        <eq name="node.id" value="info.pid">selected</eq>
+                                        >{$node.title}</option>
+                                <if condition="!empty($node['subList'])">
+                                <foreach name="node.subList" item="subNode">
+                                    <option value="{$node.id}" data-level="3"
+                                    <eq name="subNode.id" value="info.pid">selected</eq>
+                                            >&nbsp;&nbsp;{$subNode.title}</option>
+                                    <if condition="!empty($subNode['subList'])">
+                                        <foreach name="subNode.subList" item="subNode2">
+                                            <option value="{$subNode2.id}" data-level="4"
+                                            <eq name="subNode2.id" value="info.pid">selected</eq>
+                                                    >&nbsp;&nbsp;&nbsp;&nbsp;{$subNode2.title}</option>
+                                        </foreach>
+                                    </if>
+                                </foreach>
+                                </if>
+                            </foreach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>状态：</td>
+                    <td><input name="status" type="radio" value="1" id="isUsed"
+                        <eq name="info.status" value="1">checked</eq> />
+                        <label for="isUsed" style="padding-right: 30px;">启用</label>
+                        <input type="radio"  name="status" value="0" id="notUsed"
+                        <eq name="info.status" value="0">checked</eq> />
+                        <label for="notUsed">禁用</label></td>
+                </tr>
+                <tr>
+                    <td>备注：</td>
+                    <td><textarea name="remark" id="remark" cols="50" rows="5">
+                        {$info.remark}
+                    </textarea></td>
+                </tr>
+                <tr>
+                    <td>排序：</td>
+                    <td><input type="text" name="sort" id="sort" value="{$info.sort}"/></td></tr>
+                </tbody>
+            </table>
+
+            <input type="hidden" name="level" value="{$info.level}" id="level"/>
+
+            <div style="text-align: center;"> <input type="hidden" name="id" value="{$Think.get.id}" />
+                <input type="submit" value="确定" class="button"  />
+                <input type="reset" value="重置" class="button" /></div>
+        </form>
+    </div>
+</div>
+<include file="Public:footer"/>
+<script>
+    $('#pid').on('change', function(){
+        var opt = $(this).find('option:selected');
+        var level = opt.attr('data-level');
+        $('#level').val(level);
+
+    });
+</script>

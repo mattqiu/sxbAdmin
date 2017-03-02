@@ -1,0 +1,54 @@
+<include file="Public:header"/>
+<div id="listDiv" class="list-div">
+<table cellspacing="1" cellpadding="3" id="list-table">
+  <tbody>
+  <tr>
+    <th>角色名</th>
+    <th>角色描述</th>
+    <th>操作</th>
+  </tr>
+    <tr>
+    <td class="first-cell" >网站客服</td>
+    <td class="first-cell" >负责会员管理与客户咨询、订单跟进与处理</td>
+    <td align="center" >
+      <a title="编辑" href="role.php?act=edit&amp;id=6"><img width="16" height="16" border="0" src="images/icon_edit.gif"></a>&nbsp;&nbsp;
+      <a title="移除" onclick="listTable.remove(6, '您确认要删除这条记录吗?')" href="javascript:;"><img width="16" height="16" border="0" src="images/icon_drop.gif"></a></td>
+  </tr>
+    <tr>
+    <td class="first-cell" >网站运营</td>
+    <td class="first-cell" >负责网站的整体经营业绩。商品管理、订单管理、促销管理、会员管理、报表统计</td>
+    <td align="center" >
+      <a title="编辑" href="role.php?act=edit&amp;id=5"><img width="16" height="16" border="0" src="images/icon_edit.gif"></a>&nbsp;&nbsp;
+      <a title="移除" onclick="listTable.remove(5, '您确认要删除这条记录吗?')" href="javascript:;"><img width="16" height="16" border="0" src="images/icon_drop.gif"></a></td>
+  </tr>
+    <tr>
+    <td class="first-cell" >网页设计师</td>
+    <td class="first-cell" >网站交付后，负责运营中的页面美化与修改。模板管理、专题页的管理、广告位的管理、FLASH幻灯片的管理。</td>
+    <td align="center" >
+      <a title="编辑" href="role.php?act=edit&amp;id=4"><img width="16" height="16" border="0" src="images/icon_edit.gif"></a>&nbsp;&nbsp;
+      <a title="移除" onclick="listTable.remove(4, '您确认要删除这条记录吗?')" href="javascript:;"><img width="16" height="16" border="0" src="images/icon_drop.gif"></a></td>
+  </tr>
+    <tr>
+    <td class="first-cell" >网站编辑</td>
+    <td class="first-cell" >负责网站的产品与内容编辑。商品管理与文章管理的编辑、发布与删除的权限，不允许对栏目的操作。</td>
+    <td align="center" >
+      <a title="编辑" href="role.php?act=edit&amp;id=3"><img width="16" height="16" border="0" src="images/icon_edit.gif"></a>&nbsp;&nbsp;
+      <a title="移除" onclick="listTable.remove(3, '您确认要删除这条记录吗?')" href="javascript:;"><img width="16" height="16" border="0" src="images/icon_drop.gif"></a></td>
+  </tr>
+    <tr>
+    <td class="first-cell" >网站管理员</td>
+    <td class="first-cell" >对开发完成交付后的网站拥有全部的管理权限，但不允许进行直接的数据库操作，允许进行备份和恢复。</td>
+    <td align="center" >
+      <a title="编辑" href="role.php?act=edit&amp;id=2"><img width="16" height="16" border="0" src="images/icon_edit.gif"></a>&nbsp;&nbsp;
+      <a title="移除" onclick="listTable.remove(2, '您确认要删除这条记录吗?')" href="javascript:;"><img width="16" height="16" border="0" src="images/icon_drop.gif"></a></td>
+  </tr>
+    <tr>
+    <td class="first-cell" >网站开发员</td>
+    <td class="first-cell" >负责网站的开发与设计，可以对网站进行功能与模块的增、删、改。以符合预期的功能与业务需求。</td>
+    <td align="center" >
+      <a title="编辑" href="role.php?act=edit&amp;id=1"><img width="16" height="16" border="0" src="images/icon_edit.gif"></a>&nbsp;&nbsp;
+      <a title="移除" onclick="listTable.remove(1, '您确认要删除这条记录吗?')" href="javascript:;"><img width="16" height="16" border="0" src="images/icon_drop.gif"></a></td>
+  </tr>
+  </tbody></table>
+
+</div>

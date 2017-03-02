@@ -1,0 +1,19 @@
+<div id="turn-page">
+    总计  <span id="totalRecords">{$filter.count}</span>
+    个记录分为 <span id="totalPages">{$filter.allpage}</span>
+    页当前第 <span id="pageCurrent">{$filter.page}</span>
+    页，每页 <input type="text" onkeypress="return listTable.changePageSize(event)" value="15" id="pageSize" size="3">
+    <span id="page-link">
+          <a href="{$filter.first_url}">第一页</a>
+          <a href="{$filter.prev_url}">上一页</a>
+          <a href="{$filter.next_url}">下一页</a>
+          <a href="{$filter.last_url}">最末页</a>
+          <select onchange="listTable.gotoPage(this.value)" id="gotoPage">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="64">64</option>          
+          </select>
+    </span>
+</div>

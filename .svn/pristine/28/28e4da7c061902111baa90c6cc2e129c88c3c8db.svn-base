@@ -1,0 +1,13 @@
+<tr>
+    <td><input type="checkbox" name="id[]" value="{$role.id}" />{$role.id}</td>
+    <td>{$role.name}</td>
+    <td>
+        <gt name="role.status" value="0">启用</gt>
+        <lt name="role.status" value="1">禁用</lt>
+    </td>
+    <td>{$role.remark}</td>
+    <td>
+        &nbsp;<a href="{:U('Privilege/editRole', 'id='.$role['id'])}">编辑</a>
+        &nbsp;<a href="{:U('Privilege/deleteRole', 'ids='.$role['id'])}">删除</a>
+    </td>
+</tr>

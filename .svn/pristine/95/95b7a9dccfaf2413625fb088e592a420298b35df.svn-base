@@ -1,0 +1,29 @@
+<include file="Public:head"/>
+<form method="post" action="{:U('Goods/batchDone')}" id="goodsManger" onsubmit="return goodsManger();" >
+    <table class="list" cellpadding="0" cellspacing="0" >
+        <tbody>
+        <tr>
+            <th ><input type="checkbox" onclick="selAll(this);" class="1" />编号</th>
+            <th>节点名</th>
+            <th>标题</th>
+            <th>状态</th>
+            <th>层级</th>
+            <th>备注</th>
+            <th>排序</th>
+            <th>操作</th>
+        </tr>
+        <foreach name="list" item="item" key="key">
+            <include file="node_item" />
+        </foreach>
+        <tr>
+            <td class="noneBorder">&nbsp;</td>
+            <td colspan="2" class="noneBorder">
+            </td>
+            <td colspan="5" class="noneBorder" style="text-align: center;">
+                总:{$page}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<include file="Public:footer"/>

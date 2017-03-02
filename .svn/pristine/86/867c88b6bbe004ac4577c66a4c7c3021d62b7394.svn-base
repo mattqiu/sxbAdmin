@@ -1,0 +1,16 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.type}</td>
+    <td >{$item.need_key_num}</td>
+    <td >{$item.drop_group_id}</td>
+    <td >{$item.lifetime}(天)</td>
+    <td >{$item.uid}</td>
+    <td >{$item.send_time}</td>
+    <td >{$item.use_state}</td>
+    <td >{$item.description}</td>
+    <td >{$item.sms_send_showtext}</td>
+    <td >{$item.sms_send_type}</td>
+
+    <td>
+    </td>
+</tr>

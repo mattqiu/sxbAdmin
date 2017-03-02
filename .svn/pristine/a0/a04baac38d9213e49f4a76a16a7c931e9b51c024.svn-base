@@ -1,0 +1,88 @@
+<include file="Public:head_orders"/>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/comm.css"/>
+
+<div class="item shadow orderItem" data-id="{$order.id}" id="orderTr_{$order.id}">
+    <div class="orderInfo">
+        <ul class="">
+            <li class="wp15">订单号：<span class="fadeOut">{$order.orderId}</span></li>
+            <li class="wp15">下单时间： <span class="fadeOut">{$order.add_time|date="y-m-d H:i",###}</span></li>
+            <li class="wp15">状态：
+                <div valign="top" nowrap="nowrap" class="orderStatus">{$order.status_name}
+                    <if condition="count($order['actionButton']) gt 0">
+                        <ul class="actionStatus">
+                            <foreach name="order.actionButton" item="status" key="key">
+                                <if condition="$status.disable eq false">
+                                    <li><a href="javascript:void(0);" data-id="{$status.act}">{$status.label}</a></li>
+                                </if>
+                            </foreach>
+                        </ul>
+                    </if>
+                </div>
+            </li>
+            <li class="wp10">审核状态：
+                <div id="orderCheckStatus_{$order.id}" data-id="{$order.order_status}">{$order.order_status_name}</div>
+            </li>
+        </ul>
+    </div>
+    <div class="goodsInfo">
+        <table class="wp95 mAuto goodsTb">
+            <thead>
+            <tr>
+                <th class="wp20">商品</th>
+                <th class="wp10">品牌</th>
+                <th class="wp10">发货方</th>
+                <th class="wp10">货号</th>
+                <th class="wp10">条形码值</th>
+                <th class="wp5">颜色码</th>
+                <th class="wp5">单价</th>
+                <th class="wp5">优惠</th>
+                <th class="wp5">购买数</th>
+                <th class="wp5">退货数</th>
+                <th class="wp5">小计</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="order['OrdersDetail']" item="goods">
+                <tr>
+                    <td>
+                        <a href="/navbar-brand/node/b_id/{$goods.b_id}/d_id/{$goods.id}" target="_blank"><img src="{$goods.img}!gpreview" width="39" alt="" style="vertical-align:middle;"/>
+                            {$goods.good_name} </a>&nbsp;&nbsp;
+                        {$goods.goods_size} 颜色：{$goods.factory_color}
+                    </td>
+                    <td class="txtCenter"><a href="/navbar-brand/info/id/{$goods['navbar-brand']['id']}" target="_blank">{$goods['navbar-brand']['name']}</a></td>
+                    <td class="txtCenter">
+                        <span class="highlight">
+                        <eq name="$goods['navbar-brand']['send_goods']" value="1">美荟</eq>
+                        <eq name="$goods['navbar-brand']['send_goods']" value="2">供应商</eq>
+                        </span>
+                    </td>
+                    <td class="txtCenter">{$goods.identifier}</td>
+                    <td class="txtCenter">{$goods.prod_num}</td>
+                    <td class="txtCenter">{$goods.factory_color_num}</td>
+                    <td class="txtCenter">{$goods.goods_price}</td>
+                    <td class="txtCenter">{$goods.acts_money}</td>
+                    <td class="txtCenter">{$goods.goods_num}</td>
+                    <td class="txtCenter">{$goods.return_num}</td>
+                    <td class="txtCenter">{$goods.goods_pay_money}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+    <div class="orderBuyer">
+        <ul class="pFlex">
+            <li class="wp50">收货信息：{$order.address_name}&nbsp;&nbsp;&nbsp;[电话: {$order.mobile}],
+                {$order.province} &nbsp; {$order.city} &nbsp; {$order.address}
+            </li>
+            <li class="wp10">支付：
+                <span class="fadeOut">
+                <php> $payMethod = C("SUPPORT_METHO"); echo $payMethod[$order['supportmetho']];</php>
+                </span>
+            </li>
+            <li class="wp20">总金额： <span class="highlight h3">￥{$order.order_price}</span>
+                优惠后金额：<span class="highlight h3">￥{$order.pay_price}</span>
+            </li>
+
+        </ul>
+    </div>
+</div>

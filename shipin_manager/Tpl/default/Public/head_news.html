@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>时品网管理中心</title>
+    <link href="__PUBLIC__/admin/css/base.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/admin/css/comm.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/admin/css/default.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/js/jquery-easyui-1.4/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/js/jquery-easyui-1.4/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/css/main.css" />
+    <script type="text/javascript" src="__PUBLIC__/admin/js/jquery-easyui-1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/base.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/action.js"></script>
+</head>
+<body>
+<span id="root_url" class="dnone">__APP__</span>
+<span id="public_url" class="dnone">__PUBLIC__</span>
+<eq name="MODULE_NAME" value="Mail">
+    <else/>
+    <h1>
+    <span id="search_id" class="action-span1">
+        <a href="#">时品网-管理中心-{$nav}</a>
+    </span>
+    <span class="action-span">
+        <a href="{$doAct.actUrl}">{$doAct.actName}</a>
+    </span>
+    </h1>
+</eq>

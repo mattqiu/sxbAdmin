@@ -1,0 +1,77 @@
+<include file="Public:head_print"/>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/comm.css"/>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/main.css"/>
+
+<!--捡货单列表-->
+<foreach name="list" item="item" >
+    <div class="pickUpGoods-item" style="page-break-after: always;marks: none">
+       <h3>
+           <span>捡货单号：{$item.pick_up_goods_no}</span>
+           <span>订单号:{$item.order_name}</span>
+           <span>快递单号：{$item.shipping_no}</span>
+       </h3>
+        <table width="100%;">
+            <thead>
+            <tr>
+                <th>品名</th>
+                <th>货号</th>
+                <th>货位号</th>
+                <th>数量</th>
+                <th>发货数量</th>
+                <th>操作员</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="item.order_product" item="product">
+                <tr>
+                    <td>{$product.product_name}</td>
+                    <td>{$product.product_no}</td>
+                    <td>{$product.goods_allocation_no}</td>
+                    <td>{$product.qty}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </foreach>
+
+            </tbody>
+        </table>
+
+        收货地址：{$item.address}
+    </div>
+
+</foreach>
+
+<script type="text/javascript" src="__PUBLIC__/admin/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/orders.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        //初始化事件
+        initOrder();
+    });
+
+    // input全选反选联动
+    var oBtn=document.getElementById("check_all");
+    var oBox=document.getElementById("m-order");
+    var aInput=oBox.getElementsByTagName("input");
+    oBtn.onclick=function(){
+        for(var i=0; i<aInput.length;i++){
+            aInput[i].checked=this.checked;
+        }
+    }
+    for(var i=0;i<aInput.length;i++){
+        aInput[i].onclick=function(){
+            var count=0;
+            for(var i=0;i<aInput.length;i++){
+                if(aInput[i].checked){
+                    count++;
+                }
+            }
+            if(count==aInput.length){
+                oBtn.checked=true;
+            }else{
+                oBtn.checked=false;
+            }
+        }
+    }
+
+</script>

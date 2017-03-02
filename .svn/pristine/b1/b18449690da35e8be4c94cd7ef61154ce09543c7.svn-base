@@ -1,0 +1,10 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.name}</td>
+    <td >{$item.supply_id}</td>
+    <td >{$item.supply_name}</td>
+    <td>
+        <a href="/{$Think.MODULE_NAME}/edit/id/{$item.id}">编辑</a>
+        <a href="/{$Think.MODULE_NAME}/del/id/{$item.id}">删除</a>
+    </td>
+</tr>

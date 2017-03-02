@@ -1,0 +1,78 @@
+<include file="Public:head_orders"/>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/comm.css"/>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/main.css"/>
+<div class="form-div">
+    <form name="searchForm" action="{:U('searchOrder')}" method="post" onsubmit="return validate()">
+        <img width="26" height="22" border="0" alt="SEARCH" src="__PUBLIC__/admin/images/icon_search.gif">
+        订单号<input type="text" size="15" name="orderId"/>
+        收货人<input type="text" size="15" name="addressName"/>
+        订单状态
+        <select id="status" name="status">
+            <option value=""
+            <eq name="Think.post.status" value="">selected=""</eq>
+            >全部</option>
+            <option value="1"
+            <eq name="Think.post.status" value="1">selected=""</eq>
+            >待付款</option>
+            <option value="2"
+            <eq name="Think.post.status" value="2">selected=""</eq>
+            >已付款</option>
+            <option value="3"
+            <eq name="Think.post.status" value="3">selected=""</eq>
+            >待发货</option>
+            <option value="4"
+            <eq name="Think.post.status" value="4">selected=""</eq>
+            >待收货</option>
+            <option value="5"
+            <eq name="Think.post.status" value="5">selected=""</eq>
+            >已收货</option>
+            <option value="6"
+            <eq name="Think.post.status" value="6">selected=""</eq>
+            >已完成</option>
+            <option value="6"
+            <eq name="Think.post.status" value="7">selected=""</eq>
+            >退货中</option>
+            <option value="6"
+            <eq name="Think.post.status" value="8">selected=""</eq>
+            >退货完成</option>
+            <option value="6"
+            <eq name="Think.post.status" value="9">selected=""</eq>
+            >关闭</option>
+        </select>
+        <input type="submit" class="button" value=" 搜索 ">
+</div>
+<div class="exportOrder">
+    <a href="">导出订单</a>
+</div>
+<form onsubmit="return check()" name="listForm" action="../Order/order.php?act=operate" method="post">
+    <div id="listDiv">
+        <div class="orderItem" style="display: none;">
+            <!--ajax更新订单条目时,为防止第一条订单没有前一条订单信息,导致js更新订单信息不成功-->
+        </div>
+        <foreach name="ordersInfo" item="order">
+            <include file="subItem" />
+        </foreach>
+
+        <!-- 分页 -->
+        <table cellspacing="0" id="page-table" class="wp95 mAuto">
+            <tbody>
+            <tr>
+                <td nowrap="true" align="right">
+                    <div id="turn-page">
+                        {$page}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<script type="text/javascript" src="__PUBLIC__/admin/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/orders.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        //初始化事件
+        initOrder();
+    });
+</script>

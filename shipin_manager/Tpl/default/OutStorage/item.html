@@ -1,0 +1,31 @@
+<tr>
+    <td><input type="checkbox" name="check_order[]" value="{$order.order_name}"/></td>
+    <td><a href="javascript:void(0);" data-id="{$order.order_name}" class="showOrderDetail">{$order.order_name}</a></td>
+    <td>
+        <div  class="orderStatus">订单操作
+            <ul class="actionStatus" style="display: none;">
+                <foreach name="order.action_button" item="act">
+                    <li><a href="javascript:void(0);" data-id="{$act.act}">{$act.label}</a></li>
+                </foreach>
+            </ul>
+        </div>
+    </td>
+    <td>
+        <if condition="($order.has_export eq 1) ">
+            <span class="f_gre">已导出</span>
+            <else />
+            <span class="f_red">未导出</span>
+        </if>
+    </td>
+    <td>{$order.name}</td>
+    <td>{$order.mobile}</td>
+    <td>{$order.position}</td>
+    <td>{$order.address}</td>
+    <td>{$order.money}</td>
+    <td>{$order.shtime}</td>
+    <td>{$order.pay_name}</td>
+    <td>{$order.pay_status_name}</td>
+    <td>{$order.order_status_name}</td>
+    <td>{$order.username}</td>
+    <td>{$order.time}</td>
+</tr>

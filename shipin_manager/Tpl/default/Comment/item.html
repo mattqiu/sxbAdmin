@@ -1,0 +1,39 @@
+<tr>
+
+    <td class="text-left"><input type="checkbox" class="checkComment" />&nbsp;{$item.id}</td>
+    <td ><img src="{$img_site}{$item.thum_photo}" alt="" width="60"> <br/>
+        {$item.product_name}</td>
+    <td >{$item.user_name}</td>
+    <td class="text-left">{$item.content}</td>
+    <td >
+        <if condition="$item.images" ><img src="{$img_site}{$item.images}" alt="" width="60"><else/></if>
+    </td>
+    <td >{$item.star}</td>
+    <td ><if condition="$item.is_review eq 0">未审核<else/>已通过</if></td>
+    <td ><if condition="$item.recommend eq 0">否<else/>是</if></td>
+    <td>{$item.time}</td>
+    <td >
+        <if condition="$item.is_review eq 0">
+            <div class="normaldiv">
+            <button class="pass_btn md-trigger btn btn-primary mrg-b-lg" data-modal="create_pick_up_goods_dialog"
+                    commentid="{$item.id}">通过</button>
+            <button class="refuse_btn md-trigger btn btn-primary mrg-b-lg" data-modal="create_pick_up_goods_dialog"
+                    commentid="{$item.id}">拒绝</button>
+            </div>
+
+        <elseif condition="$item.is_review eq 1 and $item.recommend eq 0"/>
+            <div class="normaldiv">
+            <button class="recomment_btn md-trigger btn btn-primary mrg-b-lg" data-modal="create_pick_up_goods_dialog"
+                    commentid="{$item.id}">置顶</button>
+            <button class="del_btn md-trigger btn btn-primary mrg-b-lg" data-modal="create_pick_up_goods_dialog"
+                    commentid="{$item.id}">删除</button>
+            </div>
+        <else/>
+            <div class="normaldiv">
+            <button class="del_btn md-trigger btn btn-primary mrg-b-lg" data-modal="create_pick_up_goods_dialog"
+                    commentid="{$item.id}">删除</button>
+            </div>
+
+        </if>
+    </td>
+</tr>

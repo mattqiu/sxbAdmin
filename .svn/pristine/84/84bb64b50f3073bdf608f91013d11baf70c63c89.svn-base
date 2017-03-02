@@ -1,0 +1,5 @@
+<include file="Public:head"/>
+<form method="post" action="{:U('Goods/batchDone')}" id="goodsManger" onsubmit="return goodsManger();" >
+        <include file="item" />
+</form>
+<include file="Public:footer"/>

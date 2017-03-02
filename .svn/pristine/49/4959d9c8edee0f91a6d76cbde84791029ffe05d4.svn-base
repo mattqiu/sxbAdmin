@@ -1,0 +1,1129 @@
+<?php
+
+/**
+ * Class JOrderAction
+ *  京东订单导入导出及发货功能 以及订单查询功能
+ */
+class JdOrderAction extends CommonAction {
+
+    public function _init(){
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+        header('"text/html; charset=UTF-8"');
+    }
+
+    //订单列表
+    public function index() {
+        $where = array();
+
+        $model = M('tmp_jd_order');
+        $count = $model->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $model->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        $supplyM = M('supply');
+        $supplyList = $supplyM->where('status = 1')->select();
+        $this->assign("supply_list", $supplyList);
+
+        $sendWarehomeM = M('send_warehome');
+        $warehomeList = $sendWarehomeM->where()->select();
+
+        $status = C('STATUS');
+        $this->assign('manage_order_status', $status);
+
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display();
+    }
+
+    public function ajaxOrderItem(){
+        $orderName = I('order_name', '');
+        $model = new OrderModel();
+        if(!empty($orderName)){
+            $whereArr[C('DB_PREFIX') . 'order.order_name'] = array('eq',  $orderName);
+        }
+        $this->assign('order_name', $orderName);
+        $result = $model->getOrdersList(0, $whereArr);
+        if(!empty($result['order_list'])){
+            $this->result['status'] = 1;
+            $this->assign('order', $result['order_list'][0]);
+        }
+
+        $this->result['data'] = $this->fetch('itemContent');
+        echo json_encode($this->result);
+    }
+
+
+    /**
+     *  按条件取出订单数据到ttgy_tmp_jd_order 表
+     */
+    public function fetchOrder(){
+        $whereArr = array();
+        $model = new OrderModel();
+        $orderStatus = 0;
+
+
+        if(isset($_REQUEST['order_status_sel'])){
+            $orderStatus = I('order_status_sel', 0);
+        }
+
+        if(isset($_REQUEST['send_channel'])){
+            $send_channel = I('send_channel', '');
+            if(!empty($send_channel)){
+                $whereArr[C('DB_PREFIX') . 'order_product.send_channel'] = array('eq', $send_channel);
+            }
+        }
+
+        $limitDate = array();
+        $limitTime = array();
+        if(!empty($_REQUEST['limit_date_fetch_From'])){
+            $limitDate[0] =$_REQUEST['limit_date_fetch_From'];
+            $limitTime[0] = $_REQUEST['limit_time_fetch_From'];
+        }
+        if(!empty($_REQUEST['limit_time_fetch_To'])){
+            $limitDate[1] = $_REQUEST['limit_date_fetch_To'];
+            $limitTime[1] = $_REQUEST['limit_time_fetch_To'];
+        }
+
+        if(count($limitDate) > 0)
+        {
+            //改成最后更新时间 chrisying 2015-11-26
+            $whereArr['last_modify_time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+            //            $whereArr['time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+
+        }
+
+        $result = $model->getFetchOrdersList($orderStatus, $whereArr);
+        echo 'sql=====' . $model->getLastSql() . '<br/>';
+        echo '===总计===' . count($result['order_list']) . '单<br/>';
+        echo '===page===' . $result['page'] . '<br/>';
+        echo '===page===' . 'page-data' . '<br/>';
+        var_dump($result['page_data']);
+
+        if(!empty($result['order_list'])){
+            $tmp_jd_orderM= M('tmp_jd_order');
+            $productM = M('product');
+            $send_warehomeM = M('send_warehome');
+            $areaM = M('area');
+
+            $dataAll = array();
+
+            //取出所有的发货仓信息（最多100来条）
+            $map_warehome = array();
+            $warehomewhere = array();
+            $listSendwarehome = $send_warehomeM->where($warehomewhere)->select();
+            if(!empty($listSendwarehome))
+            {
+                //做好映射
+                foreach($listSendwarehome as $value){
+                    $map_warehome[$value['id']] = $value;
+                }
+            }
+
+            foreach($result['order_list'] as $item){
+                $data = array();
+                $where = array();
+                $where['order_name'] = array('eq', $item['order_name']);
+                $tmp_jd_orderM->where($where)->delete();
+                $data['order_name'] = $item['order_name'];
+                $data['rec_name'] = $item['name'];
+                $data['rec_mobile'] = $item['mobile'];
+                $data['rec_tel'] = $item['telephone'];
+                $data['rec_address'] = $item['address'];
+                $data['weight'] = 1;
+                $data['add_time'] = date('Y-m-d H:i:s', time());
+
+                $province_code = $item['province'];//省份代号
+                //取省份地址对应的最优发货仓,然后查看最佳仓是否有货，没有就找到最后。
+                $where_area = 'id='.$province_code;
+                $province_area = $areaM->where($where_area)->find();
+                $countWarehome = 0;
+                if(!empty($province_area['send_warehome']))
+                {
+                    $province_area['send_warehome'] = json_decode($province_area['send_warehome'],true);
+                    $countWarehome = count($province_area['send_warehome']);
+                }
+
+
+
+                if(!empty($item['order_product'])){
+                    foreach($item['order_product'] as $product){
+                        $productItem = $productM->where(array('id' => array('eq', $product['product_id'])))->find();
+                        $data['product_name'] = $productItem['product_name'];
+                        $data['remark'] = $productItem['product_name'];
+                        $data['num'] = $product['qty'];
+                        $data['product_standard'] = $product['gg_name'];
+                        $data['product_id'] = $product['product_id'];
+
+                        //取出商品的仓库信息
+                        $array_product_warehome_ids = array();
+                        $map_product_warehome_ids = array();//映射
+
+                        $get_sendwarehome = 0;
+                        if(!empty($productItem['send_warehome']))
+                        {
+                            $productItem['send_warehome'] = json_decode($productItem['send_warehome'],true);
+                            $array_product_warehome_ids = array_column($productItem['send_warehome'],'warehome_id');
+                            foreach($array_product_warehome_ids as $valueid)
+                            {
+                                $map_product_warehome_ids[$valueid] = $valueid;
+                            }
+                        }
+                        else
+                        {
+                            $data['send_warehome_id'] = 0;
+                            $data['send_warehome_name'] = "没有库存的仓";
+                            $get_sendwarehome = 1;
+                        }
+
+
+                        for($i=0;$i<$countWarehome;$i++)//下标越小为越优先的发货仓
+                        {
+                            $first_warehome = $province_area['send_warehome'][$i];
+                            if(!empty($first_warehome))
+                            {
+                                if(isset($map_product_warehome_ids[$first_warehome['warehome_id']]))
+                                {
+                                    //如果这个商品在这个仓库有库存，可以从这里发货
+                                    $wd = $map_warehome[$first_warehome['warehome_id']];
+                                    $data['send_warehome_id'] = $first_warehome['warehome_id'];
+                                    $data['send_warehome_name'] = $wd['name'];
+
+                                    $get_sendwarehome = 1;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if($get_sendwarehome == 0)
+                        {
+                            if(!empty($array_product_warehome_ids))
+                            {
+                                $wd = $map_warehome[$array_product_warehome_ids[0]];
+                                $data['send_warehome_id'] = $wd['id'];
+                                $data['send_warehome_name'] = $wd['name'];
+                                $get_sendwarehome= 1;
+                            }
+                        }
+
+
+                        $dataAll[] = $data;
+
+                    }
+                }
+            }
+
+            if(!empty($dataAll)){
+                $tmp_jd_orderM->addAll($dataAll);
+            }
+        }
+
+        echo '取出成功';
+    }
+
+    /**
+     *  直接从临时表中导出京东快递表格 V3
+     */
+    public function exportOrder(){
+        $model = M('tmp_jd_order');
+        $productName = I('product_name', '');
+        $where = array();
+        if(!empty($productName)){
+            $where['product_name'] = array('eq', $productName);
+        }
+        $orderList = $model->where($where)->select();
+        //导出类型，默认是1快递格式，2是 捡货格式
+        $type = I('export_type', 2);
+        if($type == 1){
+            $xlsName  = date('y-m-d-His') . "_order_shipping";
+            $xlsResult = $this->getTmpJdXlsData($orderList);
+            $typeName = 'export_order';
+            if(isset($xlsResult['xls_data']['all']) && !empty($xlsResult['xls_data']['all'])){
+                foreach($xlsResult['xls_data'] as $key => $xlsList){
+                    $this->exportExcel($xlsName . '_warehome_NO' . $key,$xlsResult['xls_cell'],$xlsList, $typeName);
+                }
+
+                $allNum = count($xlsResult['xls_data']['all']);
+                if($allNum > 500){
+                    $i=1;
+                    $itemArr = array();
+                    $divideFileArr = array();
+                    foreach($xlsResult['xls_data']['all'] as $item){
+                        $itemArr[] = $item;
+                        if(0==($i%500)){
+                            $divideFileArr[] = $itemArr;
+                            $itemArr = array();
+                        }
+                        $i++;
+                    }
+
+                    if(!empty($itemArr)){
+                        $divideFileArr[] = $itemArr;
+                    }
+
+                    foreach($divideFileArr as $key => $divideFileData){
+                        $tagNum = $key+1;
+                        $this->exportExcel($xlsName . '_NO' . $tagNum,$xlsResult['xls_cell'],$divideFileData, $typeName);
+                        unset($divideFileArr[$key]);
+                    }
+                }
+            }
+        } else {
+            $xlsName  = date('y-m-d-His') . "_order_product";
+            $xlsResult = $this->getTmpGoodsXlsData($orderList);
+            $typeName = 'export_send_channel_order';
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], $typeName, true);
+        }
+
+        $this->success('导出成功', '/JdOrder/index');
+    }
+
+
+    /**
+     *  根据下单时间，订单状态和发货渠道导出订单功能
+     *  chrisying 2015-11-11
+     */
+    public function exportOrderV2(){
+        $whereArr = array();
+        $model = new OrderModel();
+        $orderStatus = 0;
+        //导出类型，默认是1快递格式，2是 捡货格式
+        $type = I('export_type', 2);
+
+        if(isset($_REQUEST['order_status_sel'])){
+            $orderStatus = I('order_status_sel', 0);
+        }
+
+        if(isset($_REQUEST['send_channel'])){
+            $send_channel = I('send_channel', '');
+            if(!empty($send_channel)){
+                $whereArr[C('DB_PREFIX') . 'order_product.send_channel'] = array('eq', $send_channel);
+            }
+        }
+
+        $limitDate = array();
+        $limitTime = array();
+        if(!empty($_REQUEST['limit_date_export_From'])){
+
+            $limitDate[0] =$_REQUEST['limit_date_export_From'];
+            $limitTime[0] = $_REQUEST['limit_time_export_From'];
+        }
+        if(!empty($_REQUEST['limit_time_export_To'])){
+            $limitDate[1] = $_REQUEST['limit_date_export_To'];
+            $limitTime[1] = $_REQUEST['limit_time_export_To'];
+        }
+
+        if(count($limitDate) > 0)
+        {
+            //改成最后更新时间 chrisying 2015-11-26
+            $whereArr['last_modify_time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+            // $whereArr['time'] = array(array('egt', trim($limitDate[0]) . ' '.$limitTime[0]), array('elt', trim($limitDate[1]) . ' '.$limitTime[1]));
+
+        }
+
+        $result = $model->getExportOrdersList($orderStatus, $whereArr);
+
+        if($type == 1){
+            $xlsName  = date('y-m-d-His') . "_export_order_shipping";
+            $xlsResult = $this->getJdXlsData($result);
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], 'export_order');
+        } else {
+            $xlsName  = date('y-m-d-His') . "_export_order_product";
+            $xlsResult = $this->getGoodsXlsData($result);
+            $this->exportExcel($xlsName,$xlsResult['xls_cell'],$xlsResult['xls_data'], 'export_send_channel_order');
+        }
+
+
+    }
+
+    /**
+     *  果园备货的xls文档内容
+     * @param $orderData
+     * @return array
+     */
+    private function getTmpGoodsXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+
+        $result['xls_cell']  = array(
+            array('product_name','商品品名'),
+            array('product_standard','规格'),
+            array('num','数量'),
+        );
+
+        $productArr = array();
+        if(!empty($orderData)){
+            foreach($orderData as $item){
+                $key = md5($item['product_name'] . $item['product_standard']);
+                if(isset($productArr[$key])){
+                    $productData = $productArr[$key];
+                    $productData['num'] = intval($productData['num']) + intval($item['num']);
+                } else {
+                    $productData = array('num'=> $item['num']
+                    , 'product_standard'=>$item['product_standard'], 'product_name' => $item['product_name']);
+                }
+
+                $productArr[$key] = $productData;
+            }
+        }
+
+        if(!empty($productArr)){
+            foreach($productArr as $pItem){
+                $result['xls_data'][] = $pItem;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     *  果园备货的xls文档内容
+     * @param $orderData
+     * @return array
+     */
+    private function getGoodsXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+
+        $orderAddressM = M('order_address');
+        $areaM = M('area');
+        $productM = M('product');
+
+        $result['xls_cell']  = array(
+            array('product_name','商品品名'),
+            array('product_standard','规格'),
+            array('product_num','数量'),
+        );
+
+        $xls_data = array();
+
+        if(!empty($orderData['order_list'])){
+            foreach($orderData['order_list'] as $item){
+                $dataItem = array();
+                $dataItem['order_name'] = $item['order_name'];
+                $dataItem['name'] = $item['name'];
+                $dataItem['mobile'] = $item['mobile'];
+                $dataItem['telephone'] = $item['telephone'];
+                $dataItem['address'] = $item['address'];
+
+                $cityName = '';
+                $orderAddressItem = $orderAddressM->where(array('order_id'=>array('eq', $item['id'])))->find();
+                if(!empty($orderAddressItem)){
+                    $areaItem = $areaM->where(array('id' => array('eq', $orderAddressItem['city'])))->find();
+                    if(!empty($areaItem)){
+                        $cityName = $areaItem['name'];
+                    }
+                }
+                $dataItem['recv_city'] = $cityName;
+                if(!empty($item['order_product'])){
+                    foreach($item['order_product'] as $product){
+                        $productItem = $productM->where(array('id' => array('eq', $product['product_id'])))->find();
+
+                        $dataItem['product_name'] = $productItem['product_name'];
+                        $dataItem['product_standard'] = $product['gg_name'];
+                        $dataItem['product_num'] = $product['qty'];
+
+                        $xls_data[] = $dataItem;
+                    }
+                }
+            }
+        }
+
+        $productArr = array();
+        if(!empty($xls_data)){
+            foreach($xls_data as $item){
+                $key = md5($item['product_name'] . $item['product_standard']);
+                if(isset($productArr[$key])){
+                    $productData = $productArr[$key];
+                    $productData['product_num'] = intval($productData['product_num']) + intval($item['product_num']);
+                } else {
+                    $productData = array('product_num'=> $item['product_num']
+                        , 'product_standard'=>$item['product_standard'], 'product_name' => $item['product_name']);
+                }
+
+                $productArr[$key] = $productData;
+            }
+        }
+
+        if(!empty($productArr)){
+            foreach($productArr as $pItem){
+                $result['xls_data'][] = $pItem;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     *  京东快递模板的订单列表
+     * @param $orderData
+     * @return array
+     */
+    private function getTmpJdXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+        $result['xls_cell']  = array(
+            array('order_name','关联订单'),
+            array('name','姓名'),
+            array('mobile','手机'),
+            array('telephone','座机'),
+            array('address','地址'),
+            array('product_info','物品内容'),
+            array('qty','包裹数量'),
+            array('weight','重量（kg）'),
+            array('insured','保价'),
+            array('insured_money','保价金额（元）'),
+            array('money','订单金额（元）'),
+            array('COD','代收货款'),
+            array('remark','备注信息'),
+            array('delivery_type','配送业务类型'),
+        );
+
+        if(!empty($orderData)){
+            foreach($orderData as $item){
+                $dataItem = array();
+                $dataItem['order_name'] = $item['order_name'];
+                $dataItem['name'] = $item['rec_name'];
+                $dataItem['mobile'] = $item['rec_mobile'];
+                $dataItem['telephone'] = $item['rec_tel'];
+                $dataItem['address'] = $item['rec_address'];
+                $dataItem['weight'] = 1;
+                $dataItem['insured'] = '否';
+                $dataItem['insured_money'] = 0;
+                $dataItem['money'] = 0;
+                $dataItem['COD'] = '否';
+                $dataItem['delivery_type'] = '普通';
+                $dataItem['product_info'] = $item['product_name'];
+                $dataItem['remark'] = $item['product_name'];
+                $dataItem['qty'] = $item['num'];
+                $result['xls_data']['all'][] = $dataItem;
+                $result['xls_data'][$item['send_warehome_id']][] = $dataItem;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     *  京东快递模板的订单列表
+     * @param $orderData
+     * @return array
+     */
+    private function getJdXlsData($orderData){
+        $result = array('xls_cell' => array(), 'xls_data' => array());
+
+        $orderAddressM = M('order_address');
+        $areaM = M('area');
+        $productM = M('product');
+
+        $result['xls_cell']  = array(
+            array('order_name','关联订单'),
+            array('name','姓名'),
+            array('mobile','手机'),
+            array('telephone','座机'),
+            array('address','地址'),
+            array('product_info','物品内容'),
+            array('qty','包裹数量'),
+            array('weight','重量（kg）'),
+            array('insured','保价'),
+            array('insured_money','保价金额（元）'),
+            array('money','订单金额（元）'),
+            array('COD','代收货款'),
+            array('remark','备注信息'),
+            array('delivery_type','配送业务类型'),
+        );
+
+        if(!empty($orderData['order_list'])){
+            foreach($orderData['order_list'] as $item){
+                $dataItem = array();
+                $dataItem['order_name'] = $item['order_name'];
+                $dataItem['name'] = $item['name'];
+                $dataItem['mobile'] = $item['mobile'];
+                $dataItem['telephone'] = $item['telephone'];
+                $dataItem['address'] = $item['address'];
+                $dataItem['weight'] = 1;
+                $dataItem['insured'] = '否';
+                $dataItem['insured_money'] = 0;
+                // $dataItem['money'] = $item['money'];
+                $dataItem['money'] = 0;
+                //如果是货到付款的需要代收货款
+                if(4 === intval($item['pay_parent_id'])){
+                    $dataItem['COD'] = '是';
+                } else {
+                    $dataItem['COD'] = '否';
+                }
+                $dataItem['delivery_type'] = '普通';
+                $xlsData[] = $dataItem;
+
+                $orderNameArr[] = $item['order_name'];
+
+                if(!empty($item['order_product'])){
+                    foreach($item['order_product'] as $product){
+                        $productItem = $productM->where(array('id' => array('eq', $product['product_id'])))->find();
+
+                        $dataItem['product_info'] = $productItem['product_name'];
+                        $dataItem['remark'] = $productItem['product_name'];
+                        $dataItem['qty'] = $product['qty'];
+
+                        $result['xls_data'][] = $dataItem;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    //原来的导出订单功能,现已经废弃
+    public function exportOrderOld(){
+
+        $exportType = intval(I('export_type', 0));
+        switch($exportType){
+            case 1:
+                //未导出过的新订单
+                $orderM = new OrderModel();
+                //未导出过的, 待发货的订单
+                $where = 'has_export = 0 && (operation_id = 10 OR operation_id = 2) && (pay_status = 1 OR pay_parent_id = 4) AND time > "2015-10-13 21:00:00"';
+                $xlsName  = "export_new_order" . date('_YmdHis');
+
+                $xlsCell  = array(
+                    array('order_name','关联订单'),
+                    array('name','姓名'),
+                    array('mobile','手机'),
+                    array('telephone','座机'),
+                    array('address','地址'),
+                    array('product_info','物品内容'),
+                    array('qty','包裹数量'),
+                    array('weight','重量（kg）'),
+                    array('insured','保价'),
+                    array('insured_money','保价金额（元）'),
+                    array('money','订单金额（元）'),
+                    array('COD','代收货款'),
+                    array('remark','备注信息'),
+                    array('delivery_type','配送业务类型'),
+                );
+
+                $orderList  = $orderM->relation(true)->where($where)->select();
+                $orderNameArr = array();
+                $xlsData = array();
+                if(!empty($orderList)){
+                    foreach($orderList as $item){
+                        $dataItem = array();
+                        $dataItem['order_name'] = $item['order_name'];
+                        $dataItem['name'] = $item['name'];
+                        $dataItem['mobile'] = $item['mobile'];
+                        $dataItem['telephone'] = $item['telephone'];
+                        $dataItem['address'] = $item['address'];
+                        $dataItem['product_info'] = '';
+                        $dataItem['qty'] = 1;
+                        $dataItem['weight'] = 1;
+                        $dataItem['insured'] = '否';
+                        $dataItem['insured_money'] = 0;
+                        $dataItem['money'] = $item['money'];
+                        //如果是货到付款的需要代收货款
+                        if(4 === intval($item['pay_parent_id'])){
+                            $dataItem['COD'] = '是';
+                        } else {
+                            $dataItem['COD'] = '否';
+                        }
+                        $dataItem['delivery_type'] = '普通';
+                        $xlsData[] = $dataItem;
+
+                        $orderNameArr[] = $item['order_name'];
+                    }
+
+                    $orderM->where('order_name IN(' . implode(',', $orderNameArr) . ')')->save(array('has_export' => 1));
+                    $exportOrderLogM = M('order_export_log');
+                    $logData = array('export_name' => $xlsName, 'act_uid' => $_SESSION['admin_id']
+                    , 'export_orders' => serialize($orderNameArr)
+                        , 'add_time'=> time());
+                    $exportOrderLogM->add($logData);
+
+                }
+
+
+                $this->exportExcel($xlsName,$xlsCell,$xlsData, 'export_order');
+                break;
+
+            case 2:
+                //选中的订单
+
+                break;
+        }
+    }
+
+    public function importOrder(){
+        $file = '/home/wwwroot/sp.com/manage/Public/export_new_order_20150812160748.xls';
+        $this->importExecl($file);
+    }
+
+    /**
+     *  批量导入京东xls表格数据进行发货
+     */
+    public function importSendOrder(){
+        set_time_limit(0);
+        $file = '/mnt/wwwtest/testm1/trunk/manage/upload/orderrecord.xls';
+        // $file = '/Users/chrisying/Desktop/orderrecord_11_24.xls';
+        $result = $this->importExecl($file);
+        var_dump($result);
+        if(!empty($result['data'])){
+            $orderM = M('order');
+            $data = array();
+            $data['shipping_name'] = '京东快递';
+            $data['shipping_id'] = 'jd_delivery';
+            $data['is_send_jd'] = '1';
+            foreach($result['data'] as $key => $item){
+                if($key > 1){
+                    $where['order_name'] = array('eq', $item['C']);
+                    $data['delivery_id'] = $item['B'];
+                    $orderM->where($where)->save($data);
+                    $this->doSendGoods($item['C']);
+                    // $this->sendOrderMsg($item['C'], $item['I'], $item['B']);
+                }
+
+            }
+        }
+    }
+
+    /**
+     *  excel 表导入删除订单
+     */
+    public function importDelOrder(){
+        $savePath = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
+        $fileFix = explode('.', $_FILES['import_file']['name']);
+        $fileName = md5($_FILES['import_file']['name'] . time()) . '.' . $fileFix[1];
+        $uploadFile = $savePath . $fileName;
+        move_uploaded_file($_FILES['import_file']['tmp_name'], $uploadFile);
+        $result = $this->importExecl($uploadFile);
+
+        if(!empty($result['data'])){
+            $model = M('tmp_jd_order');
+            echo '删除的订单：<br/>';
+            foreach ($result['data'] as $key => $item) {
+                if($key > 2){
+                    $orderName = $item['A'];
+                    $where = array();
+                    $where['order_name'] = array('eq', $orderName);
+                    $model->where($where)->delete();
+                    echo $orderName . '<br/>';
+                }
+            }
+
+            echo '<br/><a href="/JdOrder/index">返回列表</a><br/>';
+        }
+    }
+
+    /**
+     *  excel表导入增加订单
+     */
+    public function importAddOrder(){
+        $savePath = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
+        $fileFix = explode('.', $_FILES['import_file']['name']);
+        $fileName = md5($_FILES['import_file']['name'] . time()) . '.' . $fileFix[1];
+        $uploadFile = $savePath . $fileName;
+        move_uploaded_file($_FILES['import_file']['tmp_name'], $uploadFile);
+        $result = $this->importExecl($uploadFile);
+
+        if(!empty($result['data'])){
+            $model = M('tmp_jd_order');
+            echo '增加的订单：<br/>';
+            foreach ($result['data'] as $key => $item) {
+                if($key > 2){
+                    $orderName = $item['A'];
+                    $where = array();
+                    $where['order_name'] = array('eq', $orderName);
+                    $model->where($where)->delete();
+                    $data = array();
+                    $model->add($data);
+                    echo $orderName . '<br/>';
+                }
+            }
+
+            echo '<br/><a href="/JdOrder/index">返回列表</a><br/>';
+        }
+    }
+
+    /**
+     * ajax检验地址是否合格
+     */
+    public function addRess(){
+        echo 123;
+    }
+
+    public function delAll(){
+        $model = M('tmp_jd_order');
+        $model->where('1=1')->delete();
+    }
+
+    /**
+     *  ajax取发货渠道对应的仓库
+     */
+//    public function getWarehouse(){
+//        $result = array('status' => 0, 'msg' => '', 'data' => array());
+//        $channel = I('channel_id', '');
+//        if(empty($channel)){
+//            exit(json_encode($result));
+//        }
+//
+//        $sendWarehome = M('send_warehome');
+//    }
+    /**
+     * 按条件查询订单
+     */
+    public function orderSearch(){
+        $status = C('STATUS');
+        $this->assign('manage_order_status', $status);
+
+        $limit_date_From = I('limit_date_From');       //从XXX开始    日期
+        $limit_date_To = I('limit_date_To');           //从XXX截至    日期
+        $status = I('status');                         //订单状态
+        $delivery_id = I('delivery_id');               //运单号
+        $groupbuy_order_name = I('groupbuy_order_name');//团单号
+        $order_name = I('order_name');                 //订单号
+        $product_name = I('product_name');             //物品名
+        $rec_name = I('rec_name');                     //收件人
+        $rec_mobile = I('rec_mobile');                 //收件人电话
+        $send_warehome_name = I('send_warehome_name'); //按发货仓
+        $package_num = I('package_num');               //包裹数量
+        $time = I('time');                             //按时间查询
+        $import_jd_num = I('import_jd_num');           //是否导入京东
+        $jd_can_shipping = I('jd_can_shipping');       //是否可发货
+        // dump($_POST);
+        $jdOrder = M("tmp_jd_order");
+        if($limit_date_From || $limit_date_To || $status != '11' || $delivery_id || $groupbuy_order_name || $order_name || $product_name || $rec_name || $rec_mobile || $send_warehome_name != '11' || $package_num != '11' || $time != '11' || $import_jd_num != '11' || $jd_can_shipping != '11'){
+            
+            //使用订单号查询
+            if($order_name){
+                $order_name = trim($order_name);
+                $where['order_name'] = array("eq","$order_name");
+                $dataList = $jdOrder->where($where)->order("id desc")->select();
+                // echo $jdOrder->getLastSql();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //使用运单号查询
+            if($delivery_id){
+                $delivery_id = trim($delivery_id);
+                $where['delivery_id'] = array("eq","$delivery_id");
+                $dataList = $jdOrder->where($where)->order("id desc")->select();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //使用团单号查询
+            if($groupbuy_order_name){
+                $groupbuy_order_name = trim($groupbuy_order_name);
+                $where['groupbuy_order_name'] = array("eq","$groupbuy_order_name");
+                $dataList = $jdOrder->where($where)->order("id desc")->select();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //使用商品名称查询
+            if($product_name){
+                $where['product_name'] = array("like","%{$product_name}%");
+                $data = $jdOrder->where($where)->order("id desc")->select();
+                $Page = new Page(count($data));
+                $Page->parameter['product_name'] = $product_name;
+                $Page->parameter['limit_date_From'] = $limit_date_From;
+                $Page->parameter['limit_date_To'] = $limit_date_To;
+                $Page->parameter['status'] = $status;
+                $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                $Page->parameter['package_num'] = $package_num;
+                $Page->parameter['time'] = $time;
+                $Page->parameter['import_jd_num'] = $import_jd_num;
+                $show = $Page->show();
+                $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+            
+            //按收件人姓名查询
+            if($rec_name){
+                $where['rec_name'] = array("eq","$rec_name");
+                $dataList = $jdOrder->where($where)->order("id desc")->select();
+                // echo $jdOrder->getLastSql();exit;
+                if($dataList){
+                    $this->assign("list",$dataList);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //收件人电话查询            
+            if($rec_mobile){
+                $where['rec_mobile'] = array("eq","$rec_mobile");
+                $dataList = $jdOrder->where($where)->order("id desc")->select();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //按发货仓查询
+            if($send_warehome_name){
+                if($send_warehome_name === '1'){
+                     $where['send_warehome_name'] = array("like","%上海%");
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                }elseif($send_warehome_name === '2'){
+                    $where['send_warehome_name'] = array("like","%北京%");
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                }
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //按时间查询
+            if($time){
+                $time_From = $limit_date_From.' '.I('limit_time_From');
+                $time_To = $limit_date_To.' '.I('limit_time_To');
+                if($time === '1'){
+                    //取出时间查询
+                    $where['add_time'] = array(array("egt","$time_From"),array("elt","$time_To"));
+                        $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                    $time_Type = 1;
+                    $this->assign("type",$time_Type);
+                }elseif($time ==='2'){
+                    //导入京东时间
+                    $where['last_import_jd_time'] = array(array("egt","$time_From"),array("elt","$time_To"));
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                    $time_Type = 2;
+                    $this->assign("type",$time_Type);
+                }elseif($time === '3'){
+                    //打印时间查询
+                    $where['last_print_time'] = array(array("egt","$time_From"),array("elt","$time_To")); 
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                    $time_Type = 3;
+                    $this->assign("type",$time_Type);
+                }
+
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+
+            //按是否导入京东查询
+            if($import_jd_num){
+                if($import_jd_num === '1'){
+                    $where['import_jd_num'] = array("egt",1);
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                }elseif($import_jd_num === '2'){
+                    $where['import_jd_num'] = array("lt",1);
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                }
+
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+            //按包裹数量查询
+            if($package_num){
+                if($package_num === '1'){
+                    $where['package_num'] = array("eq",1);
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                }elseif($package_num === '2'){
+                    $where['package_num'] = array("gt",1);
+                    $data = $jdOrder->where($where)->order("id desc")->select();
+                    $Page = new Page(count($data));
+                    $Page->parameter['product_name'] = $product_name;
+                    $Page->parameter['limit_date_From'] = $limit_date_From;
+                    $Page->parameter['limit_date_To'] = $limit_date_To;
+                    $Page->parameter['status'] = $status;
+                    $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                    $Page->parameter['package_num'] = $package_num;
+                    $Page->parameter['time'] = $time;
+                    $Page->parameter['import_jd_num'] = $import_jd_num;
+                    $show = $Page->show();
+                    $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                }
+
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+            //是否可以发京东快递
+            if($jd_can_shipping){
+                if($jd_can_shipping === '1'){
+                    $where['jd_can_shipping'] = array("eq",1);                    
+                }elseif($jd_can_shipping === '2'){
+                    $where['jd_can_shipping'] = array("eq",2);
+                }elseif($jd_can_shipping === '3'){
+                    $where['jd_can_shipping'] = array("eq",3);                    
+                }elseif($jd_can_shipping === '4'){
+                    $where['jd_can_shipping'] = array("eq",4);                    
+                }
+                 $data = $jdOrder->where($where)->order("id desc")->select();
+                $Page = new Page(count($data));
+                $Page->parameter['product_name'] = $product_name;
+                $Page->parameter['limit_date_From'] = $limit_date_From;
+                $Page->parameter['limit_date_To'] = $limit_date_To;
+                $Page->parameter['status'] = $status;
+                $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                $Page->parameter['package_num'] = $package_num;
+                $Page->parameter['time'] = $time;
+                $Page->parameter['import_jd_num'] = $import_jd_num;
+                $Page->parameter['jd_can_shipping'] = $jd_can_shipping;
+                $show = $Page->show();
+                $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                echo $jdOrder->getLastSql();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+            //使用订单状态查询
+            if($status){
+                $where['status'] = array("eq","$status");
+                $data = $jdOrder->where($where)->order("id desc")->select();
+                $Page = new Page(count($data));
+                $Page->parameter['product_name'] = $product_name;
+                $Page->parameter['limit_date_From'] = $limit_date_From;
+                $Page->parameter['limit_date_To'] = $limit_date_To;
+                $Page->parameter['status'] = $status;
+                $Page->parameter['send_warehome_name'] = $send_warehome_name;
+                $Page->parameter['package_num'] = $package_num;
+                $Page->parameter['time'] = $time;
+                $Page->parameter['import_jd_num'] = $import_jd_num;
+                $show = $Page->show();
+                $dataList = $jdOrder->where($where)->order("id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+                if($dataList){
+                    $this->assign("list",$dataList);
+                    $this->assign("page",$show);
+                }else{
+                    $this->assign("empty","<td colspan='13' style='color:#ff0000;font-size:15px;text-align:center;'>未查到信息，请查看信息是否输入错误！</td>");
+                }
+            }
+            
+            $this->assign("post",$_POST);
+        }else{
+            $count = $jdOrder->where($where)->count();
+            $page = new Page($count);
+            $strPage = $page->show();
+            $dataList = $jdOrder->where($where)->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+            $this->assign("list",$dataList);
+            $this->assign("page",$show);
+        }
+
+        $this->display('JdOrder/index');
+    }
+
+
+
+}

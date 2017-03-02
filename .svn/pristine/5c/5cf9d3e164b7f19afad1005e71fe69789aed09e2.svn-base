@@ -1,0 +1,219 @@
+<?php
+/**
+ * ï¿½ï¿½Ý±ï¿½ï¿½ï¿½é¿´
+ */
+class DataReportAction extends CommonAction{
+    const PAGE_NUM = 40;
+    /*
+     *ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * */
+    public function index(){
+        $site = I('site');
+        $distributor = M('distributor');
+        $did =$distributor->field('distributor_id')->where("name = 'jiashan'")->find();
+        if($site == '1'){
+            $where= array();
+            $where['fie_id'] = array('eq', '');
+            $where['fie_id'] = array('in', '');
+
+            $where = "distributor_id = '{$did['distributor_id']}'";         //ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ ï¿½ï¿½ï¿½ï¿½
+            $wheres= "o.uid = u.id and o.distributor_id = '{$did['distributor_id']}'";      //ï¿½ï¿½Ñ¯ï¿½ï¿½Õ¾
+        }else{
+            $wheres = "o.uid = u.id"; //Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½Ñ¯  Ê±Æ·
+        }
+
+        $model = M('user');
+        $count_user = $model->field('count(id) cid')->where($where)->find();                   //ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        $mobile = $model->field('mobile')->where($where)->order('id desc')->select();          //ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½
+//        echo $model->getLastSql();
+        $mobiles = array();
+        foreach($mobile as $key=>$val){
+            if($mobile[$key]['mobile']){
+                $mobiles[]=$mobile[$key]['mobile'];
+            }
+        }
+        $cmb = count($mobiles);
+        $user_mobile = round($cmb/$count_user['cid']*100,2).'%';   //ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
+
+
+        $m = M();
+        $data = $m->table('ttgy_user u,ttgy_order o')->field('u.username,sum(o.money) sm,u.id')->where($wheres)->group('u.id')->select();
+        $result = $m->table('ttgy_user u,ttgy_order o')->field('u.username,count(o.id) con,u.id')->where($wheres)->group('u.id')->select();
+//        echo $m->getLastSql();
+        $orders = array();
+        foreach($result as $key=>$val){
+           $orders[] = $result[$key]['id'];
+        }
+        $code = count($orders);
+        $user_orders = round($code/$count_user['cid']*100,2).'%';   //ï¿½Â¹ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
+
+        $page = new Page(count($data),self::PAGE_NUM);
+        $pages = new Page(count($result),self::PAGE_NUM);
+        $show = $page->show();
+        $shows = $pages->show();
+        $money_list = $m->table('ttgy_user u,ttgy_order o')->field('u.username,sum(o.money) sm,u.id')->where($wheres)->group('u.id')->order('sm desc')->limit($page->firstRow, $page->listRows)->select();
+        $order_list = $m->table('ttgy_user u,ttgy_order o')->field('u.username,count(o.id) con,u.id')->where($wheres)->group('u.id')->order('con desc')->limit($page->firstRow, $page->listRows)->select();
+//        echo $m->getLastSql();exit;
+        $this->assign('code',$code);
+        $this->assign('cmb',$cmb);
+        $this->assign('user_orders',$user_orders);
+        $this->assign('user_mobile',$user_mobile);
+        $this->assign('count_user',$count_user);
+        $this->assign('lists',$order_list);
+        $this->assign('list',$money_list);
+        $this->assign('pages',$shows);
+        $this->assign('page',$show);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * **/
+    public function order(){
+        $time = I('limit_date_From');
+        if(!empty($time)){
+            $time_From = I('limit_date_From').' '.I('limit_time_From');
+            $time_To = I('limit_date_To').' '.I('limit_time_To');
+        }
+
+        $site = I('site');
+        $distributor = M('distributor');
+        $did = $distributor->field('distributor_id')->where("name = 'jiashan'")->find();
+        if(empty($_POST) || $site == '1' ){
+            $where = "operation_id = 2 OR operation_id = 3 OR operation_id = 9";
+        }
+        if($site == '2'){
+            $where = "(operation_id = 2 OR operation_id = 3 OR operation_id = 9) and (distributor_id = '{$did['distributor_id']}')";
+        }
+        if($time_From && $time_To && $site == '1'){
+            $where = "(operation_id = 2 OR operation_id = 3 OR operation_id = 9) and ('$time_From' <= time )and('$time_To'>=time)";
+        }
+        if($time_To && $time_From && $site == '2'){
+            $where = "(operation_id = 2 OR operation_id = 3 OR operation_id = 9) and (distributor_id = '{$did['distributor_id']}') and('$time_From' <= time )and('$time_To'>=time)";
+        }
+
+        $order = M('order');
+        $totle = $order->field('count(id) totle,sum(money) money')->where($where)->find();   //ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//        echo $order->getLastSql();
+        $avg = round($totle['money']/$totle['totle'],2);
+        $this->assign('avg',$avg);
+        $this->assign('totle',$totle);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     * ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * */
+    public function goods(){
+        $site = I('site');
+        $sort = I('sort');
+        $distributor = M('distributor');
+        $did = $distributor->field('distributor_id')->where("name = 'jiashan'")->find();
+        if(empty($_POST) || $site == '1' ){
+            $where = "op.product_id = p.id";
+        }
+        if($site == '2'){
+            $where = "(op.product_id = p.id) and (distributor_id = '{$did['distributor_id']}')";
+        }
+        $order = "sqty desc";
+        switch($sort){
+            case '1':
+                $order = "op.product_id desc";
+            break;
+            case '2':
+                $order = "op.product_id asc";
+            break;
+            case '3':
+                $order = "sqty asc";
+            break;
+            case '4':
+                $order = "sqty desc";
+            break;
+            case '5':
+                $order = "stm asc";
+            break;
+            case '6':
+                $order = "stm desc";
+            break;
+        }
+        $m = M();
+        $data = $m->table('ttgy_order_product op,ttgy_product p')->field('op.product_id,op.product_name,sum(op.qty) sqty,sum(op.total_money) stm')->where($where)->group('op.product_id')->select();
+        $page = new Page(count($data),self::PAGE_NUM);
+        $show = $page->show();
+        $result = $m->table('ttgy_order_product op,ttgy_product p')->field('op.product_id,op.product_name,sum(op.qty) sqty,sum(op.total_money) stm')->where($where)->group('op.product_id')->order($order)->limit($page->firstRow, $page->listRows)->select();
+//        echo $m->getLastSql();
+        foreach($result as $key=>$val){
+            $result[$key]['avg'] = round($result[$key]['stm']/ $result[$key]['sqty'],2);        //Ã¿ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Æ½ï¿½ï¿½Û¸ï¿½
+        }
+        $this->assign('page',$show);
+        $this->assign('result',$result);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     * ÓÅ»ÝÈ¯Êý¾Ý
+     * */
+    public function coupon(){
+        $coupon_tmlM = M('coupon_tml');
+        $coupon_List = $coupon_tmlM->field('sms_send_showtext')->select();              //²éÑ¯È¯ÀàÐÍ
+        foreach($coupon_List as $val){
+            $val=join(',',$val);
+            $temp[]=$val;
+        }
+        $temp=array_unique($temp);
+        foreach ($temp as $k => $v){
+            $temp[$k]=explode(',',$v);
+        }
+
+//dump($_POST);
+        $sms_send_showtext = I('sms_send_showtext');
+        $time_From = I('limit_date_From');
+        $time_To = I('limit_date_To');
+        if(empty($_POST) || $sms_send_showtext =='11'){
+            $where_used['is_used'] = array('eq',1);
+        }
+        if($sms_send_showtext && $sms_send_showtext != 11 ){
+            $where_all['sms_send_showtext'] = array('eq',$sms_send_showtext);
+            $where_used['sms_send_showtext'] = array('eq',$sms_send_showtext);
+            $where_used['is_used'] = array('eq',1);
+        }
+        if($time_From && $time_To){
+            $where_used['time'] = array(array('egt',$time_From),array('elt',$time_To));
+            $where_used['is_used'] = array('eq',1);
+            $where_all['time'] = array(array('egt',$time_From),array('elt',$time_To));
+        }
+
+        $cardM = M('card');
+        $couponAll = $cardM->field('count(id) cid')->where($where_all)->find();        //²éÑ¯ÒÑ·¢·ÅµÄÈ¯
+        $couponUsed = $cardM->field('count(id) cid')->where($where_used)->find();    //²éÑ¯ÒÑÊ¹ÓÃµÄÈ¯
+        $data = $cardM->field('time,count(id) aid')->where($where_all)->group('time')->select();
+        $page = new Page(count($data),self::PAGE_NUM);
+        $show = $page->show();
+        $cardList = $cardM->field('time,count(id) aid')->where($where_all)->order('time desc')->group('time')->limit($page->firstRow, $page->listRows)->select();  //²éÑ¯ÒÑ·¢·Å
+        $cardUsed = $cardM->field('count(id) usid,time')->where($where_used)->order('time desc')->group('time')->limit($page->firstRow, $page->listRows)->select();  //²éÑ¯ÒÑÊ¹ÓÃ
+
+        $cardResult = array();
+        foreach($cardList as $key=>$val){
+            $cardResult[md5($val['time'])] = array('total'=>$val['aid'], 'time'=>$val['time']);
+        }
+
+        foreach($cardUsed as $key=>$val){
+           $cardResult[md5($val['time'])]['used_total'] = $val['usid'];
+           $cardResult[md5($val['time'])]['ratio'] = round($cardResult[md5($val['time'])]['used_total'] / $cardResult[md5($val['time'])]['total'] * 100,2) . '%';
+        }
+
+//        dump($_POST);
+//        dump($cardResult);
+//        echo$cardM->getLastSql();
+        $this->assign('page',$show);
+        $this->assign('coupon_All',$couponAll);
+        $this->assign('coupon_Used',$couponUsed);
+        $this->assign('type',$temp);
+        $this->assign('list',$cardResult);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+}

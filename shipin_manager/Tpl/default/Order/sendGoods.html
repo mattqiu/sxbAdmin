@@ -1,0 +1,56 @@
+<table>
+    <tr>
+        <td>快递公司</td>
+        <td><select name="express_com" id="express_com">
+            <foreach name="expressComList" item="express">
+                <option value="{$express.code}">{$express.name}</option>
+             </foreach>
+        </select></td></tr>
+    <tr>
+        <td>快递单号</td>
+        <td><input type="text" name="freeCode" id="freeCode"/></td></tr>
+</table>
+<input type="hidden" name="o_id" value="{$order.id}" id="o_id"/>
+
+<div style="position: absolute; text-align: right; right: 50px; bottom: 10px;">
+<div id="expressComCodeBtn"  style="cursor: pointer;">确定</div></div>
+
+<script>
+    //确定发货信息，写入订单日志，更新订单信息,关闭弹窗
+    $('#expressComCodeBtn').on('click', function(){
+        console.log('dosendgoods');
+        var express_com = $('#express_com');
+        var freeCode = $('#freeCode');
+        var oId = $('#o_id');
+
+        var data = {'oId' : oId.val(), 'expressCom' : express_com.val(), 'freeCode' : freeCode.val()};
+        var doUrl = '/admin.php/orders/postSendGoods';
+
+        $.post(doUrl, data, function(res){
+
+            var res = $.parseJSON(res);
+            if(!(res.status > 0)){
+                $.messager.alert('出错', res.msg);
+            } else {
+                var orderTr = $('#orderTr_' + res.data['id']);
+                var prevOrderTr = orderTr.prev('.orderItem');
+                orderTr.remove();
+                prevOrderTr.after(res.data['html']);
+
+                $.messager.show({
+                    title:'提示',
+                    msg:'发货成功',
+                    showType:'show',
+                    // 消息将显示在顶部中间
+                    style:{
+                        right:'',
+                        top:document.body.scrollTop+document.documentElement.scrollTop,
+                        bottom:''
+                    }
+                });
+            }
+
+            $('#ajaxWin').window('close');
+        });
+    });
+</script>

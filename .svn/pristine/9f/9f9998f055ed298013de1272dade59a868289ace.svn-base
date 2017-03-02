@@ -1,0 +1,22 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td ><img src="{$img_site}{$item.thum_photo}" alt="" width="60"> <br/>
+        {$item.product_name}</td>
+    <td >{$item.product_number}</td>
+    <td >
+        <foreach name="item.product_price" item="price">
+            {$price.volume} ￥{$price.price}元/{$price.unit} <br/>
+        </foreach>
+    </td>
+    <td >{$item.promo_code}<br>{$item.discount}折<br>{$item.period}</td>
+    <td >{$item.viewed}</td>
+    <td >{$item.sales}</td>
+    <td ><a href="/Product/photos/id/{$item.id}">商品相册</a></td>
+    <td >{$item.order_id}</td>
+    <td>
+        <a href="{$frontSiteUrl}/detail/index/{$item.id}" target="_blank">预览</a>
+        <a href="/Product/copy/id/{$item.id}" target="_blank">复制</a>
+        <a href="/Product/edit/id/{$item.id}">编辑</a>
+        <a href="/Product/del/id/{$item.id}">删除</a>
+    </td>
+</tr>

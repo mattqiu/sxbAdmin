@@ -1,0 +1,16 @@
+<tr>
+    <td><input type="checkbox" name="id[]" value="{$item.id}" />{$item.id}</td>
+    <td>{$item.name}</td>
+    <td>{$item.title}</td>
+    <td>
+        <gt name="item.status" value="0">启用</gt>
+        <lt name="item.status" value="1">禁用</lt>
+    </td>
+    <td>{$item.level}</td>
+    <td>{$item.remark}</td>
+    <td>{$item.sort}</td>
+    <td>
+        &nbsp;<a href="{:U('Privilege/editNode', 'id='.$item['id'])}">编辑</a>
+        &nbsp;<a href="{:U('Privilege/deleteNode', 'ids='.$item['id'])}">删除</a>
+    </td>
+</tr>

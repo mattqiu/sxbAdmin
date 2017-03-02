@@ -1,0 +1,336 @@
+<?php
+// +----------------------------------------------------------------------
+// | 时品
+// +----------------------------------------------------------------------
+// | Copyright (c) 2014 http://m.shipinmmm.com/ All rights reserved.
+// +----------------------------------------------------------------------
+// | 这不是一个自由软件，未经授权，不允许任何个人或组织传播和使用。
+// +----------------------------------------------------------------------
+// | Author: Chris.Ying <christhink@qq.com>
+// +----------------------------------------------------------------------
+// | @version: $Id$ 
+
+/**
+ * Class CouponTemplAction
+ *  优惠券模板管理
+ */
+class DroplistAction extends CommonAction{
+
+    public function index(){
+        $where = array();
+
+        $couponTmlM = M('coupon_tml');
+        $jewelboxTmlM = M('jewelbox_tml');
+        $droplistM = M('droplist');
+        $count = $droplistM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $droplistM->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('drop_group_id desc')->select();
+
+        if(!empty($list)){
+            foreach($list as $key => $item){
+                if(!empty($item['mutex_data'])&&$item['mutex_data'] != '0')
+                {
+                    $js_mutex_data = json_decode($item['mutex_data'],true);
+                    $array_conpontmlid2mutex = array();
+                    $array_conpontmlids = array();
+
+                    $array_jewelboxid2mutex = array();
+                    $array_jewelboxids = array();
+
+
+                    $array_jb_key_show_data = array();
+
+                    foreach($js_mutex_data as $mutexkey => $mutexitem){
+                        $dropitem_id = $mutexitem['dropitem_id'];
+                        $dropitem_type = $mutexitem['dropitem_type'];
+                        $dropitem_rate = $mutexitem['drop_rate'];
+
+                        switch(intval($dropitem_type))
+                        {
+                            case 0://优惠券
+                            {
+                                $array_conpontmlid2mutex[$dropitem_id] = $mutexitem;
+                                $array_conpontmlids[] = $dropitem_id;
+                            }break;
+                            case 1://宝盒
+                            {
+                                $array_jewelboxid2mutex[$dropitem_id] = $mutexitem;
+                                $array_jewelboxids[] = $dropitem_id;
+                            }break;
+                            case 2://钥匙
+                            {
+                                $strshow = '钥匙:'.$dropitem_id.'条,概率:'.$dropitem_rate;
+                                $array_jb_key_show_data[] = $strshow;
+                            }
+                            case 3://微信红包
+                            {
+                                $strshow = '微信红包:'.'金额随机,概率:'.$dropitem_rate;
+                                $array_jb_key_show_data[] = $strshow;
+                            }
+                        }
+
+                    }
+
+                    $show_mutex_data = array();
+
+                    //优惠券数据
+                    $coupon_tmlids = $array_conpontmlids;
+                    $coupon_tmlids = implode(',', $coupon_tmlids);
+                    $coupontmllist = $couponTmlM->where("id in (".$coupon_tmlids.")")->select();
+                    if(!empty($coupontmllist)){
+                        $couponshowdata = array();
+                        foreach($coupontmllist as $coupontmlkey => $coupontmlitem){
+                            $mutexitem_rate = $array_conpontmlid2mutex[$coupontmlitem['id']]['drop_rate'];
+                            $strshow = '模板id:'.$coupontmlitem['id'].',名称:'.$coupontmlitem['sms_send_showtext'].',概率:'.$mutexitem_rate.',使用范围说明:'.$coupontmlitem['description'];
+                            $couponshowdata[]=$strshow;
+                        }
+
+                        $show_mutex_data[] = $couponshowdata;
+
+
+                    }
+
+                    //宝盒数据
+                    $jewelbox_tmlids = $array_jewelboxids;
+                    $jewelbox_tmlids = implode(',', $jewelbox_tmlids);
+                    $jewelboxlist = $jewelboxTmlM->where("id in (".$jewelbox_tmlids.")")->select();
+                    if(!empty($jewelboxlist)){
+                        $jewelboxshowdata = array();
+                        foreach($jewelboxlist as $jewelboxtmlkey => $jewelboxtmlitem){
+                            $mutexitem_rate = $array_jewelboxid2mutex[$jewelboxtmlitem['id']]['drop_rate'];
+                            $strshow = '模板id:'.$jewelboxtmlitem['id'].',名称:'.$jewelboxtmlitem['sms_send_showtext'].',概率:'.$mutexitem_rate.',使用范围说明:'.$jewelboxtmlitem['description'];
+                            $jewelboxshowdata[]=$strshow;
+                        }
+
+                        $show_mutex_data[] = $jewelboxshowdata;
+
+
+                    }
+
+                    //钥匙数据
+                    if(!empty($array_jb_key_show_data))
+                    {
+                        $show_mutex_data[] = $array_jb_key_show_data;
+                    }
+
+                    if(!empty($show_mutex_data))
+                    {
+                        $list[$key]['b64_mutex_data'] = base64_encode($item['mutex_data']);
+                        $list[$key]['mutex_data'] = $show_mutex_data;
+                    }
+                    else
+                    {
+                        $list[$key]['b64_mutex_data'] = '';
+                        $list[$key]['mutex_data'] = '';
+                    }
+
+                }
+
+            }
+        }
+
+        $this->assign('list', $list);
+        $this->assign('page', $strPage);
+        $this->display();
+    }
+
+    public function create(){
+        $this->display();
+    }
+
+    public function doCreate(){
+        $drop_group_id = I('drop_group_id', 0);
+        $group_name = I('group_name', 0);
+        $drop_rate = I('drop_rate', 0);
+        $user_limit_times = I('user_limit_times', 0);
+        $count_limit_times = I('count_limit_times', 0);
+        $mutex_data = array();
+        $array_dropitem_ids = $_REQUEST['dropitem_id'];
+        $array_dropitem_type = $_REQUEST['dropitem_type'];
+        $array_mutex_drop_rate = $_REQUEST['mutex_drop_rate'];
+
+        for($i=0;$i<count($array_dropitem_ids);$i++)
+        {
+            if(empty($array_dropitem_ids[$i]))
+                continue;
+            $mutex_one = array(
+                'dropitem_id'=>$array_dropitem_ids[$i],
+                'dropitem_type'=>$array_dropitem_type[$i],
+                'drop_rate'=>$array_mutex_drop_rate[$i]
+            );
+            $mutex_data[] = $mutex_one;
+        }
+
+        $droplistM = M('droplist');
+            $data = array();
+            $data['drop_group_id'] =  $drop_group_id;
+            $data['group_name'] =  $group_name;
+            $data['drop_rate'] =  $drop_rate;
+            $data['mutex_data'] =  json_encode($mutex_data);
+            $data['user_limit_times'] =  $user_limit_times;
+            $data['count_limit_times'] =  $count_limit_times;
+
+        $droplistM->add($data);
+
+        redirect('/Droplist/index');
+    }
+
+    public function del(){
+        $id = I('id', 0);
+        if($id > 0){
+            $droplistM = M('droplist');
+            $droplistM->where('id = ' . $id)->delete();
+        }
+        redirect('/Droplist/index');
+    }
+
+    public function edit(){
+        $id = I('id', 0);
+
+        $droplistM = M('droplist');
+        $item = $droplistM->where('id =' . $id)->find();
+
+        $drop_group_id = $item['drop_group_id'];
+        $group_name = $item['group_name'];
+        $drop_rate = $item['drop_rate'];
+        $str_mutex_data = $item['mutex_data'];
+        $user_limit_times = $item['user_limit_times'];
+        $count_limit_times = $item['count_limit_times'];
+        $now_drop_times = $item['now_drop_times'];
+
+
+
+        if(!empty($str_mutex_data)&&$str_mutex_data != '0')
+        {
+            $js_mutex_data = json_decode($str_mutex_data,true);
+            $count = count($js_mutex_data);
+
+        }
+
+        $this->assign('id', $id);
+        $this->assign('drop_group_id', $drop_group_id);
+        $this->assign('group_name',$group_name);
+        $this->assign('drop_rate', $drop_rate);
+        $this->assign('mutex_data', $js_mutex_data);
+        $this->assign('count', $count);
+        $this->assign('user_limit_times', $user_limit_times);
+        $this->assign('count_limit_times', $count_limit_times);
+        $this->assign('now_drop_times', $now_drop_times);
+
+        $this->display();
+    }
+
+    public function doEdit(){
+        $id = I('id', 0);
+        $drop_group_id = I('drop_group_id', 0);
+        $group_name = I('group_name', 0);
+        $drop_rate = I('drop_rate', 0);
+        $user_limit_times = I('user_limit_times', 0);
+        $count_limit_times = I('count_limit_times', 0);
+        $mutex_data = array();
+
+        $array_dropitem_ids = $_REQUEST['dropitem_id'];
+        $array_dropitem_type = $_REQUEST['dropitem_type'];
+        $array_mutex_drop_rate = $_REQUEST['mutex_drop_rate'];
+
+        for($i=0;$i<count($array_dropitem_ids);$i++)
+        {
+            if(empty($array_dropitem_ids[$i]))
+                continue;
+
+            $mutex_one = array(
+                'dropitem_id'=>$array_dropitem_ids[$i],
+                'dropitem_type'=>$array_dropitem_type[$i],
+                'drop_rate'=>$array_mutex_drop_rate[$i]
+            );
+            $mutex_data[] = $mutex_one;
+        }
+
+        $droplistM = M('droplist');
+        $data = array();
+        $data['drop_group_id'] =  $drop_group_id;
+        $data['group_name'] =  $group_name;
+        $data['drop_rate'] =  $drop_rate;
+        $data['mutex_data'] =  json_encode($mutex_data);
+        $data['user_limit_times'] =  $user_limit_times;
+        $data['count_limit_times'] =  $count_limit_times;
+
+        $droplistM->where('id='.$id)->save($data);
+
+        redirect('/Droplist/index');
+    }
+
+    public function clear_userlimit()
+    {
+        $id = I('id', 0);
+        if($id == 0)
+        {
+            echo '错误的操作';
+            return;
+        }
+
+        $action_limitM = M('user_action_limit_record');
+
+        $where = 'type like "user_droplist" and value like "'.$id.'"';
+        $res = $action_limitM->where($where)->delete();
+        if($res>0)
+        {
+            echo '清除成功';
+        }
+        else
+        {
+            echo '没有可清除的数据';
+        }
+    }
+
+    /**
+     *  选择关联的优惠券模板
+     */
+    public function selectJson(){
+        $where = array();
+
+        $couponTmlM = M('coupon_tml');
+        $count = $couponTmlM->where($where)->count();
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $couponTmlM->where($where)
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        if(!empty($list)){
+            foreach($list as $key => $item){
+                $list[$key]['isgroupbuy_only'] = 1 == $item['isgroupbuy_only'] ? '<span class="red">是</span>' : '<span class="green">否</span>';
+                $list[$key]['coupon_type'] = 1 == $item['coupon_type'] ? '<span class="red">团购</span>' : '<span class="green">普通</span>';
+                $list[$key]['use_target'] = 1 == $item['use_target'] ? '<span class="red">团长</span>' : '<span class="green">不限</span>';
+
+            }
+        }
+
+        $result  = array('data' => $list, 'key' => array('id','sms_send_showtext' ,'money', 'description', 'lifetime'), 'th'=>array('id','显示名称', '金额(元)', '描述', '有效期(天)'), 'page' => $strPage);
+        echo json_encode($result);
+    }
+
+    /**
+     *  选择掉落组
+     */
+    public function selectDroplistGroupJson(){
+        $where = array();
+        $result = array();
+
+        $droplistM = M('droplist');
+        $count = $droplistM->where($where)->count('DISTINCT drop_group_id');
+
+        $page = new Page($count);
+        $strPage = $page->show();
+        $list = $droplistM->where($where)->group('drop_group_id')
+            ->limit($page->firstRow . ',' . $page->listRows)->order('id desc')->select();
+
+        $result['data'] = $list;
+        $result['key'] = array('drop_group_id','group_name');
+        $result['th'] = array('组id','组名');
+        $result['page'] = $strPage;
+        echo json_encode($result);
+    }
+
+} 

@@ -1,0 +1,14 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.drop_group_id}</td>
+    <td >{$item.group_name}</td>
+    <td >{$item.drop_rate}</td>
+    <td >
+        <foreach name='item.mutex_data' item="mutex_item" >
+            <div>{$mutex_item}</div>
+        </foreach>
+    </td>
+    <td><a href="/{$Think.MODULE_NAME }/del/id/{$item.id}" class="btn btn-primary mrg-b-lg">删除</a>
+        <a href="/{$Think.MODULE_NAME }/edit/id/{$item.id}" class="btn btn-primary mrg-b-lg">编辑</a>
+    </td>
+</tr>

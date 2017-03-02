@@ -1,0 +1,12 @@
+<foreach name="tml_list" key="key" item="tml_item">
+<div class="couponTacticTml">
+    <foreach name="tml_item.params" key="key" item="params_item">
+    <div class="row">
+        <div class="form-group col-xs-10">
+            <span class="label">{$params_item.title}</span>
+            <input type="text" name="{$tml_item.class_name}[{$key}]" class="form-control col-xs-6" id="{$tml_item.class_name}_{$key}" value="{$params_item.value}" />
+        </div>
+    </div>
+    </foreach>
+</div>
+</foreach>

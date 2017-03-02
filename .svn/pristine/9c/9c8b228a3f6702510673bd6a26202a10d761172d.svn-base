@@ -1,0 +1,576 @@
+<?php
+/**
+ * 膹偶藵膹偶藵脻卤膹偶藵膹偶藵膹偶藵茅偶麓
+ */
+class DataReportAction extends CommonAction{
+    const PAGE_NUM = 150;
+    /*
+     *膹偶藵膫禄膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶?
+     * */
+    public function index(){
+        $site = I('site');
+        $time = I('limit_date_From');
+        if(!empty($time)){
+            $time_From = I('limit_date_From').' '.I('limit_time_From');
+            $time_To = I('limit_date_To').' '.I('limit_time_To');
+        }
+
+        $distributor = M('distributor');
+        $did =$distributor->field('distributor_id')->where("name = 'jiashan'")->find();
+//        echo $distributor->getLastSql();
+        $wheres = "(o.uid = u.id) and (o.operation_id = 2 or o.operation_id = 3 or o.operation_id = 6 or o.operation_id = 9 or o.operation_id = 10)";
+        if($site == '1'){
+            $where= array();
+            $where['fie_id'] = array('eq', '');
+            $where['fie_id'] = array('in', '');
+            $where = "distributor_id = '{$did['distributor_id']}'";
+            $wheres= "(o.uid = u.id) and (o.distributor_id = '{$did['distributor_id']}') and (o.operation_id = 2 or o.operation_id = 3 or o.operation_id = 6 or o.operation_id = 9 or o.operation_id = 10)";
+        }
+        if($time_From && $time_To){
+           $wheres = "(o.uid = u.id) and (o.time>='{$time_From}') and (o.time<='{$time_To}') and (o.operation_id = 2 or o.operation_id = 3 or o.operation_id = 6 or o.operation_id = 9 or o.operation_id = 10)";
+        }
+        if($time_From && $time_To && $site ){
+            $where = "distributor_id = '{$did['distributor_id']}'";
+            $wheres = "(o.uid = u.id) and (o.distributor_id = '{$did['distributor_id']}') and (o.time>='{$time_From}') and (o.time<='{$time_To}') and (o.operation_id = 2 or o.operation_id = 3 or o.operation_id = 6 or o.operation_id = 9 or o.operation_id = 10)";
+        }
+
+
+        $model = M('user');
+        $count_user = $model->field('count(id) cid')->where($where)->find();
+
+        $where['mobile_status'] = array('eq', 1);
+        $countMobile = $model->where($where)->count();
+//        echo $model->getLastSql();
+        $user_mobile = round($countMobile/$count_user['cid']*100,2).'%';
+
+        $m = M();
+        $data = $m->table('ttgy_user u,ttgy_order o')->field('u.username,sum(o.money) sm,u.id')->where($wheres)->group('u.id')->select();
+        $result = $m->table('ttgy_user u,ttgy_order o')->field('u.username,count(o.id) con,u.id')->where($wheres)->group('u.id')->select();
+        $orders = array();
+        foreach($result as $key=>$val){
+           $orders[] = $result[$key]['id'];
+        }
+        $code = count($orders);
+        $user_orders = round($code/$count_user['cid']*100,2).'%';
+
+        $page = new Page(count($data),self::PAGE_NUM);
+        $pages = new Page(count($result),self::PAGE_NUM);
+        $show = $page->show();
+        $shows = $pages->show();
+        $money_list = $m->table('ttgy_user u,ttgy_order o')->field('u.username,sum(o.money) sm,u.id,u.mobile')->where($wheres)->group('u.id')->order('sm desc')->limit($page->firstRow, $page->listRows)->select();
+//        echo $m->getLastSql().'<br>';
+        $order_list = $m->table('ttgy_user u,ttgy_order o')->field('u.username,count(o.id) con,u.id,u.mobile')->where($wheres)->group('u.id')->order('con desc')->limit($page->firstRow, $page->listRows)->select();
+//        echo $m->getLastSql();
+        $this->assign('code',$code);
+        $this->assign('cmb',$countMobile);
+        $this->assign('user_orders',$user_orders);
+        $this->assign('user_mobile',$user_mobile);
+        $this->assign('count_user',$count_user);
+        $this->assign('lists',$order_list);
+        $this->assign('list',$money_list);
+        $this->assign('pages',$shows);
+        $this->assign('page',$show);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     * 膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶?
+     * **/
+    public function order(){
+        $time = I('limit_date_From');
+        if(!empty($time)){
+            $time_From = I('limit_date_From').' '.I('limit_time_From');
+            $time_To = I('limit_date_To').' '.I('limit_time_To');
+        }
+        $prov = I('prov');
+        $city = I('city');
+        $area = I('area');
+        $site = I('site');
+        $distributor = M('distributor');
+        $did = $distributor->field('distributor_id')->where("name = 'jiashan'")->find();
+        if(empty($_POST) || $site == '1' ){
+            $where = "(operation_id = 2 or operation_id = 3 or operation_id = 9) and (o.id = oa.order_id)";
+        }
+        if($site == '2'){
+            $where = "(operation_id = 2 or operation_id = 3 or operation_id = 9) and (o.id = oa.order_id) and (distributor_id = '{$did['distributor_id']}')";
+        }
+        if($time_From && $time_To && $site == '1'){
+            $where = "(operation_id = 2 or operation_id = 3 or operation_id = 9) and (o.id = oa.order_id) and ('$time_From' <= o.time )and('$time_To'>=o.time)";
+        }
+        if($time_To && $time_From && $site == '2'){
+            $where = "(operation_id = 2 or operation_id = 3 or operation_id = 9) and (o.id = oa.order_id) and (distributor_id = '{$did['distributor_id']}') and('$time_From' <= o.time )and('$time_To'>=o.time)";
+        }
+        if($prov && $city && $area){
+            $where = "(operation_id = 2 or operation_id = 3 or operation_id = 9) and (o.id = oa.order_id) and (oa.province = '$prov' and oa.area = '$area' and oa.city = '$city')";
+        }
+
+//dump($_POST);
+        $m = M();
+        $totle = $m->table('ttgy_order o,ttgy_order_address oa')->field('count(o.id) totle,sum(o.money) money')->where($where)->find();
+//        echo $m->getLastSql();
+        $avg = round($totle['money']/$totle['totle'],2);
+        $this->assign('avg',$avg);
+        $this->assign('totle',$totle);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+
+    /*
+     * 订单发货报表
+     * */
+    public function orderDeliver(){
+        $distributorM = M('distributor');
+        $sendM = M('send_warehome');
+        $tmpJdOrderM = M('tmp_jd_order');
+
+        $site = $distributorM->field('distributor_id,short_name')->select();
+        $send = $sendM->field('id,name')->select();
+
+        $siteId = I('site');
+        $sendId = I('send');
+        $time = I('limit_date_From');
+        if(!empty($time)){
+            $time_From = I('limit_date_From').' '.I('limit_time_From');
+            $time_To = I('limit_date_To').' '.I('limit_time_To');
+        }
+
+        if($siteId){
+            $where['distributor_id'] = array('eq',$siteId);
+        }
+        if($sendId){
+            $where['send_warehome_id'] = array('eq',$sendId);
+        }
+        if($time_From && $time_To){
+            $where['last_send_mail_time'] = array( array('egt',$time_From) , array('elt',$time_To) );
+        }
+
+
+        $data = $tmpJdOrderM->field('product_id,product_name,count(id) total')->where($where)->group('product_id')->select();
+        $page = new Page(count($data),self::PAGE_NUM);
+        $show = $page->show();
+        $result = $tmpJdOrderM->field('product_id,product_name,count(id) total')->where($where)->order('total desc')->group('product_id')->select();
+
+        $this->assign('list',$result);
+        $this->assign('site',$site);
+        $this->assign('send',$send);
+        $this->assign('page',$show);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     * 膹偶藵膹偶藵膯路膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶藵膹偶?
+     * */
+    public function goods(){
+        $site = I('site');
+        $sort = I('sort');
+        $distributor = M('distributor');
+        $did = $distributor->field('distributor_id')->where("name = 'jiashan'")->find();
+        if(empty($_POST) || $site == '1' ){
+            $where = "op.product_id = p.id";
+        }
+        if($site == '2'){
+            $where = "(op.product_id = p.id) and (distributor_id = '{$did['distributor_id']}')";
+        }
+        $order = "sqty desc";
+        switch($sort){
+            case '1':
+                $order = "op.product_id desc";
+            break;
+            case '2':
+                $order = "op.product_id asc";
+            break;
+            case '3':
+                $order = "sqty asc";
+            break;
+            case '4':
+                $order = "sqty desc";
+            break;
+            case '5':
+                $order = "stm asc";
+            break;
+            case '6':
+                $order = "stm desc";
+            break;
+        }
+        $m = M();
+        $data = $m->table('ttgy_order_product op,ttgy_product p')->field('op.product_id,op.product_name,sum(op.qty) sqty,sum(op.total_money) stm')->where($where)->group('op.product_id')->select();
+        $page = new Page(count($data),self::PAGE_NUM);
+        $show = $page->show();
+        $result = $m->table('ttgy_order_product op,ttgy_product p')->field('op.product_id,op.product_name,sum(op.qty) sqty,sum(op.total_money) stm')->where($where)->group('op.product_id')->order($order)->limit($page->firstRow, $page->listRows)->select();
+//        echo $m->getLastSql();
+        foreach($result as $key=>$val){
+            $result[$key]['avg'] = round($result[$key]['stm']/ $result[$key]['sqty'],2);        //膫偶膹偶藵膹偶藵膹偶藵膹偶藵膯路膹偶藵膹偶藵膯藵膹偶藵膹偶藵虐赂膹偶?
+        }
+        $this->assign('page',$show);
+        $this->assign('result',$result);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     *团购数据报表
+     *  */
+
+    public function group(){
+        $distributorM = M('distributor');
+        $distributorList = $distributorM->field('short_name,distributor_id')->where('status = 1')->select();        //查询分站站点
+
+        $sort = I('sort');
+        $site = I('site');
+        $groupType = I('group_type');
+        $time = I('limit_date_From');
+
+        $week = strtotime(date('Y-m-d H:i:s',strtotime('-1 week')));            //默认显示一周时间的数据
+        $nowTime = time();
+        if(!empty($time)){
+            $time_From = strtotime(I('limit_date_From').' '.I('limit_time_From'));
+            $time_To = strtotime(I('limit_date_To').' '.I('limit_time_To'));
+        }
+        if(empty($site)|| empty($sort) || empty($time)){
+            $whereAll['state'] = array('neq',0);
+            $whereOk['state'] = array('eq',2);
+            $whereNo['state'] = array('in','1,3');
+            $whereAll['groupbuying_begintime'] = array(array('egt',$week),array('elt',$nowTime));
+            $whereOk['groupbuying_begintime'] = array(array('egt',$week),array('elt',$nowTime));
+            $whereNo['groupbuying_begintime'] = array(array('egt',$week),array('elt',$nowTime));
+        }
+        if($site){
+            $whereAll['distributor_id'] = array('eq',$site);
+            $whereOk['distributor_id'] = array('eq',$site);
+            $whereNo['distributor_id'] = array('eq',$site);
+        }
+        if($time_From && $time_To){
+            $whereAll['groupbuying_begintime'] = array(array('egt',$time_From),array('elt',$time_To));
+            $whereOk['groupbuying_begintime'] = array(array('egt',$time_From),array('elt',$time_To));
+            $whereNo['groupbuying_begintime'] = array(array('egt',$time_From),array('elt',$time_To));
+        }
+
+        if($groupType){
+            $whereAll['product_id'] = array('eq',$groupType);
+            $whereOk['product_id'] = array('eq',$groupType);
+            $whereNo['product_id'] = array('eq',$groupType);
+        }
+
+        $groupBuyingM = M('groupbuying');
+        $groupAll = $groupBuyingM->field('count(id) total')->where($whereAll)->find();        //查询开团的数量
+        $groupOk = $groupBuyingM->field('count(id) okTotal')->where($whereOk)->find();        //查询成团的数量
+        $groupNo = $groupBuyingM->field('count(id) noTotal,sum(groupbuying_nownums) noPeople')->where($whereNo)->find();        //查询未成团的数量以及参与
+        $peopleNo = $groupBuyingM->field('count(id) noGroupTotal,sum(groupbuying_nownums) noGroupPeople,groupbuying_name')->where($whereNo)->group('groupbuying_name')->select(); //查询未成团人数 分组
+//        dump($peopleNo);echo $groupBuyingM->getLastSql();
+        $groupNo['avgNoPeople'] = ceil($groupNo['noPeople'] / $groupNo['noTotal']);             //平均每团人数
+
+        $data = $groupBuyingM->field('count(id) aid,groupbuying_name,groupbuying_reqnums')->where($whereAll)->group('groupbuying_name')->select();
+        $page = new Page(count($data),self::PAGE_NUM);
+        $show = $page->show();
+        $list = $groupBuyingM->field('groupbuying_name,product_id,groupbuying_reqnums,count(id) total')->where($whereAll)->group('groupbuying_name')->limit($page->firstRow, $page->listRows)->select();          //查询一共开了多少团
+//        echo $groupBuyingM->getLastSql().'<br/>';
+        $okList = $groupBuyingM->field('groupbuying_name,product_id,groupbuying_reqnums,count(id) okTotal')->where($whereOk)->group('groupbuying_name')->limit($page->firstRow, $page->listRows)->select();   //查询以成团订单
+//                echo $groupBuyingM->getLastSql().'<br/>';
+
+        $groupList = array();
+        foreach($list as $key=>$val){
+            $groupList[md5($val['groupbuying_name'])] = array('groupbuying_name' => $val['groupbuying_name'] , 'product_id' => $val['product_id'],'group' => $val['total'] , 'groupbuying_reqnums' => $val['groupbuying_reqnums']);
+        }
+        foreach($okList as $key=>$val){
+           $groupList[md5($val['groupbuying_name'])]['groupOk'] = $val['okTotal'];
+           $groupList[md5($val['groupbuying_name'])]['ratio'] = round( $groupList[md5($val['groupbuying_name'])]['groupOk'] / $groupList[md5($val['groupbuying_name'])]['group'] * 100 , 2 );
+        }
+        foreach($peopleNo as $key=>$val){
+            $groupList[md5($val['groupbuying_name'])]['noGroupPeople'] = $val['noGroupPeople'];
+            $noGroupNum = $groupList[md5($val['groupbuying_name'])]['group'] - $groupList[md5($val['groupbuying_name'])]['groupOk'];
+            $groupList[md5($val['groupbuying_name'])]['avgNoGroupPeople'] = ceil($groupList[md5($val['groupbuying_name'])]['noGroupPeople'] / $noGroupNum);
+        }
+
+//        dump($groupList);
+        foreach($groupList as $key=>$val){
+            $groupList[$key]['okPeople'] = $groupList[$key]['groupbuying_reqnums'] * $groupList[$key]['groupOk'];       //每团成团人数
+            $groupList[$key]['requirePeople'] = $groupList[$key]['groupbuying_reqnums'] * $groupList[$key]['group'];        //需要人数
+            $groupList[$key]['group'] = intval($groupList[$key]['group']);
+            $groupList[$key]['groupbuying_reqnums'] = intval($groupList[$key]['groupbuying_reqnums']);
+            $groupList[$key]['groupOk'] = empty($groupList[$key]['groupOk']) ? 0 : intval($groupList[$key]['groupOk']);
+            $ratio[$key] = $val['ratio'];
+            $group[$key] = $val['group'];
+            $groupbuying_reqnums[$key] = $val['groupbuying_reqnums'];
+        }
+
+        foreach($groupList as $key=>$val){
+            $ctsl[$key] = $val['groupOk'];
+            $okPeople[$key] = $val['okPeople'];
+            $angp[$key] = $val['avgNoGroupPeople'];
+            $ngp[$key] = $val['noGroupPeople'];
+        }
+        switch($sort){
+            case '':
+                array_multisort($ratio,SORT_DESC,$groupList);
+            break;
+            case '1':
+                array_multisort($groupbuying_reqnums,SORT_ASC,$groupList);
+            break;
+            case '2':
+                array_multisort($groupbuying_reqnums,SORT_DESC,$groupList);
+            break;
+            case '3':
+                array_multisort($group,SORT_ASC,$groupList);
+            break;
+            case '4':
+                array_multisort($group,SORT_DESC,$groupList);
+            break;
+            case '5':
+                array_multisort($ctsl,SORT_ASC,$groupList);
+            break;
+            case '6':
+                array_multisort($ctsl,SORT_DESC,$groupList);
+            break;
+            case '7':
+                array_multisort($okPeople,SORT_ASC,$groupList);
+            break;
+            case '8':
+                array_multisort($okPeople,SORT_DESC,$groupList);
+            break;
+            case '9':
+                array_multisort($ratio,SORT_ASC,$groupList);
+            break;
+            case '10':
+                array_multisort($ratio,SORT_DESC,$groupList);
+            break;
+        }
+
+        $okPeopleAll = array();
+        $requirePeopleAll = array();
+        foreach($groupList as $key=>$val) {
+            $okPeopleAll[] = $groupList[$key]['okPeople'];              //把每个商品成团人数处理称 数组 后面相加
+            $requirePeopleAll[] = $groupList[$key]['requirePeople'];    //需要的总人数
+        }
+
+        $people['partake'] = intval($groupNo['noPeople']) + array_sum($okPeopleAll);   //参与总人数
+        $people['require'] = array_sum($requirePeopleAll);                             //要求总人数
+        $people['ratio'] = round($people['partake'] / $people['require'] *100 ,2).'%';
+
+
+//        dump($groupList);
+        $this->assign('page',$show);
+        $this->assign('groupOk',$groupOk);
+        $this->assign('groupAll',$groupAll);
+        $this->assign('groupNo',$groupNo);                  //未成团
+        $this->assign('people',$people);                    //参与总人数
+        $this->assign('groupList',$groupList);              //列表数据
+        $this->assign('list',$distributorList);             //分站
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+
+    /*
+     * 脫墓禄脻膶呕臉媒木脻
+     * */
+    public function coupon(){
+        $coupon_tmlM = M('coupon_tml');
+        $coupon_List = $coupon_tmlM->field('sms_send_showtext')->select();              //藳茅艃呕膶呕艛艜膼脥
+        foreach($coupon_List as $val){
+            $val=join(',',$val);
+            $temp[]=$val;
+        }
+        $temp=array_unique($temp);
+        foreach ($temp as $k => $v){
+            $temp[$k]=explode(',',$v);
+        }
+
+//dump($_POST);
+        $sms_send_showtext = I('sms_send_showtext');
+        $time_From = I('limit_date_From');
+        $time_To = I('limit_date_To');
+        if(empty($_POST) || $sms_send_showtext =='11'){
+            $where_used['is_used'] = array('eq',1);
+        }
+        if($sms_send_showtext && $sms_send_showtext != 11 ){
+            $where_all['sms_send_showtext'] = array('eq',$sms_send_showtext);
+            $where_used['sms_send_showtext'] = array('eq',$sms_send_showtext);
+            $where_used['is_used'] = array('eq',1);
+        }
+        if($time_From && $time_To){
+            $where_used['time'] = array(array('egt',$time_From),array('elt',$time_To));
+            $where_used['is_used'] = array('eq',1);
+            $where_all['time'] = array(array('egt',$time_From),array('elt',$time_To));
+        }
+
+        $cardM = M('card');
+        $couponAll = $cardM->field('count(id) cid')->where($where_all)->find();        //藳茅艃呕艊艃路藰路墓碌脛膶呕
+        $couponUsed = $cardM->field('count(id) cid')->where($where_used)->find();    //藳茅艃呕艊艃臉膮脫膫碌脛膶呕
+        $data = $cardM->field('time,count(id) aid')->where($where_all)->group('time')->select();
+        $page = new Page(count($data),self::PAGE_NUM);
+        $show = $page->show();
+        $cardList = $cardM->field('time,count(id) aid')->where($where_all)->order('time desc')->group('time')->limit($page->firstRow, $page->listRows)->select();  //藳茅艃呕艊艃路藰路墓
+        $cardUsed = $cardM->field('count(id) usid,time')->where($where_used)->order('time desc')->group('time')->limit($page->firstRow, $page->listRows)->select();  //藳茅艃呕艊艃臉膮脫膫
+
+        $cardResult = array();
+        foreach($cardList as $key=>$val){
+            $cardResult[md5($val['time'])] = array('total'=>$val['aid'], 'time'=>$val['time']);
+        }
+
+        foreach($cardUsed as $key=>$val){
+           $cardResult[md5($val['time'])]['used_total'] = $val['usid'];
+           $cardResult[md5($val['time'])]['ratio'] = round($cardResult[md5($val['time'])]['used_total'] / $cardResult[md5($val['time'])]['total'] * 100,2) . '%';
+        }
+
+//        dump($_POST);
+//        dump($cardResult);
+//        echo$cardM->getLastSql();
+        $this->assign('page',$show);
+        $this->assign('coupon_All',$couponAll);
+        $this->assign('coupon_Used',$couponUsed);
+        $this->assign('type',$temp);
+        $this->assign('list',$cardResult);
+        $this->assign('post',$_POST);
+        $this->display();
+    }
+
+    /*
+     * 三级联动 省市区
+     * **/
+    public function areaList(){
+        $areaM = M('area');
+        $pid = I('pid');
+        $where['pid'] = array('eq',$pid);
+        $provList = $areaM->field('id,name')->where($where)->select();
+//        echo $areaM->getLastSql();
+        echo json_encode($provList);
+    }
+
+    /**
+     *  用户订单统计
+     */
+    public function userOrders(){
+        $startTime = I('start_time', date('Y-m-d', time()) . ' 00:00:00');
+        $endTime = I('end_time', date('Y-m-d', time()) . ' 23:59:59');
+
+        $tmpJdOrder = M('tmp_jd_order');
+        $orderM = new OrderModel();
+        $where = array();
+        $where['last_send_mail_time'] = array(array('egt', $startTime), array('elt', $endTime));
+
+        $orderList = $tmpJdOrder->field('order_name')->where($where)->group('rec_key')->select();
+        $orderNameArr = array();
+        foreach($orderList as $order){
+            $orderNameArr[] = $order['order_name'];
+        }
+
+        $orderUidWhere = array();
+        $orderUidWhere['order_name'] = array('in', $orderNameArr);
+        $orderUidList = $orderM->field('uid')->where($orderUidWhere)->select();
+
+        $userOrdersInfo = array();
+        //`operation_id` int(2) NOT NULL DEFAULT '0' COMMENT '0=>''待审核'',1=>''已审核'',2=>''已发货'',3=>''已完成'',4=>''未完成'',5=>''已取消'',6=>''等待完成'',7=>''退货中'',8=>''换货中'',9=>''已收货'',10=>''待发货''',
+        $uidArr = array();
+        foreach($orderUidList as $uid){
+            $uidArr[] = $uid['uid'];
+
+//            $userOrdersInfo[$uid['uid']] = '';
+        }
+
+        $userOrderWhere = array();
+        $userOrderWhere['operation_id'] = array('in', array(2,3,6,9,10));
+        $userOrderWhere['uid'] = array('in', $uidArr);
+
+        $userOrdersList = $orderM->field('count(*) as onum, uid')->where($userOrderWhere)->relation('User')->group('uid')->limit(0, 10000)->select();
+
+        $userOrderReportM = M('user_order_report');
+        foreach($userOrdersList as $item){
+            $data = array();
+            $data['onum'] = $item['onum'];
+            $data['uid'] = $item['uid'];
+            $data['username'] = $item['username'];
+            $data['add_time'] = date('Y-m-d H:i:s', time());
+            $userOrderReportM->add($data);
+        }
+
+//        echo '<br/>总用户数'  . count($uidArr) . '<br/>';
+//        echo $orderM->getLastSql();
+//        var_dump($userOrdersList);
+    }
+
+    /**
+     *  微信红包发送数据报表
+     */
+    public function redpackSendData(){
+        $redpackResultM = M('redpack_result');
+        $where = array();
+        $where['id'] = array('gt', 36);
+        $where['luck_uids'] = array('neq', '');
+        $count = $redpackResultM->where($where)->count();
+        $page = new Page($count, 20);
+        $redpackList = $redpackResultM->where($where)->order('id desc')->limit($page->firstRow, $page->listRows)->select();
+
+        $statusArr = array();
+        //默认为1， 2为 已开奖，3为异常如无额度等',
+        $statusArr[1] = '未开奖';
+        $statusArr[2] = '已开奖';
+        $statusArr[3] = '异常(如无额度)';
+        $statusArr[4] = '已检查';
+        foreach($redpackList as $key => $item){
+            $redpackList[$key]['status'] = $statusArr[$item['status']];
+            $redpackList[$key]['log'] = mb_substr($item['log'], 0, 30);
+
+            $redpackMoney = 0;
+            $luckUserArr = json_decode($item['luck_uids'], true);
+            if(empty($luckUserArr)){
+                $redpackList[$key]['total_money'] = $redpackMoney;
+                continue;
+            }
+
+            foreach($luckUserArr as $luckItem){
+                $redpackMoney = $redpackMoney + $luckItem['money'];
+            }
+
+            $redpackList[$key]['total_money'] = $redpackMoney / 100;
+
+            $redpackList[$key]['real_one_money'] = number_format($redpackList[$key]['total_money'] / $redpackList[$key]['real_group_new_user_num'], 2);
+        }
+
+        $this->assign('page',$page->show());
+        $this->assign('list',$redpackList);              //列表数据
+        $this->display('redpack');
+
+    }
+
+    public function exportData(){
+        $dataType = I('data_type', 'redpack');
+
+
+        switch($dataType){
+            case 'redpack':
+                $xlsName = '微信红包发放数据报表';
+                $xls_cell = array();
+                $xls_data = array();
+                $this->exportExcel($xlsName, $xls_cell, $xls_data, '', true);
+                break;
+
+            default:
+
+                break;
+        }
+
+    }
+
+    private function getRedpackData(){
+        $redpackResultM = M('redpack_result');
+        $where = array();
+        $where['id'] = array('gt', 36);
+        $where['status'] = 4;
+        $redpackList = $redpackResultM->where($where)->order('id desc')->limit(0, 1000)->select();
+
+        $dataList = array();
+        foreach($redpackList as $key => $item){
+            $redpackList[$key]['real_one_money'] = number_format($redpackList[$key]['total_money'] / $redpackList[$key]['real_group_new_user_num'], 2);
+
+            $data = array();
+            $data[''] = '';
+        }
+
+        return $redpackList;
+    }
+
+    
+}

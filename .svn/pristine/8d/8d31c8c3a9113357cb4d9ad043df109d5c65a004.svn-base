@@ -1,0 +1,48 @@
+<volist name="list" id="item" empty="$empty">
+<tr class="select_all">
+    <td class="id_order_name" style="text-align:left;text-indent:3px;">
+        <input type="checkbox" class="checkOrder" value="{$item.id}"
+                <if condition="$item.jd_can_shipping neq 2">
+                    disabled
+                </if>
+                />&nbsp;{$item.id}</td>
+    <td>订:{$item.order_name} <br/>团:{$item.groupbuy_order_name}</td>
+    <td>{$item.rec_name} <br/> {$item.rec_mobile}</td>
+    <td>{$item.rec_address}</td>
+    <td>{$item.product_name}</td>
+    <td>{$item.delivery_id}</td>
+    <td>{$item.shipping_status_name}</td>
+    <td>{$item.print_num}</td>
+    <td>{$item.is_export_to_warehome}</td>
+    <td>{$item.package_num}</td>
+    <td>{$item.jd_can_shipping_name}</td>
+    <td>{$item.send_warehome_name}</td>
+    <td style="padding:0;">
+        <if condition="$item.status eq 1"><span class="order_status tack">取出</span>
+            <elseif condition="$item.status eq 2"/><span class="order_status sync">同步</span>
+            <elseif condition="$item.status eq 4"/><span class="order_status deliver">发货</span>
+            <elseif condition="$nums eq 1"/><span class="order_status print">已打印</span>
+            <elseif condition="$nums eq 2"/><span class="order_status print">未打印</span>
+            <elseif condition="$item.status eq 10"/><span class="order_status abnormal click_abnormal">异常&nbsp;
+                <a class="delete" oid="{$item.id}" href="javascript:;" >删除</a></span>
+        </if>
+    </td>
+    <td>
+        <if condition="$type eq 3">{$item.last_print_time}
+            <elseif condition="$type eq 2"/>{$item.last_import_jd_time}
+            <else/>{$item.add_time}
+        </if>
+    </td>
+    <td>
+        <button class="md-trigger btn btn-primary mrg-b-lg save_address" data-modal="save_address_dialog">
+            修改地址
+        </button>
+        <input type="hidden" name="order_name" value="{$item.order_name}">
+        <input type="hidden" name="group_order_name" value="{$item.groupbuy_order_name}">
+        <input type="hidden" name="rec_name" value="{$item.rec_name}">
+        <input type="hidden" name="rec_mobile" value="{$item.rec_mobile}">
+        <input type="hidden" name="rec_address" value="{$item.rec_address}">
+    </td>
+
+</tr>
+</volist>

@@ -1,0 +1,15 @@
+<tr>
+
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.pid}111</td>
+    <td ><a href="/postage/town/id/{$item.id}/countyname/{$item.name}/provincename/{$provincename}/areaname/{$areaname}">{$item.name}</a></td>
+    <td >{$item.zipcode}</td>
+    <td >{$item.first_weight}</td>
+    <td >{$item.first_weight_money}</td>
+    <td >{$item.follow_weight_money}</td>
+    <td>{$item.active}</td>
+    <td>
+        <a href="/index.php?m=Postage&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Postage&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

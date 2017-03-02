@@ -1,0 +1,431 @@
+<?php
+
+/**
+ * 定时任务
+ * User: chrisying
+ * Date: 15/9/21
+ * Time: 下午12:00
+ */
+class TaskAction extends Action {
+
+
+    public function _initialize() {
+        header("Content-type: text/html; charset=utf-8");
+        $passKey = I('pass_key', md5('abc12376446'));
+        $autoTaskKey = C('AUTO_TASK_KEY');
+        if($autoTaskKey != $passKey) {
+            return;
+        }
+    }
+
+    /**
+     *  拼团未成团的订单自动退款给用户
+     */
+    public function groupbuy_autorefund() {
+        //取未成团的订单
+        $groupbuyingM = M('groupbuying');
+        $groupbuyingOrderM = M('groupbuying_order');
+        $orderRefundM = M('order_refund');
+        $orderPaymentM = M('order_payment');
+        $taskM = new TaskModel();
+
+        $time = time();
+
+        $where = ' groupbuying_endtime < ' . $time . ' AND state = 1';
+//        $where = 'state = 1';
+        $count = $groupbuyingM->where($where)->count();
+        $pageNum = 100;
+        $offset = 0;
+        $page = 1;
+        $list = $groupbuyingM->where($where)->limit($offset, $pageNum)->order('id DESC')->select();
+
+        echo 'totao===' . $count . '<br/>';
+        echo $groupbuyingM->getLastSql() . '<br/>';
+
+
+        while (!empty($list)) {
+            $groupbuyingM->startTrans();
+            foreach ($list as $item) {
+                echo $item['id'] . '<br/>';
+                if($item['groupbuying_nownums'] < $item['groupbuying_reqnums']) {
+                    //未达到成团人数，则退款
+                    $orderList = $groupbuyingOrderM->where('groupbuying_id = ' . $item['id']
+                        . ' AND state = 1')->select();
+                    if(empty($orderList)) {
+                        continue;
+                    }
+
+                    foreach ($orderList as $groupbuyOrder) {
+                        if($groupbuyOrder['pay_money'] > 0){
+                            $taskM->doGroupOrderRefund($groupbuyOrder);
+                        } else {
+                            $taskM->doZeroOrderRefund($groupbuyOrder);
+                        }
+
+                    }
+                }
+            }
+
+            $page++;
+            $offset = ($page - 1) * $pageNum;
+            $list=array();
+//            $list = $groupbuyingM->where($where)->limit($offset, $pageNum)->select();
+
+            $groupbuyingM->commit();
+        }
+    }
+
+    public function testAlipayRefund(){
+        Vendor("alipay/lib/alipay_notify", '', '.class.php');
+        Vendor("alipay/lib/alipay_submit", '', '.class.php');
+
+        //支付宝 退款
+        $alipayUrl = 'https://mapi.alipay.com/gateway.do?';
+        $alipay_config = C('ALIPAY_CONF');
+
+        //建立请求
+        $alipaySubmit = new AlipaySubmit($alipay_config);
+
+        $alipayParams = array();
+        $alipayParams['service'] = 'refund_fastpay_by_platform_pwd';
+        $alipayParams['partner'] = $alipay_config['partner'];
+        $alipayParams['_input_charset'] = $alipay_config['input_charset'];
+        $alipayParams['notify_url'] = 'http://v1manage.shipinmmm.com/Task/alipayRefundNotify';
+        $alipayParams['seller_email'] = $alipay_config['seller_id'];
+        $alipayParams['seller_user_id'] = $alipay_config['partner'];
+        $alipayParams['refund_date'] = date('Y-m-d H:i:s', time());
+        //每进行一次即时到账批量 退款,都需要提供一个批次 号,通过该批次号可以查询 这一批次的退款交易记录,
+        // 对于每一个合作伙伴,传递 的每一个批次号都必须保 证唯一性。
+        //格式为:退款日期(8 位) +流水号(3~24 位)。
+        //不可重复,且退款日期必须 是当天日期。流水号可以接 受数字或英文字符,建议使 用数字,但不可接受 “000”。
+        $alipayParams['batch_no'] = date('Ymd') . sprintf('%05s', 1);
+        //总笔数即参数 detail_data 的值 中,“#”字符出现的数量 加 1,最大支持 1000 笔
+        //(即 “#”字符出现的最大数量 为 999 个)
+        $alipayParams['batch_num'] = '2';
+        //交易退款数据集的格式为:原付款支付宝交易号^退款总金额^退款理由;
+        $alipayParams['detail_data'] = '2015092200001000810064534570^0.1^未成团退款#2015092200001000810064543655^0.1^未成团退款';
+
+        $reqParams = $alipaySubmit->buildRequestPara($alipayParams);
+        $reqParams['sign_type'] = $alipay_config['sign_type'];
+
+        $url = $alipayUrl . $alipaySubmit->buildRequestParaToString($reqParams);
+    }
+
+    public function alipayRefundNotify(){
+//http://商户自定义地址 /alipay/notify_url.php?notify_time=2009-08-12+11%3A08%3A32&notify_type=b atch_refund_notify&notify_id=70fec0c2730b27528665af4517c27b95&sign_type =MD5&sign=_p_w_l_h_j0b_gd_aejia7n_ko4_m%252Fu_w_jd3_nx_s_k_mxus9 _hoxg_y_r_lunli_pmma29_t_q%3D%3D&batch_no=20060702001&success_nu m=2&result_details=2010031906272929%5E80%5ESUCCESS
+        $alipayRefundM = M('alipay_refund');
+        $orderRefundM = M('order_refund');
+        $groupbuyingOrderM = M('groupbuying_order');
+        $taskM = new TaskModel();
+
+        Vendor("alipay/lib/alipay_notify", '', '.class.php');
+        $alipay_config = C('ALIPAY_CONF');
+        $alipayNotify = new AlipayNotify($alipay_config);
+        $post = $_POST;
+//        $post = json_decode('{"result_details":"2015092200001000810064534570^0.10^SUCCESS#2015092200001000810064543655^0.10^SUCCESS","notify_time":"2015-10-11 01:04:27","notify_type":"batch_refund_notify","notify_id":"4d3c7bdb1a08eb104f3c7022d6e8a0alpk","batch_no":"2015101000001","success_num":"2"}";}');
+
+
+//        $post = json_decode('{"sign":"f0012ca7e2444610186ffc5b9bca49a3","result_details":"2015092300001000240061197086^0.10^TRADE_HAS_CLOSED#2015092300001000240061198187^0.10^TRADE_HAS_CLOSED","notify_time":"2015-11-17 16:26:41","sign_type":"MD5","notify_type":"batch_refund_notify","notify_id":"16479c452a900eb399d8a94b1c26ac8img","batch_no":"20151117002","success_num":"0"}', true);
+
+        $sign = $post['sign'];
+        $signType = $post['sign_type'];
+
+        Log::write('===alipay refund notify ===post= ' . json_encode($_POST));
+
+        if($alipayNotify->getSignVeryfy($post, $sign, true)){
+            //确认是支付宝发来的消息，并且签名验证通过
+            $batch_no = $post['batch_no'];
+            $success_num = $post['success_num'];
+            $result_details = $post['result_details'];
+//            不退手续费结果返回格式: 交易号^退款金额^处理结果。
+//若退款申请提交成功,处理结果 会返回“SUCCESS”。
+
+//            ﻿[2015-10-11 01:04:27 ]        a:1:{s:4:"post";s:299:"======alipayrefundnotify====={"result_details":"2015092200001000810064534570^0.10^SUCCESS#2015092200001000810064543655^0.10^SUCCESS","notify_time":"2015-10-11 01:04:27","notify_type":"batch_refund_notify","notify_id":"4d3c7bdb1a08eb104f3c7022d6e8a0alpk","batch_no":"2015101000001","success_num":"2"}";}
+            if(!empty($result_details)){
+                $resultList = explode('#', $result_details);
+                if(count($resultList) > 1){
+                    foreach($resultList as $item){
+                        $itemArr = explode('^', $item);
+                        $aliWhere = 'batch_no = "' . $batch_no . '" AND old_out_bill_no = "' . $itemArr[0] . '"';
+                        $aliItem  = $alipayRefundM->where($aliWhere)->find();
+                        $alipayRefundM->where($aliWhere)->save(array('status' => $itemArr[2]));
+                        deBugLog(array('itemArr' => '====alipay refund==itemArr=====' . json_encode($itemArr)), __FILE__);
+                        deBugLog(array('itemArr' => '====alipay refund==itemArr=====' . json_encode($itemArr)), __FILE__);
+                        if($itemArr[2] == 'SUCCESS'){
+                            $orderRefundData = $orderRefundM->where('payment_id = "' . $aliItem['payment_id'] . '"')->find();
+                            $groupbuyOrder = $groupbuyingOrderM->where('order_name = "' . $aliItem['order_name'] . '"')->find();
+                            $taskM->upOrderRefund(true, $aliItem['payment_id'], $orderRefundData, $groupbuyOrder, $itemArr[1]);
+                        } else {
+                            $taskM->failOrderRefund($aliItem['payment_id']);
+                        }
+
+                    }
+                } else {
+                    if(!empty($resultList)){
+                        $itemArr = explode('^', $resultList[0]);
+                        $aliWhere = 'batch_no = "' . $batch_no . '" AND old_out_bill_no = "' . $itemArr[0] . '"';
+                        $aliItem  = $alipayRefundM->where($aliWhere)->find();
+                        $alipayRefundM->where($aliWhere)->save(array('status' => $itemArr[2]));
+                        deBugLog(array('itemArr' => '====alipay refund==itemArr=====' . json_encode($itemArr)), __FILE__);
+                        if($itemArr[2] == 'SUCCESS'){
+                            $orderRefundData = $orderRefundM->where('payment_id = "' . $aliItem['payment_id'] . '"')->find();
+                            $groupbuyOrder = $groupbuyingOrderM->where('order_name = "' . $aliItem['order_name'] . '"')->find();
+                            $taskM->upOrderRefund(true, $aliItem['payment_id'], $orderRefundData, $groupbuyOrder, $itemArr[1]);
+                        } else {
+                            $taskM->failOrderRefund($aliItem['payment_id']);
+                        }
+                    }
+                }
+            }
+
+            echo 'success';
+        }
+
+        deBugLog(array('post' => '======alipayrefundnotify=====' . json_encode($post)), __FILE__);
+    }
+
+    /**
+     *  测试微信支付退款接口
+     */
+    public function testwxrefund() {
+        //如果的微信支付则调用微信支付退款接口
+        $url = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
+//        $url = 'https://api.sp.com/api';
+
+        $wxParams = array();
+        $wxParams['appid'] = C('WX_APP_ID');
+        $wxParams['mch_id'] = C('WX_PAY_MCHID');
+        $wxParams['nonce_str'] = C('WX_JSSDK_NONCESTR');
+
+        $wxParams['out_trade_no'] = '1512031549522755';
+//        $wxParams['out_refund_no'] = time();
+        $wxParams['out_refund_no'] = 1449114348;
+        $wxParams['total_fee'] = 12.50 * 100;
+        $wxParams['refund_fee'] = 12.50 * 100;
+        $wxParams['op_user_id'] = C('WX_PAY_MCHID');
+        $wxParams['sign'] = $this->makeWxSign($wxParams);
+        $wxParams['ssl_cert'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/apiclient_cert.pem';
+        $wxParams['ssl_key'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/apiclient_key.pem';
+
+
+        $isShipin = true;
+        if($isShipin){
+            $wxParams = array();
+            $wxParams['appid'] = 'wx50d24bb15d0567a0';
+            $wxParams['mch_id'] = '1261897201';
+            $wxParams['nonce_str'] = 'spai689898djjduejdud';
+            $wxParams['out_trade_no'] = '151130317243';
+            //        $wxParams['out_refund_no'] = time();
+            $wxParams['out_refund_no'] = 1449114349;
+            $wxParams['total_fee'] = 1 * 100;
+            $wxParams['refund_fee'] = 1 * 100;
+            $wxParams['op_user_id'] = '1261897201';
+
+            $wxParams['sign'] = $this->makeWxSign($wxParams);
+
+            $wxParams['ssl_cert'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/shipin/apiclient_cert.pem';
+            $wxParams['ssl_key'] = BASE_PATH . '/shipin_manager/Conf/weixinpay/cert/shipin/apiclient_key.pem';
+        }
+
+
+        var_dump($wxParams);
+        echo '<br/>';
+        $result = getCurlRequestXML($url, $wxParams);
+        echo $result .'<br/>';
+        $resultArr = fromXml($result);
+        var_dump($resultArr);
+    }
+
+    /**
+     * 生成签名
+     * @return 签名，本函数不覆盖sign成员变量，如要设置签名需要调用SetSign方法赋值
+     */
+    public function makeWxSign($data) {
+        if(isset($data['sign'])){
+            unset($data['sign']);
+        }
+        //签名步骤一：按字典序排序参数
+        ksort($data);
+        $string = $this->toUrlParams($data);
+        //签名步骤二：在string后加入KEY
+        $string = $string . "&key=6a50ea01b41e4239a991f6419d19c0b3";
+        //签名步骤三：MD5加密
+        $string = md5($string);
+        //签名步骤四：所有字符转为大写
+        $result = strtoupper($string);
+
+        return $result;
+    }
+
+    /**
+     * 格式化参数格式化成url参数
+     */
+    public function toUrlParams($data) {
+        $buff = "";
+        foreach ($data as $k => $v) {
+            if($v != "" && !is_array($v)) {
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+
+        $buff = trim($buff, "&");
+
+        return $buff;
+    }
+
+    /**
+     *  如果支付方式是在线支付且超过30分钟未付款的订单自动取消
+     * TODO 如果量大的话要放在队列中处理, 目前没有积分，赠品，部分付款之类的，不需要做退回处理，后期
+     *  如果有的话要做退回处理， 并记录订单处理日志
+     * @author chrisying 2015-10-10
+     */
+    public function overTimeCancelOrder(){
+        $orderM = M('order');
+        $overTime = date('Y-m-d H:i:s', time() - 7200);
+        $where = 'pay_parent_id <> 4 AND pay_status = 0 AND time < "' . $overTime . '"';
+        $orderM->where($where)->save(array('operation_id' => 5, 'order_status' => 3));
+        echo $orderM->getLastSql();
+    }
+
+    public function collectAvatar(){
+        Vendor('simple_html_dom');
+        $collectAvatarM = M('collect_avatar');
+        $p = I('p', 2);
+        $inUrl = I('url', 'http://www.qqtn.com/tx/meinvtx_' . $p . '.html');
+        $site = 'http://www.qqtn.com/';
+
+        $html = file_get_html($inUrl);
+
+        // Find all images
+        foreach($html->find('ul.m_txul img') as $element){
+            echo $element->src . '<br>';
+            $hasHttp = strpos($element->src,'ttp://');
+            if(!$hasHttp){
+                $element->src = $site . $element->src;
+            }
+            $img=file_get_contents($element->src);
+            $imgFix = explode('.', $element->src);
+            $savename = md5($img . time()).'.' . $imgFix[count($imgFix) - 1];
+            $dateArr = explode('-', date('Y-m-d', time()));
+            $upyunPath = '/upload/avatar_2/';
+
+            $avatarPath = $upyunPath . $savename;
+            $avatarHead = array(
+                'big' => $avatarPath . '!middleavatar',
+                'middle' => $avatarPath . '!thumavatar',
+                'small' => $avatarPath . '!thumminavatar'
+            );
+            $collectAvatarM->add(array(
+                'avatar_img' => serialize($avatarHead),
+                'source_site' => $inUrl,
+                'add_time' => time(),
+            ));
+            $savePath = $_SERVER['DOCUMENT_ROOT'] . $upyunPath;
+            $ret=@file_put_contents($savePath . $savename,$img);
+        }
+
+        $p++;
+        if($p < 10){
+            redirect('/Task/collectAvatar/p/' . $p);
+        }
+    }
+
+    /**
+     *  定时下载微信头像
+     */
+    public function downWeixinAvatar(){
+        $userWxM = M('user_wx');
+        $userM = M('user');
+        $needDownList = $userWxM->where('is_down_avatar = 0')->order('id ASC')->limit(0, 10)->select();
+        if(empty($needDownList)){
+           return;
+        }
+
+        Vendor('upyun');
+
+        foreach($needDownList as $item){
+            $img=file_get_contents($item['headimgurl']);
+            $upyun = new UpYun('shipinmmm-img', 'spchris', 'sp&98chris123');
+
+            $savename = md5($img . time()).'.jpeg'; //localResizeIMG压缩后的图片都是jpeg格式
+            $dateArr = explode('-', date('Y-m-d', time()));
+            $upyunPath = '/upload/avatar/' . $dateArr[0] . '/' . $dateArr[1] . '/' . $dateArr[2] . '/';
+
+            $savePath = $_SERVER['DOCUMENT_ROOT'] . $upyunPath;
+            createDir($savePath);
+            $ret=@file_put_contents($savePath . $savename,$img);
+
+            $fh = fopen($savePath . $savename, 'rb');
+            $rsp = $upyun->writeFile($upyunPath . $savename, $fh, True);   // 上传图片，自动创建目录
+            fclose($fh);
+
+            $avatarFullPath = $upyunPath . $savename;
+
+            $user_head = serialize(array(
+                'big'=> $avatarFullPath . '!middleavatar',
+                'middle'=> $avatarFullPath . '!thumavatar',
+                'small'=> $avatarFullPath . '!thumminavatar',
+            ));
+
+            $userM->where('id = ' . $item['uid'])->save(array('user_head' => $user_head));
+            $userWxM->where('id = ' . $item['id'])->save(array('is_down_avatar' => 1));
+            echo $userWxM->getLastSql() . '<br/>';
+        }
+    }
+
+    public function testMem(){
+        $wxToken = getMem('wx_api_access_token');
+        $userWxM = M('user_wx');
+        $userWxItem = $userWxM->where('uid = 332885')->find();
+
+        if(!empty($wxToken) && !empty($userWxItem)){
+            $wxUrl = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $wxToken;
+            $wxData = array(
+                'touser' => $userWxItem['openid'],
+                'msgtype' => 'text',
+                'text' => array(
+                    'content' => urlencode('您的订单：'.'2015test111'.' 已发货。由[京东]快递进行配送，快递单号为：textjd001')
+                ),
+            );
+
+            $wxDataJson = urldecode(json_encode($wxData));
+            $wxResult = getCurlRequest($wxUrl, $wxDataJson);
+        }
+    }
+
+    /**
+     *  给微信号发通知消息
+     */
+    public function sendWxMsg(){
+        $uid = I('uid', '');
+        $msg = I('msg', '');
+        if(!empty($uid) && !empty($msg)){
+            $wxToken = getMem('wx_authorizer_access_token');
+            $userWxM = M('user_wx');
+            $userWxItem = $userWxM->where('uid = ' . $uid)->find();
+
+            if(!empty($wxToken) && !empty($userWxItem)){
+                $wxUrl = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $wxToken;
+                $wxData = array(
+                    'touser' => $userWxItem['openid'],
+                    'msgtype' => 'text',
+                    'text' => array(
+                        'content' => urlencode($msg)
+                    ),
+                );
+                $wxDataJson = urldecode(json_encode($wxData));
+                $wxResult = getCurlRequest($wxUrl, $wxDataJson);
+                Log::write('===wx send msg===' . json_encode($wxResult));
+        }
+
+        }
+    }
+
+    public function showInfo(){
+        $wxToken = getMem('wx_api_access_token');
+        echo $wxToken;
+
+//        echo RD('wx_api_access_token');
+    }
+
+}

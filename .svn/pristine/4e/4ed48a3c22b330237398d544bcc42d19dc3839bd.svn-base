@@ -1,0 +1,12 @@
+<tr>
+
+    <td style="text-align:center;">{$item.id}</td>
+    <td style="text-align:center;">{$item.name}</td>
+    <td style="text-align:center;">{$item.mname}</td>
+    <td style="text-align:center;">{$item.aname}</td>
+    <td style="text-align:center;"><if condition="$item.status eq 1">启用<else/>禁用</if></td>
+    <td style="text-align:center;">
+        <a href="/index.php?m=Node&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Node&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

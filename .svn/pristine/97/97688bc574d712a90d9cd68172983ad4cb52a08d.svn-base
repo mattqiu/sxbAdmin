@@ -1,0 +1,13 @@
+<tr>
+
+    <td ><input type="checkbox" />&nbsp;{$item.id}</td>
+    <td >{$item.username}</td>
+    <td >{$item.mobile}</td>
+    <td > <img src="{$img_site}{$item.user_head}" alt=""> </td>
+    <td > <if condition="$item.sex eq 0">未填写<elseif condition="$item.sex eq 1"/>男<else/>女</if> </td>
+    <td >{$item.reg_time}</td>
+    <td>
+        <a href="/index.php?m=User&a=edituser&id={$item.id}">编辑</a>
+        <a href="/index.php?m=User&a=deluser&id={$item.id}">删除</a>
+    </td>
+</tr>

@@ -1,0 +1,17 @@
+<tr>
+
+    <td style="text-align:center;">{$item.id}</td>
+    <td style="text-align:center;">{$item.name}</td>    
+    <td style="text-align:left;">
+    	<foreach name="item.node" item="qx">
+    	{$qx}、
+    	</foreach>
+    </td>
+    <td style="text-align:left;text-indent:40px;">{$item.remark}</td>
+    <td style="text-align:center;"><if condition="$item.status eq 1">启用<else/>禁用</if></td>
+    <td style="text-align:center;">
+        <a href="/index.php?m=Role&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Role&a=del&id={$item.id}">删除</a>
+        <a href="/index.php?m=Role&a=nodelist&id={$item.id}">分配权限</a>
+    </td>
+</tr>

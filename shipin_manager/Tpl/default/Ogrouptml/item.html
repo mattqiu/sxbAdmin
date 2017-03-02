@@ -1,0 +1,18 @@
+<tr>
+
+    <td>{$item.id}</td>
+    <td>{$item.o2o_money}元</td>
+    <td>{$item.o2o_nums}人</td>
+    <td>
+        <if condition="$item.condition eq 1">金额 or 人数
+        <else/>金额 and 人数
+        </if>
+
+    </td>
+    <td>{$item.delivery_time}</td>
+    <td>{$item.group_ok_time}</td>
+    <td>
+        <a href="/index.php?m=Ogrouptml&a=edit&id={$item.id}">编辑</a>
+        <a href="/index.php?m=Ogrouptml&a=del&id={$item.id}">删除</a>
+    </td>
+</tr>

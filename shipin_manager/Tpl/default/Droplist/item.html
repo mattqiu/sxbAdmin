@@ -1,0 +1,17 @@
+<tr>
+    <td ><input type="checkbox" />{$item.id}</td>
+    <td >{$item.drop_group_id}</td>
+    <td >{$item.group_name}</td>
+    <td >{$item.drop_rate}</td>
+    <td >
+        <foreach name='item.mutex_data' item="mutex_item" >
+            <foreach name='mutex_item' item="item_item" >
+            <div>{$item_item}</div>
+            </foreach>
+        </foreach>
+    </td>
+    <td><a href="/{$Think.MODULE_NAME }/del/id/{$item.id}" class="btn btn-primary mrg-b-lg">删除</a>
+        <a href="/{$Think.MODULE_NAME }/edit/id/{$item.id}" class="btn btn-primary mrg-b-lg">编辑</a>
+        <a href="/{$Think.MODULE_NAME }/clear_userlimit/id/{$item.id}" class="btn btn-primary mrg-b-lg">清除用户掉落限制</a>
+    </td>
+</tr>
